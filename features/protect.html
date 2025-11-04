@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+    <title>Password Protect - EditMyPDFs.com</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+    <!-- PDFKit will be loaded at runtime. Prefer local vendor copies if present -->
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: #fff;
+        color: #111;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid #eee;
+      }
+      header h1 {
+        font-size: 1.4rem;
+        font-weight: 700;
+      }
+      header nav a {
+        margin-left: 1.5rem;
+        text-decoration: none;
+        color: #111;
+        font-weight: 500;
+      }
+      main {
+        max-width: 700px;
+        margin: 3rem auto;
+        padding: 1rem;
+        text-align: center;
+      }
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      p.sub {
+        color: #555;
+        margin-bottom: 2rem;
+      }
+      .compress-card {
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+      label,
+      input,
+      button {
+        display: block;
+        margin: 0.75rem auto;
+        font-size: 1rem;
+      }
+      input[type="password"],
+      input[type="text"] {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.6rem 0.9rem;
+        width: 260px;
+        text-align: center;
+      }
+      button {
+        background: linear-gradient(90deg, #6366f1, #2563eb);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 0.9rem 1.8rem;
+        font-weight: 600;
+        margin-top: 1rem;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+      button:hover {
+        opacity: 0.9;
+      }
+      .upload-box {
+        border: 2px dashed #ccc;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 1.5rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .upload-box:hover {
+        background: #f8faff;
+      }
+      .upload-box.dragover {
+        border-color: #2563eb;
+        background: #f8faff;
+      }
+      .file-info {
+        margin-top: 1rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 0.95rem;
+        white-space: pre-wrap;
+      }
+      .progress {
+        margin-top: 1rem;
+        color: #555;
+        min-height: 1.4rem;
+      }
+      .ad-box {
+        margin-top: 3rem;
+        height: 90px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #999;
+        font-weight: 500;
+      }
+      footer {
+        text-align: center;
+        padding: 2rem;
+        color: #777;
+        font-size: 0.9rem;
+        border-top: 1px solid #eee;
+        margin-top: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>EDITMYPDFS<span style="font-weight: 400">.com</span></h1>
+      <nav>
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../privacy.html">Privacy</a>
+        <a href="../terms.html">Terms</a>
+        <a href="../about.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Password Protect</h2>
+      <p class="sub">
+        Secure your PDF with a password (processing happens entirely in your
+        browser). Do not use this tool for illegal or infringing content.
+      </p>
+
+      <div class="compress-card">
+        <label class="upload-box" id="drop-zone">
+          📄 Drop your PDF here or click to upload
+          <input
+            type="file"
+            id="file-input"
+            accept="application/pdf"
+            style="display: none"
+          />
+        </label>
+        <div id="file-info" class="file-info"></div>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" />
+        <label for="confirm">Confirm Password</label>
+        <input type="password" id="confirm" placeholder="Confirm password" />
+
+        <label for="output-name">Output filename</label>
+        <input
+          type="text"
+          id="output-name"
+          placeholder="e.g., protected"
+          value="protected"
+        />
+
+        <button id="protect-btn" disabled>Protect PDF</button>
+        <div id="status" class="progress"></div>
+        <button id="download-btn" style="display: none">
+          Download Protected PDF
+        </button>
+      </div>
+
+      <div class="ad-box">Ad Space</div>
+    </main>
+
+    <footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
+
+    <script>
+      const pdfjsLib = window["pdfjs-dist/build/pdf"];
+      if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+      }
+
+      // Basic runtime checks for required libraries
+      function libsReady() {
+        const ok = typeof PDFDocument !== "undefined";
+        if (!ok) {
+          console.error("Libraries not loaded", {
+            PDFDocument: typeof PDFDocument,
+          });
+        }
+        return ok;
+      }
+
+      // Dynamic loader with multi-CDN fallbacks for PDFKit and blob-stream
+      function loadScript(url) {
+        return new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.src = url;
+          s.async = true;
+          s.crossOrigin = "anonymous";
+          s.onload = () => resolve();
+          s.onerror = () => reject(new Error("Failed to load " + url));
+          document.head.appendChild(s);
+        });
+      }
+
+      async function ensureEncryptionLibsLoaded() {
+        if (libsReady()) return true;
+        // Try local vendored copies first
+        const localPdfkit = [
+          "../vendor/pdfkit.standalone.min.js",
+          "../vendor/pdfkit.standalone.js",
+        ];
+        for (const u of localPdfkit) {
+          try {
+            await loadScript(u);
+            if (typeof PDFDocument !== "undefined") return true;
+          } catch (e) {
+            /* ignore */
+          }
+        }
+        // Fall back to multiple CDNs
+        const pdfkitUrls = [
+          "https://cdn.jsdelivr.net/npm/pdfkit@0.13.0/js/pdfkit.standalone.min.js",
+          "https://cdn.jsdelivr.net/npm/pdfkit@0.13.0/js/pdfkit.standalone.js",
+          "https://unpkg.com/pdfkit@0.13.0/js/pdfkit.standalone.js",
+        ];
+        for (const u of pdfkitUrls) {
+          try {
+            await loadScript(u);
+            if (typeof PDFDocument !== "undefined") return true;
+          } catch (e) {
+            console.warn(e.message);
+          }
+        }
+        return libsReady();
+      }
+
+      const dropZone = document.getElementById("drop-zone");
+      const fileInput = document.getElementById("file-input");
+      const fileInfo = document.getElementById("file-info");
+      const protectBtn = document.getElementById("protect-btn");
+      const statusText = document.getElementById("status");
+      const downloadBtn = document.getElementById("download-btn");
+      const passwordInput = document.getElementById("password");
+      const confirmInput = document.getElementById("confirm");
+
+      let srcBytes = null;
+      let outBlob = null;
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("dragover")
+      );
+      dropZone.addEventListener("drop", async (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        const f = e.dataTransfer.files[0];
+        if (f) await loadFile(f);
+      });
+      fileInput.addEventListener("click", (e) => e.stopPropagation());
+      fileInput.addEventListener("change", async (e) => {
+        const f = e.target.files[0];
+        if (f) await loadFile(f);
+        e.target.value = "";
+      });
+
+      async function loadFile(f) {
+        const sizeMB = (f.size / (1024 * 1024)).toFixed(2);
+        fileInfo.textContent = `📄 ${f.name} (${sizeMB} MB uploaded)`;
+        const buf = await f.arrayBuffer();
+        srcBytes = new Uint8Array(buf);
+        protectBtn.disabled = false;
+        statusText.textContent = "";
+        downloadBtn.style.display = "none";
+      }
+
+      function getOutputName(defaultBase) {
+        const el = document.getElementById("output-name");
+        let name =
+          (el && el.value ? el.value : "").trim() || defaultBase || "output";
+        name = name.replace(/[\\/:*?"<>|]/g, "-");
+        if (!/\.pdf$/i.test(name)) name += ".pdf";
+        return name;
+      }
+
+      async function renderToImages(bytes) {
+        // Render PDF to array of canvases (images)
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+        const pages = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 2.0 }); // higher quality
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = Math.floor(viewport.width);
+          canvas.height = Math.floor(viewport.height);
+          await page.render({ canvasContext: ctx, viewport }).promise;
+          pages.push({ canvas, width: canvas.width, height: canvas.height });
+        }
+        return pages;
+      }
+
+      function pxToPt(px) {
+        // Assume 96 CSS dpi -> 72pt per inch
+        return (px * 72) / 96;
+      }
+
+      function buildEncryptedPDF(pages, password) {
+        return new Promise((resolve, reject) => {
+          try {
+            if (!libsReady()) {
+              return reject(
+                new Error(
+                  "PDFKit failed to load. Check network, CSP, or add vendor/pdfkit.standalone.js"
+                )
+              );
+            }
+            // Use different owner password to avoid viewers treating it as owner-only perms
+            const doc = new PDFDocument({
+              autoFirstPage: false,
+              userPassword: password,
+              ownerPassword: password + "-owner",
+              permissions: {
+                printing: "highResolution",
+                copying: false,
+                modifying: false,
+              },
+            });
+
+            // Collect chunks directly without blob-stream
+            const chunks = [];
+            doc.on("data", (chunk) => chunks.push(chunk));
+            doc.on("error", (e) => reject(e));
+            doc.on("end", () => {
+              try {
+                const blob = new Blob(chunks, { type: "application/pdf" });
+                resolve(blob);
+              } catch (e) {
+                reject(e);
+              }
+            });
+
+            (async () => {
+              for (const pg of pages) {
+                // Convert canvas to a JPEG data URL string for browser PDFKit
+                const dataUrl = pg.canvas.toDataURL("image/jpeg", 0.9);
+                const pageW = pxToPt(pg.width);
+                const pageH = pxToPt(pg.height);
+                doc.addPage({ size: [pageW, pageH], margin: 0 });
+                doc.image(dataUrl, 0, 0, { width: pageW, height: pageH });
+              }
+              doc.end();
+            })();
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+
+      async function verifyEncrypted(blob) {
+        try {
+          const ab = await blob.arrayBuffer();
+          // Decode as ISO-8859-1 to preserve bytes -> string mapping for /Encrypt marker search
+          const str = new TextDecoder("iso-8859-1").decode(new Uint8Array(ab));
+          // Look for /Encrypt in trailer or xref streams
+          return str.indexOf("/Encrypt") !== -1 || str.indexOf("/O ") !== -1;
+        } catch {
+          return false;
+        }
+      }
+
+      protectBtn.addEventListener("click", async () => {
+        const pwd = (passwordInput.value || "").trim();
+        const conf = (confirmInput.value || "").trim();
+        if (!pwd) {
+          statusText.textContent = "Please enter a password.";
+          return;
+        }
+        if (pwd !== conf) {
+          statusText.textContent = "Passwords do not match.";
+          return;
+        }
+        if (!srcBytes) {
+          statusText.textContent = "Please upload a PDF first.";
+          return;
+        }
+        protectBtn.disabled = true;
+        statusText.textContent = "Loading encryption engine...";
+        try {
+          const ready = await ensureEncryptionLibsLoaded();
+          if (!ready)
+            throw new Error(
+              "PDFKit or blob-stream failed to load. Check network or CSP."
+            );
+          statusText.textContent = "Rendering pages...";
+          const pages = await renderToImages(srcBytes);
+          statusText.textContent = "Encrypting and rebuilding PDF (PDFKit)...";
+          outBlob = await buildEncryptedPDF(pages, pwd);
+          // Verify encryption flag exists; if not, treat as failure
+          const ok = await verifyEncrypted(outBlob);
+          if (!ok) {
+            throw new Error(
+              "Encryption flag missing in output PDF. Your browser environment may not support client-side PDF encryption."
+            );
+          }
+          downloadBtn.style.display = "inline-block";
+          statusText.textContent = "Protected PDF is ready.";
+        } catch (e) {
+          console.error("Protect failed:", e);
+          statusText.textContent = `Failed to protect PDF${
+            e && e.message ? ": " + e.message : "."
+          }`;
+        } finally {
+          protectBtn.disabled = false;
+        }
+      });
+
+      downloadBtn.addEventListener("click", () => {
+        if (!outBlob) return;
+        const url = URL.createObjectURL(outBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = getOutputName("protected");
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    </script>
+    <!-- Cookie consent (minimal) -->
+    <div
+      id="cookie-consent"
+      style="
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        background: #111;
+        color: #fff;
+        padding: 12px 16px;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      "
+    >
+      <span style="font-size: 14px">
+        We use cookies for ads and measurement. See our
+        <a
+          href="../privacy.html"
+          style="color: #93c5fd; text-decoration: underline"
+          >Privacy Policy</a
+        >.
+      </span>
+      <button
+        data-accept
+        style="
+          background: #22c55e;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 12px;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        Accept
+      </button>
+    </div>
+    <script>
+      (function () {
+        var bar = document.getElementById("cookie-consent");
+        try {
+          if (localStorage.getItem("cookieConsent") === "accepted") {
+            if (bar) bar.style.display = "none";
+            return;
+          }
+        } catch (e) {}
+        if (!bar) return;
+        bar.style.display = "flex";
+        var btn = bar.querySelector("button[data-accept]");
+        if (btn)
+          btn.addEventListener("click", function () {
+            try {
+              localStorage.setItem("cookieConsent", "accepted");
+            } catch (e) {}
+            bar.remove();
+          });
+      })();
+    </script>
+    <!-- Suppress local banner and load Funding Choices CMP when configured -->
+    <script>
+      (function () {
+        function loadFundingChoices(id) {
+          var bar = document.getElementById("cookie-consent");
+          if (bar) bar.remove();
+          var s = document.createElement("script");
+          s.async = true;
+          s.crossOrigin = "anonymous";
+          s.src =
+            "https://fundingchoicesmessages.google.com/i/" +
+            encodeURIComponent(id);
+          document.head.appendChild(s);
+        }
+        var meta = document.querySelector('meta[name="fc-id"]');
+        var id =
+          (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
+          (meta && (meta.content || "").trim());
+        if (id && !/^REPLACE_/i.test(id)) {
+          loadFundingChoices(id);
+          return;
+        }
+        var base =
+          location.pathname.indexOf("/features/") !== -1
+            ? "../vendor/"
+            : "./vendor/";
+        var tagId = "cmp-id-loader";
+        if (!document.getElementById(tagId)) {
+          var t = document.createElement("script");
+          t.id = tagId;
+          t.async = true;
+          t.src = base + "cmp-id.js";
+          t.onload = function () {
+            var id2 =
+              (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
+              (meta && (meta.content || "").trim());
+            if (id2 && !/^REPLACE_/i.test(id2)) loadFundingChoices(id2);
+          };
+          t.onerror = function () {};
+          document.head.appendChild(t);
+        }
+      })();
+    </script>
+  </body>
+</html>

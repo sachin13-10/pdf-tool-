@@ -4,28 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <meta
-      name="description"
-      content="EditMyPDFs.com - Free online tools to compress, merge, split, convert, and edit PDFs in your browser with no server needed."
-    />
-    <title>EditMyPDFs.com - Free Online PDF Editor</title>
+    <title>About - EditMyPDFs.com</title>
 
-    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Styles -->
     <style>
       body {
         font-family: "Inter", sans-serif;
-        background-color: #ffffff;
+        background: #fff;
+        color: #111;
         margin: 0;
         padding: 0;
-        color: #111;
       }
-
       header {
         display: flex;
         justify-content: space-between;
@@ -33,97 +26,40 @@
         padding: 1rem 2rem;
         border-bottom: 1px solid #eee;
       }
-
       header h1 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 700;
       }
-
       header nav a {
         margin-left: 1.5rem;
         text-decoration: none;
         color: #111;
         font-weight: 500;
       }
-
       main {
-        text-align: center;
-        padding: 3rem 1rem;
         max-width: 900px;
-        margin: auto;
+        margin: 3rem auto;
+        padding: 1rem 2rem;
       }
-
       h2 {
         font-size: 2rem;
         margin-bottom: 0.5rem;
       }
-
-      p.subtext {
+      p.lead {
         color: #555;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
       }
-
-      .tools {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
-      }
-
-      .tool {
-        display: block;
-        text-decoration: none;
-        color: inherit;
+      .card {
         border: 1px solid #eee;
-        border-radius: 12px;
-        padding: 1.5rem;
-        text-align: left;
-        transition: all 0.2s ease;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         background: #fff;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       }
-
-      .tool:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-      }
-
-      .tool-icon {
-        font-size: 2rem;
-        color: #2563eb;
-        margin-bottom: 0.75rem;
-      }
-
-      .tool h3 {
-        margin: 0;
-        font-size: 1.2rem;
-        color: #111;
-      }
-
-      .tool p {
-        color: #555;
-        font-size: 0.95rem;
-      }
-
-      .ad-banner {
-        margin: 3rem auto 1rem;
-        height: 90px;
-        width: 100%;
-        max-width: 728px;
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #888;
-        font-weight: 500;
-      }
-
       footer {
         text-align: center;
-        color: #777;
         padding: 2rem;
+        color: #777;
         font-size: 0.9rem;
         border-top: 1px solid #eee;
         margin-top: 3rem;
@@ -143,106 +79,36 @@
     </header>
 
     <main>
-      <h2>Edit Your PDFs For Free</h2>
-      <p class="subtext">All-in-one online PDF editor — 100% in your browser</p>
+      <h2>About EditMyPDFs.com</h2>
+      <p class="lead">
+        Fast, private, and free PDF tools — all in your browser.
+      </p>
 
-      <div class="tools">
-        <a
-          class="tool"
-          href="features/compress.html"
-          aria-label="Compress PDF - Reduce the file size of your PDF"
-        >
-          <div class="tool-icon">📉</div>
-          <h3>Compress PDF</h3>
-          <p>Reduce the file size of your PDF</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/images-to-pdf.html"
-          aria-label="Images to PDF - Convert images into a single PDF"
-        >
-          <div class="tool-icon">🖼️</div>
-          <h3>Images to PDF</h3>
-          <p>Convert images into a single PDF</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/texttopdf.html"
-          aria-label="Text to PDF - Convert typed or uploaded text into a PDF"
-        >
-          <div class="tool-icon">🔤</div>
-          <h3>Text to PDF</h3>
-          <p>Turn plain text into a PDF</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/merge.html"
-          aria-label="Merge PDFs - Combine multiple PDFs into one"
-        >
-          <div class="tool-icon">📂</div>
-          <h3>Merge PDFs</h3>
-          <p>Combine multiple PDFs into one</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/split.html"
-          aria-label="Split PDF - Extract pages from your PDF"
-        >
-          <div class="tool-icon">✂️</div>
-          <h3>Split PDF</h3>
-          <p>Extract pages from your PDF</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/delete.html"
-          aria-label="Delete Pages - Remove specific pages from your PDF"
-        >
-          <div class="tool-icon">🗑️</div>
-          <h3>Delete Pages</h3>
-          <p>Remove specific pages from your PDF</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/edit.html"
-          aria-label="Edit PDF - Add text, images, shapes, highlights"
-        >
-          <div class="tool-icon">✏️</div>
-          <h3>Edit PDF</h3>
-          <p>Add text, images, or shapes</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/protect.html"
-          aria-label="Password Protect - Secure your PDF with a password"
-        >
-          <div class="tool-icon">🔒</div>
-          <h3>Password Protect</h3>
-          <p>Secure your PDF with a password</p>
-        </a>
-
-        <a
-          class="tool"
-          href="features/unlock.html"
-          aria-label="Unlock PDF - Remove password protection"
-        >
-          <div class="tool-icon">🔓</div>
-          <h3>Unlock PDF</h3>
-          <p>Remove password protection</p>
-        </a>
+      <div class="card">
+        <p>
+          EditMyPDFs.com provides simple tools like Compress PDF and Images to
+          PDF that run entirely on your device using modern web technologies.
+          Your files never leave your computer — there are no uploads to a
+          server.
+        </p>
+        <p>
+          This project is a work in progress. More tools are coming soon. If you
+          have suggestions or find bugs, feel free to reach out and share
+          feedback.
+        </p>
+        <hr
+          style="margin: 1.5rem 0; border: none; border-top: 1px solid #eee"
+        />
+        <h3 id="contact">Contact</h3>
+        <p>
+          For support or questions, email us at
+          <a href="mailto:support@editmypdfs.com">support@editmypdfs.com</a>.
+          <!-- Replace the email above with your preferred contact address. -->
+        </p>
       </div>
-
-      <!-- Ad placeholder -->
-      <div class="ad-banner">AD</div>
     </main>
 
-    <footer>© 2025 EditMyPDFs.com — Free Online PDF Tools</footer>
+    <footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
 
     <!-- Cookie consent (minimal) -->
     <div
@@ -331,7 +197,6 @@
           loadFundingChoices(id);
           return;
         }
-        // Optionally load centralized ID from vendor/cmp-id.js if present
         var base =
           location.pathname.indexOf("/features/") !== -1
             ? "../vendor/"
@@ -348,9 +213,7 @@
               (meta && (meta.content || "").trim());
             if (id2 && !/^REPLACE_/i.test(id2)) loadFundingChoices(id2);
           };
-          t.onerror = function () {
-            /* ignore missing file */
-          };
+          t.onerror = function () {};
           document.head.appendChild(t);
         }
       })();
