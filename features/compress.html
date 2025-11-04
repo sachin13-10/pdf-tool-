@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Compress PDF - EditMyPDFs.com</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  body {font-family:"Inter",sans-serif;background:#fff;color:#111;margin:0;padding:0;}
+  header{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid #eee;}
+  header h1{font-size:1.4rem;font-weight:700;}
+  header nav a{margin-left:1.5rem;text-decoration:none;color:#111;font-weight:500;}
+  main{max-width:700px;margin:3rem auto;padding:1rem;text-align:center;}
+  h2{font-size:2rem;margin-bottom:.5rem;}
+  p.sub{color:#555;margin-bottom:2rem;}
+  .compress-card{border:1px solid #eee;border-radius:16px;padding:2rem;box-shadow:0 2px 6px rgba(0,0,0,.05);}
+  label,select,input{display:block;margin:.75rem auto;font-size:1rem;}
+  select,input{border:1px solid #ddd;border-radius:8px;padding:.6rem .9rem;width:200px;text-align:center;}
+  button{background:linear-gradient(90deg,#6366f1,#2563eb);color:#fff;border:none;border-radius:10px;
+         padding:.9rem 1.8rem;font-weight:600;margin-top:1rem;cursor:pointer;transition:opacity .3s;}
+  button:hover{opacity:.9;}
+  .upload-box{border:2px dashed #ccc;border-radius:12px;padding:2rem;margin-top:1.5rem;transition:all .2s ease;cursor:pointer;}
+  .upload-box:hover{background:#f8faff;}
+  .upload-box.dragover{border-color:#2563eb;background:#f8faff;}
+  .file-info{margin-top:1rem;color:#333;font-weight:500;font-size:0.95rem;}
+  .progress{margin-top:1rem;color:#555;}
+  .ad-box{margin-top:3rem;height:90px;background:#f5f5f5;border:1px solid #ddd;border-radius:8px;
+          display:flex;justify-content:center;align-items:center;color:#999;font-weight:500;}
+  footer{text-align:center;padding:2rem;color:#777;font-size:.9rem;border-top:1px solid #eee;margin-top:3rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>EDITMYPDFS<span style="font-weight:400;">.com</span></h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Compress PDF</h2>
+  <p class="sub">Upload your PDF, set desired size, then click “Start Compression”.</p>
+
+  <div class="compress-card">
+    <label>Enter desired size:</label>
+    <input type="number" id="target-size" placeholder="256" value="256" />
+    <select id="size-unit">
+      <option value="KB" selected>KB</option>
+      <option value="MB">MB</option>
+    </select>
+
+    <label class="upload-box" id="drop-zone">
+      📄 Drop your PDF here or click to upload
+      <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+    </label>
+
+    <!-- File info text -->
+    <div id="file-info" class="file-info"></div>
+
+    <button id="start-btn" disabled>Start Compression</button>
+    <div class="progress" id="status"></div>
+    <button id="download-btn" style="display:none;">Download Compressed PDF</button>
+  </div>
+
+  <div class="ad-box">Ad Space</div>
+</main>
+
+<footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
+
+<script>
+const { jsPDF } = window.jspdf;
+const fileInput=document.getElementById("file-input");
+const dropZone=document.getElementById("drop-zone");
+const startBtn=document.getElementById("start-btn");
+const statusText=document.getElementById("status");
+const downloadBtn=document.getElementById("download-btn");
+const targetInput=document.getElementById("target-size");
+const sizeUnit=document.getElementById("size-unit");
+const fileInfo=document.getElementById("file-info");
+
+let pdfBytes=null;
+let pdfBlob=null;
+
+// Drag & drop
+dropZone.addEventListener("dragover",e=>{
+  e.preventDefault();
+  dropZone.classList.add("dragover");
+});
+dropZone.addEventListener("dragleave",()=>dropZone.classList.remove("dragover"));
+dropZone.addEventListener("drop",async e=>{
+  e.preventDefault();
+  dropZone.classList.remove("dragover");
+  const file=e.dataTransfer.files[0];
+  if(file) await loadFile(file);
+});
+
+// Normal select
+fileInput.addEventListener("click", e => e.stopPropagation());
+fileInput.addEventListener("change",async e=>{
+  const file=e.target.files[0];
+  if(file) await loadFile(file);
+});
+
+async function loadFile(file){
+  const sizeMB = (file.size / (1024*1024)).toFixed(2);
+  fileInfo.textContent = `📄 ${file.name} (${sizeMB} MB uploaded)`;
+  const arrayBuffer = await file.arrayBuffer();
+  pdfBytes = new Uint8Array(arrayBuffer);
+  startBtn.disabled = false;
+  statusText.textContent="";
+  downloadBtn.style.display="none";
+}
+
+startBtn.addEventListener("click",()=>{
+  if(pdfBytes){
+    startBtn.disabled = true;
+    statusText.textContent="Starting compression...";
+    compressPDF(pdfBytes);
+  }
+});
+
+async function compressPDF(pdfData){
+  const target=parseFloat(targetInput.value)||256;
+  const unit=sizeUnit.value;
+  const targetBytes=unit==="MB"?target*1024*1024:target*1024;
+  const pdf = await pdfjsLib.getDocument({data:pdfData}).promise;
+
+  let quality=0.9, attempt=0;
+  let blob, size;
+
+  while(attempt<6){
+    const pdfDoc=new jsPDF();
+    for(let i=1;i<=pdf.numPages;i++){
+      const page=await pdf.getPage(i);
+      const viewport=page.getViewport({scale:1.0});
+      const canvas=document.createElement("canvas");
+      const context=canvas.getContext("2d");
+      canvas.height=viewport.height;
+      canvas.width=viewport.width;
+      await page.render({canvasContext:context,viewport}).promise;
+
+      const imgData=canvas.toDataURL("image/jpeg",quality);
+      if(i>1) pdfDoc.addPage();
+      pdfDoc.addImage(imgData,"JPEG",0,0,210,(210*viewport.height)/viewport.width);
+      statusText.textContent=`Compressing page ${i}/${pdf.numPages}...`;
+    }
+
+    blob=pdfDoc.output("blob");
+    size=blob.size;
+    if(size<=targetBytes || quality<=0.25) break;
+
+    quality-=0.15;
+    attempt++;
+    statusText.textContent=`Adjusting quality... (try ${attempt})`;
+  }
+
+  pdfBlob=blob;
+  const sizeKB=(pdfBlob.size/1024).toFixed(1);
+  statusText.textContent=`Compression complete! Final size: ${sizeKB} KB`;
+  downloadBtn.style.display="inline-block";
+  startBtn.disabled = false;
+}
+
+downloadBtn.addEventListener("click",()=>{
+  if(pdfBlob){
+    const url=URL.createObjectURL(pdfBlob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="compressed.pdf";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+});
+</script>
+</body>
+</html>
