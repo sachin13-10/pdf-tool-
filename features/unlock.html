@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Compress PDF - EditMyPDFs.com</title>
+    <title>Unlock PDF - EditMyPDFs.com</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
     <style>
       body {
@@ -59,18 +60,18 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       }
       label,
-      select,
-      input {
+      input,
+      button {
         display: block;
         margin: 0.75rem auto;
         font-size: 1rem;
       }
-      select,
-      input {
+      input[type="password"],
+      input[type="text"] {
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 0.6rem 0.9rem;
-        width: 200px;
+        width: 260px;
         text-align: center;
       }
       button {
@@ -111,6 +112,7 @@
       .progress {
         margin-top: 1rem;
         color: #555;
+        min-height: 1.4rem;
       }
       .ad-box {
         margin-top: 3rem;
@@ -147,19 +149,14 @@
     </header>
 
     <main>
-      <h2>Compress PDF</h2>
+      <h2>Unlock PDF</h2>
       <p class="sub">
-        Upload your PDF, set desired size, then click “Start Compression”.
+        Remove password protection (processing happens entirely in your
+        browser). Only unlock PDFs you own or have explicit permission to
+        modify.
       </p>
 
       <div class="compress-card">
-        <label>Enter desired size:</label>
-        <input type="number" id="target-size" placeholder="256" value="256" />
-        <select id="size-unit">
-          <option value="KB" selected>KB</option>
-          <option value="MB">MB</option>
-        </select>
-
         <label class="upload-box" id="drop-zone">
           📄 Drop your PDF here or click to upload
           <input
@@ -170,21 +167,27 @@
           />
         </label>
 
-        <!-- File info text -->
         <div id="file-info" class="file-info"></div>
+
+        <label for="password">Password (if required)</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter password if prompted"
+        />
 
         <label for="output-name">Output filename</label>
         <input
           type="text"
           id="output-name"
-          placeholder="e.g., compressed"
-          value="compressed"
+          placeholder="e.g., unlocked"
+          value="unlocked"
         />
 
-        <button id="start-btn" disabled>Start Compression</button>
-        <div class="progress" id="status"></div>
+        <button id="unlock-btn" disabled>Unlock PDF</button>
+        <div id="status" class="progress"></div>
         <button id="download-btn" style="display: none">
-          Download Compressed PDF
+          Download Unlocked PDF
         </button>
       </div>
 
@@ -194,20 +197,23 @@
     <footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
 
     <script>
-      const { jsPDF } = window.jspdf;
-      const fileInput = document.getElementById("file-input");
+      const pdfjsLib = window["pdfjs-dist/build/pdf"];
+      if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+      }
+
       const dropZone = document.getElementById("drop-zone");
-      const startBtn = document.getElementById("start-btn");
+      const fileInput = document.getElementById("file-input");
+      const fileInfo = document.getElementById("file-info");
+      const unlockBtn = document.getElementById("unlock-btn");
       const statusText = document.getElementById("status");
       const downloadBtn = document.getElementById("download-btn");
-      const targetInput = document.getElementById("target-size");
-      const sizeUnit = document.getElementById("size-unit");
-      const fileInfo = document.getElementById("file-info");
+      const passwordInput = document.getElementById("password");
 
-      let pdfBytes = null;
-      let pdfBlob = null;
+      let srcBytes = null;
+      let outBlob = null;
 
-      // Drag & drop
       dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZone.classList.add("dragover");
@@ -218,84 +224,24 @@
       dropZone.addEventListener("drop", async (e) => {
         e.preventDefault();
         dropZone.classList.remove("dragover");
-        const file = e.dataTransfer.files[0];
-        if (file) await loadFile(file);
+        const f = e.dataTransfer.files[0];
+        if (f) await loadFile(f);
       });
-
-      // Normal select
       fileInput.addEventListener("click", (e) => e.stopPropagation());
       fileInput.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (file) await loadFile(file);
+        const f = e.target.files[0];
+        if (f) await loadFile(f);
+        e.target.value = "";
       });
 
-      async function loadFile(file) {
-        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
-        fileInfo.textContent = `📄 ${file.name} (${sizeMB} MB uploaded)`;
-        const arrayBuffer = await file.arrayBuffer();
-        pdfBytes = new Uint8Array(arrayBuffer);
-        startBtn.disabled = false;
+      async function loadFile(f) {
+        const sizeMB = (f.size / (1024 * 1024)).toFixed(2);
+        fileInfo.textContent = `📄 ${f.name} (${sizeMB} MB uploaded)`;
+        const buf = await f.arrayBuffer();
+        srcBytes = new Uint8Array(buf);
+        unlockBtn.disabled = false;
         statusText.textContent = "";
         downloadBtn.style.display = "none";
-      }
-
-      startBtn.addEventListener("click", () => {
-        if (pdfBytes) {
-          startBtn.disabled = true;
-          statusText.textContent = "Starting compression...";
-          compressPDF(pdfBytes);
-        }
-      });
-
-      async function compressPDF(pdfData) {
-        const target = parseFloat(targetInput.value) || 256;
-        const unit = sizeUnit.value;
-        const targetBytes =
-          unit === "MB" ? target * 1024 * 1024 : target * 1024;
-        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-
-        let quality = 0.9,
-          attempt = 0;
-        let blob, size;
-
-        while (attempt < 6) {
-          const pdfDoc = new jsPDF();
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const viewport = page.getViewport({ scale: 1.0 });
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            await page.render({ canvasContext: context, viewport }).promise;
-
-            const imgData = canvas.toDataURL("image/jpeg", quality);
-            if (i > 1) pdfDoc.addPage();
-            pdfDoc.addImage(
-              imgData,
-              "JPEG",
-              0,
-              0,
-              210,
-              (210 * viewport.height) / viewport.width
-            );
-            statusText.textContent = `Compressing page ${i}/${pdf.numPages}...`;
-          }
-
-          blob = pdfDoc.output("blob");
-          size = blob.size;
-          if (size <= targetBytes || quality <= 0.25) break;
-
-          quality -= 0.15;
-          attempt++;
-          statusText.textContent = `Adjusting quality... (try ${attempt})`;
-        }
-
-        pdfBlob = blob;
-        const sizeKB = (pdfBlob.size / 1024).toFixed(1);
-        statusText.textContent = `Compression complete! Final size: ${sizeKB} KB`;
-        downloadBtn.style.display = "inline-block";
-        startBtn.disabled = false;
       }
 
       function getOutputName(defaultBase) {
@@ -307,18 +253,121 @@
         return name;
       }
 
-      downloadBtn.addEventListener("click", () => {
-        if (pdfBlob) {
-          const url = URL.createObjectURL(pdfBlob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = getOutputName("compressed");
-          a.click();
-          URL.revokeObjectURL(url);
+      async function renderToImagesWithPassword(bytes, password) {
+        const task = pdfjsLib.getDocument({
+          data: bytes,
+          password: password || undefined,
+        });
+        // Provide a simple onPassword handler if pdf.js needs it
+        task.onPassword = (updatePassword, reason) => {
+          const pass = passwordInput.value || prompt("Enter PDF password");
+          updatePassword(pass || "");
+        };
+        const pdf = await task.promise;
+        const pages = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 2.0 });
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = Math.floor(viewport.width);
+          canvas.height = Math.floor(viewport.height);
+          await page.render({ canvasContext: ctx, viewport }).promise;
+          pages.push({ canvas, width: canvas.width, height: canvas.height });
+        }
+        return pages;
+      }
+
+      async function buildPDFViaPdfLib(pages) {
+        const out = await PDFLib.PDFDocument.create();
+        for (let i = 0; i < pages.length; i++) {
+          const pg = pages[i];
+          const imgBytes = await new Promise((res) =>
+            pg.canvas.toBlob(
+              (b) => {
+                const r = new FileReader();
+                r.onload = () => res(new Uint8Array(r.result));
+                r.readAsArrayBuffer(b);
+              },
+              "image/jpeg",
+              0.92
+            )
+          );
+          const img = await out.embedJpg(imgBytes);
+          const page = out.addPage([img.width, img.height]);
+          page.drawImage(img, {
+            x: 0,
+            y: 0,
+            width: img.width,
+            height: img.height,
+          });
+        }
+        const bytes = await out.save();
+        return new Blob([bytes], { type: "application/pdf" });
+      }
+
+      // Fast path: if the PDF is not encrypted, simply copy pages using pdf-lib to preserve vector quality
+      async function tryFastCopyViaPdfLib(bytes) {
+        try {
+          const srcDoc = await PDFLib.PDFDocument.load(bytes);
+          const out = await PDFLib.PDFDocument.create();
+          const pages = await out.copyPages(srcDoc, srcDoc.getPageIndices());
+          pages.forEach((p) => out.addPage(p));
+          const outBytes = await out.save();
+          return new Blob([outBytes], { type: "application/pdf" });
+        } catch (e) {
+          // Likely encrypted or unsupported by pdf-lib; return null to trigger rasterization fallback
+          return null;
+        }
+      }
+
+      unlockBtn.addEventListener("click", async () => {
+        if (!srcBytes) {
+          statusText.textContent = "Please upload a PDF first.";
+          return;
+        }
+        unlockBtn.disabled = true;
+        statusText.textContent = "Checking encryption and unlocking...";
+        try {
+          // 1) Try fast vector-preserving copy for non-encrypted PDFs
+          outBlob = await tryFastCopyViaPdfLib(srcBytes);
+          if (outBlob) {
+            statusText.textContent =
+              "Unlocked (no encryption detected). Ready to download.";
+            downloadBtn.style.display = "inline-block";
+            return;
+          }
+
+          // 2) Fallback: open with password via pdf.js, rasterize pages, rebuild unencrypted PDF
+          statusText.textContent =
+            "Encrypted PDF detected. Rendering pages (this may take a moment)...";
+          const pages = await renderToImagesWithPassword(
+            srcBytes,
+            passwordInput.value || undefined
+          );
+          statusText.textContent = "Rebuilding unlocked PDF...";
+          outBlob = await buildPDFViaPdfLib(pages);
+          downloadBtn.style.display = "inline-block";
+          statusText.textContent = "Unlocked PDF is ready.";
+        } catch (e) {
+          console.error(e);
+          statusText.textContent =
+            "Failed to unlock PDF (wrong password or unsupported encryption).";
+        } finally {
+          unlockBtn.disabled = false;
         }
       });
-    </script>
 
+      downloadBtn.addEventListener("click", () => {
+        if (!outBlob) return;
+        const url = URL.createObjectURL(outBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = getOutputName("unlocked");
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    </script>
     <!-- Cookie consent (minimal) -->
     <div
       id="cookie-consent"

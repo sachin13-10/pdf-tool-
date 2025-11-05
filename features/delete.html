@@ -4,14 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Compress PDF - EditMyPDFs.com</title>
+    <title>Delete Pages - EditMyPDFs.com</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
     <style>
       body {
@@ -59,18 +58,18 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       }
       label,
-      select,
-      input {
+      input,
+      button {
         display: block;
         margin: 0.75rem auto;
         font-size: 1rem;
       }
-      select,
-      input {
+      input[type="text"],
+      input[type="number"] {
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 0.6rem 0.9rem;
-        width: 200px;
+        width: 260px;
         text-align: center;
       }
       button {
@@ -111,6 +110,7 @@
       .progress {
         margin-top: 1rem;
         color: #555;
+        min-height: 1.4rem;
       }
       .ad-box {
         margin-top: 3rem;
@@ -147,19 +147,13 @@
     </header>
 
     <main>
-      <h2>Compress PDF</h2>
+      <h2>Delete Pages</h2>
       <p class="sub">
-        Upload your PDF, set desired size, then click “Start Compression”.
+        Upload your PDF, enter pages to delete (e.g., 2,5-7), then click “Delete
+        Pages”.
       </p>
 
       <div class="compress-card">
-        <label>Enter desired size:</label>
-        <input type="number" id="target-size" placeholder="256" value="256" />
-        <select id="size-unit">
-          <option value="KB" selected>KB</option>
-          <option value="MB">MB</option>
-        </select>
-
         <label class="upload-box" id="drop-zone">
           📄 Drop your PDF here or click to upload
           <input
@@ -170,22 +164,22 @@
           />
         </label>
 
-        <!-- File info text -->
         <div id="file-info" class="file-info"></div>
+
+        <label for="pages-input">Pages to delete</label>
+        <input type="text" id="pages-input" placeholder="e.g., 2,5-7" />
 
         <label for="output-name">Output filename</label>
         <input
           type="text"
           id="output-name"
-          placeholder="e.g., compressed"
-          value="compressed"
+          placeholder="e.g., deleted"
+          value="deleted"
         />
 
-        <button id="start-btn" disabled>Start Compression</button>
-        <div class="progress" id="status"></div>
-        <button id="download-btn" style="display: none">
-          Download Compressed PDF
-        </button>
+        <button id="start-btn" disabled>Delete Pages</button>
+        <div id="status" class="progress"></div>
+        <button id="download-btn" style="display: none">Download PDF</button>
       </div>
 
       <div class="ad-box">Ad Space</div>
@@ -194,20 +188,18 @@
     <footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
 
     <script>
-      const { jsPDF } = window.jspdf;
       const fileInput = document.getElementById("file-input");
       const dropZone = document.getElementById("drop-zone");
       const startBtn = document.getElementById("start-btn");
       const statusText = document.getElementById("status");
       const downloadBtn = document.getElementById("download-btn");
-      const targetInput = document.getElementById("target-size");
-      const sizeUnit = document.getElementById("size-unit");
       const fileInfo = document.getElementById("file-info");
+      const pagesInput = document.getElementById("pages-input");
 
-      let pdfBytes = null;
-      let pdfBlob = null;
+      let srcPdfBytes = null,
+        outBlob = null,
+        totalPages = 0;
 
-      // Drag & drop
       dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZone.classList.add("dragover");
@@ -218,84 +210,64 @@
       dropZone.addEventListener("drop", async (e) => {
         e.preventDefault();
         dropZone.classList.remove("dragover");
-        const file = e.dataTransfer.files[0];
-        if (file) await loadFile(file);
+        const f = e.dataTransfer.files[0];
+        if (f) await loadFile(f);
       });
-
-      // Normal select
       fileInput.addEventListener("click", (e) => e.stopPropagation());
       fileInput.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (file) await loadFile(file);
+        const f = e.target.files[0];
+        if (f) await loadFile(f);
+        e.target.value = "";
       });
 
       async function loadFile(file) {
         const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
         fileInfo.textContent = `📄 ${file.name} (${sizeMB} MB uploaded)`;
-        const arrayBuffer = await file.arrayBuffer();
-        pdfBytes = new Uint8Array(arrayBuffer);
-        startBtn.disabled = false;
-        statusText.textContent = "";
-        downloadBtn.style.display = "none";
+        const buf = await file.arrayBuffer();
+        srcPdfBytes = new Uint8Array(buf);
+        try {
+          const doc = await PDFLib.PDFDocument.load(srcPdfBytes, {
+            ignoreEncryption: true,
+          });
+          totalPages = doc.getPageCount();
+          statusText.textContent = `Loaded PDF with ${totalPages} page(s).`;
+          startBtn.disabled = false;
+        } catch (e) {
+          console.error(e);
+          statusText.textContent = "Failed to read PDF.";
+          startBtn.disabled = true;
+        }
       }
 
-      startBtn.addEventListener("click", () => {
-        if (pdfBytes) {
-          startBtn.disabled = true;
-          statusText.textContent = "Starting compression...";
-          compressPDF(pdfBytes);
-        }
-      });
-
-      async function compressPDF(pdfData) {
-        const target = parseFloat(targetInput.value) || 256;
-        const unit = sizeUnit.value;
-        const targetBytes =
-          unit === "MB" ? target * 1024 * 1024 : target * 1024;
-        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-
-        let quality = 0.9,
-          attempt = 0;
-        let blob, size;
-
-        while (attempt < 6) {
-          const pdfDoc = new jsPDF();
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const viewport = page.getViewport({ scale: 1.0 });
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            await page.render({ canvasContext: context, viewport }).promise;
-
-            const imgData = canvas.toDataURL("image/jpeg", quality);
-            if (i > 1) pdfDoc.addPage();
-            pdfDoc.addImage(
-              imgData,
-              "JPEG",
-              0,
-              0,
-              210,
-              (210 * viewport.height) / viewport.width
-            );
-            statusText.textContent = `Compressing page ${i}/${pdf.numPages}...`;
+      function parsePages(input, max) {
+        if (!input) return [];
+        const normalized = input
+          .replace(/[\u2012\u2013\u2014\u2015]/g, "-")
+          .replace(/\s*to\s*/gi, "-")
+          .replace(/\s+/g, " ")
+          .trim();
+        const parts = normalized
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+        const set = new Set();
+        for (const p of parts) {
+          if (/^\d+$/.test(p)) {
+            const n = parseInt(p, 10);
+            if (n >= 1 && n <= max) set.add(n);
+            continue;
           }
-
-          blob = pdfDoc.output("blob");
-          size = blob.size;
-          if (size <= targetBytes || quality <= 0.25) break;
-
-          quality -= 0.15;
-          attempt++;
-          statusText.textContent = `Adjusting quality... (try ${attempt})`;
+          const m = p.match(/^(\d+)\s*-\s*(\d+)$/);
+          if (m) {
+            let a = parseInt(m[1], 10),
+              b = parseInt(m[2], 10);
+            if (a > b) [a, b] = [b, a];
+            a = Math.max(1, a);
+            b = Math.min(max, b);
+            for (let i = a; i <= b; i++) set.add(i);
+          }
         }
-
-        pdfBlob = blob;
-        const sizeKB = (pdfBlob.size / 1024).toFixed(1);
-        statusText.textContent = `Compression complete! Final size: ${sizeKB} KB`;
-        downloadBtn.style.display = "inline-block";
-        startBtn.disabled = false;
+        return Array.from(set).sort((x, y) => x - y);
       }
 
       function getOutputName(defaultBase) {
@@ -307,18 +279,50 @@
         return name;
       }
 
-      downloadBtn.addEventListener("click", () => {
-        if (pdfBlob) {
-          const url = URL.createObjectURL(pdfBlob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = getOutputName("compressed");
-          a.click();
-          URL.revokeObjectURL(url);
+      startBtn.addEventListener("click", async () => {
+        if (!srcPdfBytes) return;
+        const toDelete = parsePages(pagesInput.value, totalPages);
+        if (toDelete.length === 0) {
+          statusText.textContent = "Please enter valid page numbers to delete.";
+          return;
+        }
+        const keep = Array.from({ length: totalPages }, (_, i) => i + 1).filter(
+          (n) => !toDelete.includes(n)
+        );
+        if (keep.length === 0) {
+          statusText.textContent =
+            "All pages selected for deletion. Nothing to keep.";
+          return;
+        }
+        statusText.textContent = "Deleting pages...";
+        try {
+          const src = await PDFLib.PDFDocument.load(srcPdfBytes, {
+            ignoreEncryption: true,
+          });
+          const out = await PDFLib.PDFDocument.create();
+          const indices = keep.map((n) => n - 1);
+          const copied = await out.copyPages(src, indices);
+          copied.forEach((p) => out.addPage(p));
+          const bytes = await out.save();
+          outBlob = new Blob([bytes], { type: "application/pdf" });
+          downloadBtn.style.display = "inline-block";
+          statusText.textContent = `Done! Deleted ${toDelete.length} page(s).`;
+        } catch (e) {
+          console.error(e);
+          statusText.textContent = "Failed to delete pages.";
         }
       });
-    </script>
 
+      downloadBtn.addEventListener("click", () => {
+        if (!outBlob) return;
+        const url = URL.createObjectURL(outBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = getOutputName("deleted");
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    </script>
     <!-- Cookie consent (minimal) -->
     <div
       id="cookie-consent"

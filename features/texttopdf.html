@@ -4,13 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Compress PDF - EditMyPDFs.com</title>
+    <title>Text to PDF - EditMyPDFs.com</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
@@ -57,21 +56,40 @@
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        text-align: left;
       }
       label,
       select,
-      input {
+      input,
+      textarea {
         display: block;
         margin: 0.75rem auto;
         font-size: 1rem;
       }
       select,
-      input {
+      input[type="number"],
+      input[type="text"] {
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 0.6rem 0.9rem;
-        width: 200px;
+        width: 260px;
         text-align: center;
+      }
+      textarea {
+        width: 100%;
+        min-height: 220px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.9rem 1rem;
+        resize: vertical;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+      .options-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.75rem 1rem;
+        margin-top: 0.5rem;
       }
       button {
         background: linear-gradient(90deg, #6366f1, #2563eb);
@@ -90,10 +108,11 @@
       .upload-box {
         border: 2px dashed #ccc;
         border-radius: 12px;
-        padding: 2rem;
-        margin-top: 1.5rem;
+        padding: 1.25rem;
+        margin-top: 1rem;
         transition: all 0.2s ease;
         cursor: pointer;
+        text-align: center;
       }
       .upload-box:hover {
         background: #f8faff;
@@ -103,7 +122,7 @@
         background: #f8faff;
       }
       .file-info {
-        margin-top: 1rem;
+        margin-top: 0.5rem;
         color: #333;
         font-weight: 500;
         font-size: 0.95rem;
@@ -111,6 +130,8 @@
       .progress {
         margin-top: 1rem;
         color: #555;
+        min-height: 1.4rem;
+        text-align: center;
       }
       .ad-box {
         margin-top: 3rem;
@@ -147,45 +168,75 @@
     </header>
 
     <main>
-      <h2>Compress PDF</h2>
+      <h2>Text to PDF</h2>
       <p class="sub">
-        Upload your PDF, set desired size, then click “Start Compression”.
+        Paste your text or upload a .txt file, choose options, then click
+        “Create PDF”.
       </p>
 
       <div class="compress-card">
-        <label>Enter desired size:</label>
-        <input type="number" id="target-size" placeholder="256" value="256" />
-        <select id="size-unit">
-          <option value="KB" selected>KB</option>
-          <option value="MB">MB</option>
-        </select>
+        <label for="text-input">Your Text</label>
+        <textarea
+          id="text-input"
+          placeholder="Type or paste your text here..."
+        ></textarea>
 
-        <label class="upload-box" id="drop-zone">
-          📄 Drop your PDF here or click to upload
+        <div class="options-row">
+          <select id="paper-size" aria-label="Paper size">
+            <option value="a4" selected>A4 (210 × 297 mm)</option>
+            <option value="letter">Letter (8.5 × 11 in)</option>
+          </select>
+          <select id="orientation" aria-label="Orientation">
+            <option value="p" selected>Portrait</option>
+            <option value="l">Landscape</option>
+          </select>
+          <select id="font-family" aria-label="Font">
+            <option value="helvetica" selected>Helvetica</option>
+            <option value="times">Times</option>
+            <option value="courier">Courier</option>
+          </select>
+          <input
+            id="font-size"
+            type="number"
+            min="6"
+            max="36"
+            value="12"
+            aria-label="Font size (pt)"
+            placeholder="Font size (pt)"
+          />
+          <input
+            id="margin"
+            type="number"
+            min="5"
+            max="40"
+            value="15"
+            aria-label="Margins (mm)"
+            placeholder="Margins (mm)"
+          />
+        </div>
+
+        <label class="upload-box" id="txt-drop">
+          📄 Drop a .txt file here or click to upload
           <input
             type="file"
-            id="file-input"
-            accept="application/pdf"
+            id="txt-input"
+            accept="text/plain"
             style="display: none"
           />
         </label>
-
-        <!-- File info text -->
         <div id="file-info" class="file-info"></div>
 
         <label for="output-name">Output filename</label>
         <input
           type="text"
           id="output-name"
-          placeholder="e.g., compressed"
-          value="compressed"
+          placeholder="e.g., text"
+          value="text"
         />
 
-        <button id="start-btn" disabled>Start Compression</button>
-        <div class="progress" id="status"></div>
-        <button id="download-btn" style="display: none">
-          Download Compressed PDF
-        </button>
+        <button id="create-btn" disabled>Create PDF</button>
+        <div id="status" class="progress"></div>
+        <button id="download-btn" style="display: none">Download PDF</button>
       </div>
 
       <div class="ad-box">Ad Space</div>
@@ -195,108 +246,138 @@
 
     <script>
       const { jsPDF } = window.jspdf;
-      const fileInput = document.getElementById("file-input");
-      const dropZone = document.getElementById("drop-zone");
-      const startBtn = document.getElementById("start-btn");
+      const textInput = document.getElementById("text-input");
+      const paperSize = document.getElementById("paper-size");
+      const orientation = document.getElementById("orientation");
+      const fontFamily = document.getElementById("font-family");
+      const fontSizeInput = document.getElementById("font-size");
+      const marginInput = document.getElementById("margin");
+      const txtInput = document.getElementById("txt-input");
+      const txtDrop = document.getElementById("txt-drop");
+
+      const createBtn = document.getElementById("create-btn");
       const statusText = document.getElementById("status");
       const downloadBtn = document.getElementById("download-btn");
-      const targetInput = document.getElementById("target-size");
-      const sizeUnit = document.getElementById("size-unit");
       const fileInfo = document.getElementById("file-info");
 
-      let pdfBytes = null;
-      let pdfBlob = null;
+      let outBlob = null;
 
-      // Drag & drop
-      dropZone.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        dropZone.classList.add("dragover");
+      function refreshButtonState() {
+        const hasText = (textInput.value || "").trim().length > 0;
+        createBtn.disabled = !hasText;
+      }
+
+      textInput.addEventListener("input", () => {
+        refreshButtonState();
+        statusText.textContent = "";
+        downloadBtn.style.display = "none";
       });
-      dropZone.addEventListener("dragleave", () =>
-        dropZone.classList.remove("dragover")
+
+      // Clicking the label naturally triggers the hidden input
+      txtInput.addEventListener("click", (e) => e.stopPropagation());
+      txtInput.addEventListener("change", async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) await readTxtFile(file);
+        e.target.value = "";
+      });
+
+      txtDrop.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        txtDrop.classList.add("dragover");
+      });
+      txtDrop.addEventListener("dragleave", () =>
+        txtDrop.classList.remove("dragover")
       );
-      dropZone.addEventListener("drop", async (e) => {
+      txtDrop.addEventListener("drop", async (e) => {
         e.preventDefault();
-        dropZone.classList.remove("dragover");
-        const file = e.dataTransfer.files[0];
-        if (file) await loadFile(file);
+        txtDrop.classList.remove("dragover");
+        const file = e.dataTransfer.files && e.dataTransfer.files[0];
+        if (file && file.type === "text/plain") await readTxtFile(file);
       });
 
-      // Normal select
-      fileInput.addEventListener("click", (e) => e.stopPropagation());
-      fileInput.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (file) await loadFile(file);
-      });
-
-      async function loadFile(file) {
-        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
-        fileInfo.textContent = `📄 ${file.name} (${sizeMB} MB uploaded)`;
-        const arrayBuffer = await file.arrayBuffer();
-        pdfBytes = new Uint8Array(arrayBuffer);
-        startBtn.disabled = false;
+      async function readTxtFile(file) {
+        const reader = new FileReader();
+        const content = await new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsText(file);
+        });
+        const name = file.name || "file.txt";
+        const sizeKB = ((file.size || 0) / 1024).toFixed(1);
+        fileInfo.textContent = `📄 ${name} (${sizeKB} KB loaded)`;
+        textInput.value = String(content || "");
+        refreshButtonState();
         statusText.textContent = "";
         downloadBtn.style.display = "none";
       }
 
-      startBtn.addEventListener("click", () => {
-        if (pdfBytes) {
-          startBtn.disabled = true;
-          statusText.textContent = "Starting compression...";
-          compressPDF(pdfBytes);
+      createBtn.addEventListener("click", async () => {
+        const raw = (textInput.value || "").replace(/\r\n?/g, "\n");
+        const text = raw.trim();
+        if (!text) {
+          statusText.textContent =
+            "Please enter some text or upload a .txt file.";
+          return;
         }
-      });
 
-      async function compressPDF(pdfData) {
-        const target = parseFloat(targetInput.value) || 256;
-        const unit = sizeUnit.value;
-        const targetBytes =
-          unit === "MB" ? target * 1024 * 1024 : target * 1024;
-        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+        createBtn.disabled = true;
+        statusText.textContent = "Creating PDF...";
 
-        let quality = 0.9,
-          attempt = 0;
-        let blob, size;
+        try {
+          const size = paperSize.value || "a4";
+          const orient = orientation.value || "p";
+          const doc = new jsPDF({
+            orientation: orient,
+            unit: "mm",
+            format: size,
+          });
 
-        while (attempt < 6) {
-          const pdfDoc = new jsPDF();
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const viewport = page.getViewport({ scale: 1.0 });
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            await page.render({ canvasContext: context, viewport }).promise;
+          const font = fontFamily.value || "helvetica";
+          const fontSize = Math.max(
+            6,
+            Math.min(36, parseInt(fontSizeInput.value || "12", 10) || 12)
+          );
+          let margin = Math.max(
+            0,
+            Math.min(60, parseFloat(marginInput.value || "15"))
+          );
+          doc.setFont(font, "normal");
+          doc.setFontSize(fontSize);
 
-            const imgData = canvas.toDataURL("image/jpeg", quality);
-            if (i > 1) pdfDoc.addPage();
-            pdfDoc.addImage(
-              imgData,
-              "JPEG",
-              0,
-              0,
-              210,
-              (210 * viewport.height) / viewport.width
-            );
-            statusText.textContent = `Compressing page ${i}/${pdf.numPages}...`;
+          const pageWidth = doc.internal.pageSize.getWidth();
+          const pageHeight = doc.internal.pageSize.getHeight();
+          const usableWidth = Math.max(10, pageWidth - 2 * margin);
+          const usableHeight = Math.max(10, pageHeight - 2 * margin);
+          const lineHeight = fontSize * 1.2;
+
+          // Wrap the text to available width
+          const lines = doc.splitTextToSize(text, usableWidth);
+          let x = margin;
+          let y = margin + lineHeight; // start a bit below top margin
+
+          let pageCount = 1;
+          for (let i = 0; i < lines.length; i++) {
+            if (y + lineHeight > margin + usableHeight) {
+              doc.addPage();
+              pageCount++;
+              y = margin + lineHeight;
+            }
+            doc.text(lines[i], x, y);
+            y += lineHeight;
           }
 
-          blob = pdfDoc.output("blob");
-          size = blob.size;
-          if (size <= targetBytes || quality <= 0.25) break;
-
-          quality -= 0.15;
-          attempt++;
-          statusText.textContent = `Adjusting quality... (try ${attempt})`;
+          outBlob = doc.output("blob");
+          downloadBtn.style.display = "inline-block";
+          statusText.textContent = `PDF created successfully! (${pageCount} page${
+            pageCount > 1 ? "s" : ""
+          })`;
+        } catch (err) {
+          console.error(err);
+          statusText.textContent = "Failed to create PDF.";
+        } finally {
+          createBtn.disabled = false;
         }
-
-        pdfBlob = blob;
-        const sizeKB = (pdfBlob.size / 1024).toFixed(1);
-        statusText.textContent = `Compression complete! Final size: ${sizeKB} KB`;
-        downloadBtn.style.display = "inline-block";
-        startBtn.disabled = false;
-      }
+      });
 
       function getOutputName(defaultBase) {
         const el = document.getElementById("output-name");
@@ -308,17 +389,18 @@
       }
 
       downloadBtn.addEventListener("click", () => {
-        if (pdfBlob) {
-          const url = URL.createObjectURL(pdfBlob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = getOutputName("compressed");
-          a.click();
-          URL.revokeObjectURL(url);
-        }
+        if (!outBlob) return;
+        const url = URL.createObjectURL(outBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = getOutputName("text");
+        a.click();
+        URL.revokeObjectURL(url);
       });
-    </script>
 
+      // Initialize button state
+      refreshButtonState();
+    </script>
     <!-- Cookie consent (minimal) -->
     <div
       id="cookie-consent"

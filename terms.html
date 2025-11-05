@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+    <title>Terms of Use - EditMyPDFs.com</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        margin: 0;
+        color: #111;
+        background: #fff;
+      }
+      header,
+      footer {
+        border-bottom: 1px solid #eee;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+      }
+      header nav a {
+        margin-left: 1rem;
+        color: #111;
+        text-decoration: none;
+      }
+      main {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+        margin: 0;
+      }
+      h2 {
+        margin-top: 2rem;
+      }
+      p,
+      li {
+        color: #333;
+        line-height: 1.6;
+      }
+      footer {
+        border-top: 1px solid #eee;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>EDITMYPDFS<span style="font-weight: 400">.com</span></h1>
+      <nav>
+        <a href="./index.html">Home</a>
+        <a href="./about.html">About</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+      </nav>
+    </header>
+    <main>
+      <h2>Terms of Use</h2>
+      <a href="./terms.html">Terms</a>
+      <a href="./about.html#contact">Contact</a>
+      <p>
+        Last updated:
+        <!-- DATE -->
+        November 5, 2025
+      </p>
+
+      <h3>Acceptable use</h3>
+      <ul>
+        <li>
+          Use the tools only on documents you own or have explicit permission to
+          modify.
+        </li>
+        <li>
+          Do not use the site to infringe third‑party rights or for unlawful
+          purposes.
+        </li>
+        <li>Do not attempt to bypass DRM or technical protection measures.</li>
+      </ul>
+
+      <h3>Intellectual property</h3>
+      <p>
+        You retain ownership of your files. You are responsible for ensuring
+        that your use of the tools complies with applicable laws and third‑party
+        rights.
+      </p>
+
+      <h3>Third‑party libraries</h3>
+      <p>
+        This site uses open‑source libraries such as PDF.js (Apache‑2.0), PDFKit
+        (MIT), and pdf‑lib (MIT). These are used in accordance with their
+        licenses. Licenses and notices are available on request and may be
+        included in the repository.
+      </p>
+
+      <h3>Warranty and liability</h3>
+      <p>
+        The site is provided “as is” without warranties. We are not liable for
+        loss or damages arising from your use of the tools.
+      </p>
+
+      <h3>Changes</h3>
+      <p>
+        We may update these terms from time to time. Continued use constitutes
+        acceptance of any changes.
+      </p>
+    </main>
+    <footer>© 2025 EditMyPDFs.com — All rights reserved.</footer>
+
+    <!-- Cookie consent (minimal) -->
+    <div
+      id="cookie-consent"
+      style="
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        background: #111;
+        color: #fff;
+        padding: 12px 16px;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      "
+    >
+      <span style="font-size: 14px">
+        We use cookies for ads and measurement. See our
+        <a
+          href="./privacy.html"
+          style="color: #93c5fd; text-decoration: underline"
+          >Privacy Policy</a
+        >.
+      </span>
+      <button
+        data-accept
+        style="
+          background: #22c55e;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 12px;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        Accept
+      </button>
+    </div>
+    <script>
+      (function () {
+        var bar = document.getElementById("cookie-consent");
+        try {
+          if (localStorage.getItem("cookieConsent") === "accepted") {
+            if (bar) bar.style.display = "none";
+            return;
+          }
+        } catch (e) {}
+        if (!bar) return;
+        bar.style.display = "flex";
+        var btn = bar.querySelector("button[data-accept]");
+        if (btn)
+          btn.addEventListener("click", function () {
+            try {
+              localStorage.setItem("cookieConsent", "accepted");
+            } catch (e) {}
+            bar.remove();
+          });
+      })();
+    </script>
+    <!-- Suppress local banner and load Funding Choices CMP when configured -->
+    <script>
+      (function () {
+        function loadFundingChoices(id) {
+          var bar = document.getElementById("cookie-consent");
+          if (bar) bar.remove();
+          var s = document.createElement("script");
+          s.async = true;
+          s.crossOrigin = "anonymous";
+          s.src =
+            "https://fundingchoicesmessages.google.com/i/" +
+            encodeURIComponent(id);
+          document.head.appendChild(s);
+        }
+        var meta = document.querySelector('meta[name="fc-id"]');
+        var id =
+          (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
+          (meta && (meta.content || "").trim());
+        if (id && !/^REPLACE_/i.test(id)) {
+          loadFundingChoices(id);
+          return;
+        }
+        var base =
+          location.pathname.indexOf("/features/") !== -1
+            ? "../vendor/"
+            : "./vendor/";
+        var tagId = "cmp-id-loader";
+        if (!document.getElementById(tagId)) {
+          var t = document.createElement("script");
+          t.id = tagId;
+          t.async = true;
+          t.src = base + "cmp-id.js";
+          t.onload = function () {
+            var id2 =
+              (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
+              (meta && (meta.content || "").trim());
+            if (id2 && !/^REPLACE_/i.test(id2)) loadFundingChoices(id2);
+          };
+          t.onerror = function () {};
+          document.head.appendChild(t);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -4,14 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Compress PDF - EditMyPDFs.com</title>
+    <title>Merge PDFs - EditMyPDFs.com</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
     <style>
       body {
@@ -57,21 +56,15 @@
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        text-align: left;
       }
       label,
       select,
-      input {
+      input,
+      button {
         display: block;
         margin: 0.75rem auto;
         font-size: 1rem;
-      }
-      select,
-      input {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 0.6rem 0.9rem;
-        width: 200px;
-        text-align: center;
       }
       button {
         background: linear-gradient(90deg, #6366f1, #2563eb);
@@ -94,6 +87,7 @@
         margin-top: 1.5rem;
         transition: all 0.2s ease;
         cursor: pointer;
+        text-align: center;
       }
       .upload-box:hover {
         background: #f8faff;
@@ -107,10 +101,13 @@
         color: #333;
         font-weight: 500;
         font-size: 0.95rem;
+        white-space: pre-wrap;
       }
       .progress {
         margin-top: 1rem;
         color: #555;
+        min-height: 1.4rem;
+        text-align: center;
       }
       .ad-box {
         margin-top: 3rem;
@@ -147,44 +144,38 @@
     </header>
 
     <main>
-      <h2>Compress PDF</h2>
+      <h2>Merge PDFs</h2>
       <p class="sub">
-        Upload your PDF, set desired size, then click “Start Compression”.
+        Add two or more PDFs, then click “Merge PDFs”. You can add more files in
+        multiple selections.
       </p>
 
       <div class="compress-card">
-        <label>Enter desired size:</label>
-        <input type="number" id="target-size" placeholder="256" value="256" />
-        <select id="size-unit">
-          <option value="KB" selected>KB</option>
-          <option value="MB">MB</option>
-        </select>
-
         <label class="upload-box" id="drop-zone">
-          📄 Drop your PDF here or click to upload
+          📄 Drop your PDFs here or click to upload
           <input
             type="file"
             id="file-input"
             accept="application/pdf"
+            multiple
             style="display: none"
           />
         </label>
 
-        <!-- File info text -->
         <div id="file-info" class="file-info"></div>
 
         <label for="output-name">Output filename</label>
         <input
           type="text"
           id="output-name"
-          placeholder="e.g., compressed"
-          value="compressed"
+          placeholder="e.g., merged"
+          value="merged"
         />
 
-        <button id="start-btn" disabled>Start Compression</button>
-        <div class="progress" id="status"></div>
+        <button id="merge-btn" disabled>Merge PDFs</button>
+        <div id="status" class="progress"></div>
         <button id="download-btn" style="display: none">
-          Download Compressed PDF
+          Download Merged PDF
         </button>
       </div>
 
@@ -194,20 +185,38 @@
     <footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
 
     <script>
-      const { jsPDF } = window.jspdf;
-      const fileInput = document.getElementById("file-input");
       const dropZone = document.getElementById("drop-zone");
-      const startBtn = document.getElementById("start-btn");
-      const statusText = document.getElementById("status");
-      const downloadBtn = document.getElementById("download-btn");
-      const targetInput = document.getElementById("target-size");
-      const sizeUnit = document.getElementById("size-unit");
+      const fileInput = document.getElementById("file-input");
       const fileInfo = document.getElementById("file-info");
+      const statusText = document.getElementById("status");
+      const mergeBtn = document.getElementById("merge-btn");
+      const downloadBtn = document.getElementById("download-btn");
 
-      let pdfBytes = null;
-      let pdfBlob = null;
+      let pdfFiles = [];
+      let outBlob = null;
 
-      // Drag & drop
+      function uniqueByKey(list) {
+        const map = new Map();
+        for (const f of list) {
+          const key = `${f.name}|${f.size}|${f.lastModified}`;
+          if (!map.has(key)) map.set(key, f);
+        }
+        return Array.from(map.values());
+      }
+
+      function refreshUI() {
+        const totalSize = pdfFiles.reduce((a, f) => a + (f.size || 0), 0);
+        const sizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+        const names = pdfFiles.map((f, i) => `${i + 1}. ${f.name}`).join("\n");
+        fileInfo.textContent = pdfFiles.length
+          ? `Selected ${pdfFiles.length} PDF(s) (${sizeMB} MB):\n${names}`
+          : "";
+        mergeBtn.disabled = pdfFiles.length < 2;
+        statusText.textContent = "";
+        downloadBtn.style.display = "none";
+      }
+
+      // Label naturally triggers input; avoid manual .click()
       dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZone.classList.add("dragover");
@@ -218,85 +227,68 @@
       dropZone.addEventListener("drop", async (e) => {
         e.preventDefault();
         dropZone.classList.remove("dragover");
-        const file = e.dataTransfer.files[0];
-        if (file) await loadFile(file);
+        const files = Array.from(e.dataTransfer.files).filter(
+          (f) => f.type === "application/pdf"
+        );
+        if (files.length) {
+          pdfFiles = uniqueByKey([...pdfFiles, ...files]);
+          refreshUI();
+        }
       });
 
-      // Normal select
       fileInput.addEventListener("click", (e) => e.stopPropagation());
       fileInput.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (file) await loadFile(file);
-      });
-
-      async function loadFile(file) {
-        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
-        fileInfo.textContent = `📄 ${file.name} (${sizeMB} MB uploaded)`;
-        const arrayBuffer = await file.arrayBuffer();
-        pdfBytes = new Uint8Array(arrayBuffer);
-        startBtn.disabled = false;
-        statusText.textContent = "";
-        downloadBtn.style.display = "none";
-      }
-
-      startBtn.addEventListener("click", () => {
-        if (pdfBytes) {
-          startBtn.disabled = true;
-          statusText.textContent = "Starting compression...";
-          compressPDF(pdfBytes);
+        const files = Array.from(e.target.files || []).filter(
+          (f) => f.type === "application/pdf"
+        );
+        if (files.length) {
+          pdfFiles = uniqueByKey([...pdfFiles, ...files]);
+          refreshUI();
         }
+        e.target.value = "";
       });
 
-      async function compressPDF(pdfData) {
-        const target = parseFloat(targetInput.value) || 256;
-        const unit = sizeUnit.value;
-        const targetBytes =
-          unit === "MB" ? target * 1024 * 1024 : target * 1024;
-        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+      mergeBtn.addEventListener("click", async () => {
+        if (pdfFiles.length < 2) return;
+        mergeBtn.disabled = true;
+        statusText.textContent = "Merging PDFs...";
+        try {
+          const outDoc = await PDFLib.PDFDocument.create();
 
-        let quality = 0.9,
-          attempt = 0;
-        let blob, size;
-
-        while (attempt < 6) {
-          const pdfDoc = new jsPDF();
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const viewport = page.getViewport({ scale: 1.0 });
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            await page.render({ canvasContext: context, viewport }).promise;
-
-            const imgData = canvas.toDataURL("image/jpeg", quality);
-            if (i > 1) pdfDoc.addPage();
-            pdfDoc.addImage(
-              imgData,
-              "JPEG",
-              0,
-              0,
-              210,
-              (210 * viewport.height) / viewport.width
-            );
-            statusText.textContent = `Compressing page ${i}/${pdf.numPages}...`;
+          for (let i = 0; i < pdfFiles.length; i++) {
+            const f = pdfFiles[i];
+            statusText.textContent = `Merging file ${i + 1}/${
+              pdfFiles.length
+            }: ${f.name}`;
+            try {
+              const bytes = new Uint8Array(await f.arrayBuffer());
+              const srcDoc = await PDFLib.PDFDocument.load(bytes, {
+                ignoreEncryption: true,
+              });
+              const pageCount = srcDoc.getPageCount();
+              const indices = Array.from(
+                { length: pageCount },
+                (_, idx) => idx
+              );
+              const copied = await outDoc.copyPages(srcDoc, indices);
+              copied.forEach((p) => outDoc.addPage(p));
+            } catch (err) {
+              console.error("Failed to merge", f.name, err);
+              // Continue with remaining files
+            }
           }
 
-          blob = pdfDoc.output("blob");
-          size = blob.size;
-          if (size <= targetBytes || quality <= 0.25) break;
-
-          quality -= 0.15;
-          attempt++;
-          statusText.textContent = `Adjusting quality... (try ${attempt})`;
+          const outBytes = await outDoc.save();
+          outBlob = new Blob([outBytes], { type: "application/pdf" });
+          downloadBtn.style.display = "inline-block";
+          statusText.textContent = "Merged successfully!";
+        } catch (err) {
+          console.error(err);
+          statusText.textContent = "Failed to merge PDFs.";
+        } finally {
+          mergeBtn.disabled = false;
         }
-
-        pdfBlob = blob;
-        const sizeKB = (pdfBlob.size / 1024).toFixed(1);
-        statusText.textContent = `Compression complete! Final size: ${sizeKB} KB`;
-        downloadBtn.style.display = "inline-block";
-        startBtn.disabled = false;
-      }
+      });
 
       function getOutputName(defaultBase) {
         const el = document.getElementById("output-name");
@@ -308,17 +300,15 @@
       }
 
       downloadBtn.addEventListener("click", () => {
-        if (pdfBlob) {
-          const url = URL.createObjectURL(pdfBlob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = getOutputName("compressed");
-          a.click();
-          URL.revokeObjectURL(url);
-        }
+        if (!outBlob) return;
+        const url = URL.createObjectURL(outBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = getOutputName("merged");
+        a.click();
+        URL.revokeObjectURL(url);
       });
     </script>
-
     <!-- Cookie consent (minimal) -->
     <div
       id="cookie-consent"
