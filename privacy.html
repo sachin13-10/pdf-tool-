@@ -9,6 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="./assets/styles.css" />
     <style>
       body {
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
@@ -16,21 +17,6 @@
         margin: 0;
         color: #111;
         background: #fff;
-      }
-      header,
-      footer {
-        border-bottom: 1px solid #eee;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-      }
-      header nav a {
-        margin-left: 1rem;
-        color: #111;
-        text-decoration: none;
       }
       main {
         max-width: 800px;
@@ -54,26 +40,10 @@
         padding: 0 0.25rem;
         border-radius: 4px;
       }
-      footer {
-        border-top: 1px solid #eee;
-        text-align: center;
-        padding: 2rem;
-        margin-top: 3rem;
-        color: #777;
-      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>EDITMYPDFS<span style="font-weight: 400">.com</span></h1>
-      <nav>
-        <a href="./index.html">Home</a>
-        <a href="./about.html">About</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Terms</a>
-        <a href="./about.html#contact">Contact</a>
-      </nav>
-    </header>
+    <header data-include="navbar"></header>
     <main>
       <h2>Privacy Policy</h2>
       <p>
@@ -145,115 +115,7 @@
         <a href="./about.html">About</a> page.
       </p>
     </main>
-    <footer>© 2025 EditMyPDFs.com — Privacy‑first PDF tools</footer>
-
-    <!-- Cookie consent (minimal) -->
-    <div
-      id="cookie-consent"
-      style="
-        display: none;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1000;
-        background: #111;
-        color: #fff;
-        padding: 12px 16px;
-        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-      "
-    >
-      <span style="font-size: 14px">
-        We use cookies for ads and measurement. See our
-        <a
-          href="./privacy.html"
-          style="color: #93c5fd; text-decoration: underline"
-          >Privacy Policy</a
-        >.
-      </span>
-      <button
-        data-accept
-        style="
-          background: #22c55e;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          padding: 8px 12px;
-          font-weight: 600;
-          cursor: pointer;
-        "
-      >
-        Accept
-      </button>
-    </div>
-    <script>
-      (function () {
-        var bar = document.getElementById("cookie-consent");
-        try {
-          if (localStorage.getItem("cookieConsent") === "accepted") {
-            if (bar) bar.style.display = "none";
-            return;
-          }
-        } catch (e) {}
-        if (!bar) return;
-        bar.style.display = "flex";
-        var btn = bar.querySelector("button[data-accept]");
-        if (btn)
-          btn.addEventListener("click", function () {
-            try {
-              localStorage.setItem("cookieConsent", "accepted");
-            } catch (e) {}
-            bar.remove();
-          });
-      })();
-    </script>
-    <!-- Suppress local banner and load Funding Choices CMP when configured -->
-    <script>
-      (function () {
-        function loadFundingChoices(id) {
-          var bar = document.getElementById("cookie-consent");
-          if (bar) bar.remove();
-          var s = document.createElement("script");
-          s.async = true;
-          s.crossOrigin = "anonymous";
-          s.src =
-            "https://fundingchoicesmessages.google.com/i/" +
-            encodeURIComponent(id);
-          document.head.appendChild(s);
-        }
-        var meta = document.querySelector('meta[name="fc-id"]');
-        var id =
-          (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-          (meta && (meta.content || "").trim());
-        if (id && !/^REPLACE_/i.test(id)) {
-          loadFundingChoices(id);
-          return;
-        }
-        var base =
-          location.pathname.indexOf("/features/") !== -1
-            ? "../vendor/"
-            : "./vendor/";
-        var tagId = "cmp-id-loader";
-        if (!document.getElementById(tagId)) {
-          var t = document.createElement("script");
-          t.id = tagId;
-          t.async = true;
-          t.src = base + "cmp-id.js";
-          t.onload = function () {
-            var id2 =
-              (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-              (meta && (meta.content || "").trim());
-            if (id2 && !/^REPLACE_/i.test(id2)) loadFundingChoices(id2);
-          };
-          t.onerror = function () {};
-          document.head.appendChild(t);
-        }
-      })();
-    </script>
+    <div data-include="footer"></div>
+    <script src="./assets/app.js"></script>
   </body>
 </html>

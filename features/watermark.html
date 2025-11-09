@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+  <title>Watermark PDF - EditMyPDFs.com</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <style>
+    body { font-family:Inter,sans-serif; margin:0; background:#fff; color:#111; }
+    main { max-width:760px; margin:3rem auto; padding:1rem; text-align:center; }
+    h2 { font-size:2rem; margin:.5rem 0 1rem; }
+    p.sub { color:#555; }
+    .card { border:1px solid #eee; border-radius:16px; padding:2rem; box-shadow:0 2px 6px rgba(0,0,0,.05); text-align:left; }
+    .upload-box { border:2px dashed #ccc; border-radius:12px; padding:2rem; cursor:pointer; transition:.25s; text-align:center; }
+    .upload-box:hover { background:#f8faff; }
+    .upload-box.dragover { border-color:#e53935; }
+    label,input,button { display:block; margin:.75rem auto; font-size:1rem; }
+    input[type=text] { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:260px; }
+    button { background:linear-gradient(90deg,#e53935,#c62828); color:#fff; border:none; border-radius:10px; padding:.85rem 1.6rem; font-weight:600; cursor:pointer; }
+    button:hover { opacity:.9; }
+    .file-info { margin-top:.5rem; color:#333; font-weight:500; font-size:.95rem; }
+    .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
+    .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+  </style>
+</head>
+<body>
+  <header data-include="navbar"></header>
+  <main class="feature">
+    <h2>Watermark PDF</h2>
+    <p class="sub">Add a translucent text watermark to every page client‑side. Your file never leaves your device.</p>
+    <div class="card">
+      <label class="upload-box" id="drop-zone">📄 Drop your PDF or click to upload
+        <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+      </label>
+      <div id="file-info" class="file-info"></div>
+      <label for="wm-text">Watermark text</label>
+      <input id="wm-text" type="text" value="CONFIDENTIAL" />
+      <label for="wm-opacity">Opacity (0.1–1.0)</label>
+      <input id="wm-opacity" type="text" value="0.2" />
+  <label for="wm-color">Watermark color</label>
+  <input id="wm-color" type="color" value="#e53935" />
+      <label for="wm-placement">Placement</label>
+      <select id="wm-placement">
+        <option value="diagonal" selected>Diagonal (bottom-left → top-right)</option>
+        <option value="center">Center</option>
+        <option value="top-left">Top-Left</option>
+        <option value="top-center">Top-Center</option>
+        <option value="top-right">Top-Right</option>
+        <option value="middle-left">Middle-Left</option>
+        <option value="middle-right">Middle-Right</option>
+        <option value="bottom-left">Bottom-Left</option>
+        <option value="bottom-center">Bottom-Center</option>
+        <option value="bottom-right">Bottom-Right</option>
+        <option value="custom">Custom (choose on preview)</option>
+      </select>
+      <label for="wm-size">Size</label>
+      <select id="wm-size">
+        <option value="auto" selected>Auto-fit (diagonal)</option>
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+      </select>
+
+      <!-- Simple preview canvas so users can choose custom location -->
+      <div id="preview-wrap" style="display:block; margin:1rem auto; text-align:center;">
+        <div style="font-weight:600; color:#444; margin-bottom:.35rem;">Preview</div>
+        <canvas id="wm-preview" width="320" height="452" style="border:1px solid #ddd; border-radius:8px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.06);"></canvas>
+        <div id="preview-hint" style="font-size:.9rem; color:#666; margin-top:.4rem; display:none;">Tip: Click or drag on the page to set the watermark position.</div>
+      </div>
+      <label for="output-name">Output filename</label>
+      <input id="output-name" type="text" value="watermarked" />
+      <button id="apply-btn" disabled>Apply Watermark</button>
+      <button id="download-btn" style="display:none">Download PDF</button>
+      <div id="status" class="progress"></div>
+    </div>
+    <div class="ad-box" data-ad-slot="watermark-bottom">Ad Space</div>
+  </main>
+  <div data-include="footer"></div>
+  <script>
+    const fileInput = document.getElementById('file-input');
+    const dropZone = document.getElementById('drop-zone');
+    const applyBtn = document.getElementById('apply-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const statusText = document.getElementById('status');
+    const fileInfo = document.getElementById('file-info');
+    const wmTextInput = document.getElementById('wm-text');
+  const wmOpacityInput = document.getElementById('wm-opacity');
+  const wmColorInput = document.getElementById('wm-color');
+  const placementSelect = document.getElementById('wm-placement');
+  const sizeSelect = document.getElementById('wm-size');
+  const previewCanvas = document.getElementById('wm-preview');
+  const previewHint = document.getElementById('preview-hint');
+  const pctx = previewCanvas.getContext('2d');
+  // Normalized custom position within inner margins [0..1]
+  let customPos = { x: 0.5, y: 0.5 };
+  let dragging = false;
+    let srcBytes=null; let outBlob=null; let loaded=null;
+
+    dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await loadFile(f); });
+    fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await loadFile(f); e.target.value=''; });
+
+    async function loadFile(file){
+      statusText.textContent='Reading PDF...';
+      try { srcBytes = new Uint8Array(await file.arrayBuffer()); loaded = await PDFLib.PDFDocument.load(srcBytes,{ignoreEncryption:true}); fileInfo.textContent = `📄 ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`; applyBtn.disabled=false; statusText.textContent='Loaded. Enter watermark.'; }
+      catch(e){ console.error(e); statusText.textContent='Failed to read PDF.'; applyBtn.disabled=true; }
+    }
+
+    function getOutputName(def){ const el=document.getElementById('output-name'); let name=(el&&el.value?el.value:'').trim()||def||'output'; name=name.replace(/[\\/:*?"<>|]/g,'-'); if(!/\.pdf$/i.test(name)) name+='.pdf'; return name; }
+
+    // -------- Preview logic --------
+    function drawPreview(){
+      // Paper background
+      pctx.clearRect(0,0,previewCanvas.width, previewCanvas.height);
+      pctx.fillStyle = '#fff';
+      pctx.fillRect(0,0,previewCanvas.width, previewCanvas.height);
+      pctx.strokeStyle = '#e5e7eb';
+      pctx.strokeRect(0.5,0.5,previewCanvas.width-1, previewCanvas.height-1);
+
+      const text = (wmTextInput.value||'').trim() || 'WATERMARK';
+      const hex = wmColorInput.value || '#e53935';
+      // Convert hex to rgba string for canvas
+      function hexToRGBA(h, a){ const m=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h||''); const r=m?parseInt(m[1],16):229, g=m?parseInt(m[2],16):57, b=m?parseInt(m[3],16):53; return `rgba(${r},${g},${b},${a})`; }
+      const opacity = Math.min(1, Math.max(0.05, parseFloat(wmOpacityInput.value)||0.2));
+      const margin = Math.max(previewCanvas.width, previewCanvas.height) * 0.06;
+
+      function sizeFactor(mode){ return mode==='small'?0.08 : mode==='large'?0.18 : 0.12; }
+      const placement = placementSelect.value;
+      const sizeMode = sizeSelect.value;
+
+      if (placement === 'diagonal'){
+        let fontSize;
+        if (sizeMode === 'auto'){
+          const target = Math.hypot(previewCanvas.width - 2*margin, previewCanvas.height - 2*margin);
+          let estimate = 24; pctx.font = `${estimate}px Helvetica, Arial, sans-serif`;
+          const unitW = pctx.measureText(text).width / estimate;
+          fontSize = unitW > 0 ? (target / unitW) : (Math.min(previewCanvas.width, previewCanvas.height)/5);
+        } else {
+          fontSize = Math.min(previewCanvas.width, previewCanvas.height) * sizeFactor(sizeMode);
+        }
+        pctx.save();
+        pctx.translate(margin, previewCanvas.height - margin);
+        pctx.rotate(-Math.PI/4);
+        pctx.fillStyle = hexToRGBA(hex, opacity);
+        pctx.font = `${fontSize}px Helvetica, Arial, sans-serif`;
+        pctx.fillText(text, 0, 0);
+        pctx.restore();
+      } else if (placement === 'custom'){
+        const fontSize = (sizeMode==='auto') ? (Math.min(previewCanvas.width, previewCanvas.height)*0.12) : (Math.min(previewCanvas.width, previewCanvas.height) * sizeFactor(sizeMode));
+        const x = margin + customPos.x * (previewCanvas.width - 2*margin);
+        const y = margin + customPos.y * (previewCanvas.height - 2*margin);
+        pctx.save();
+        pctx.translate(x, y);
+        pctx.rotate(-Math.PI/4);
+        pctx.fillStyle = hexToRGBA(hex, opacity);
+        pctx.font = `${fontSize}px Helvetica, Arial, sans-serif`;
+        const m = pctx.measureText(text);
+        const tw = m.width; const th = fontSize;
+        pctx.fillText(text, -tw/2, th/2);
+        pctx.restore();
+        pctx.fillStyle = 'rgba(0,0,0,.12)';
+        pctx.beginPath(); pctx.arc(x, y, 6, 0, Math.PI*2); pctx.fill();
+      } else {
+        const fontSize = (sizeMode==='auto') ? (Math.min(previewCanvas.width, previewCanvas.height)*0.12) : (Math.min(previewCanvas.width, previewCanvas.height) * sizeFactor(sizeMode));
+        pctx.font = `${fontSize}px Helvetica, Arial, sans-serif`;
+        const tw = pctx.measureText(text).width; const th = fontSize;
+        const W = previewCanvas.width, H = previewCanvas.height;
+        let x=margin, y=H-margin; // baseline top-left adjustments below
+        if (placement==='center'){ x = (W - tw)/2; y = (H + th)/2; }
+        else if (placement==='top-left'){ x = margin; y = margin + th; }
+        else if (placement==='top-center'){ x = (W - tw)/2; y = margin + th; }
+        else if (placement==='top-right'){ x = W - margin - tw; y = margin + th; }
+        else if (placement==='middle-left'){ x = margin; y = H/2 + th/2; }
+        else if (placement==='middle-right'){ x = W - margin - tw; y = H/2 + th/2; }
+        else if (placement==='bottom-left'){ x = margin; y = H - margin; }
+        else if (placement==='bottom-center'){ x = (W - tw)/2; y = H - margin; }
+        else if (placement==='bottom-right'){ x = W - margin - tw; y = H - margin; }
+        pctx.save();
+        pctx.translate(x + tw/2, y - th/2);
+        pctx.rotate(-Math.PI/4);
+        pctx.fillStyle = hexToRGBA(hex, opacity);
+        pctx.fillText(text, -tw/2, th/2);
+        pctx.restore();
+      }
+    }
+
+    function setPlacementUI(){
+      const isCustom = placementSelect.value === 'custom';
+      previewHint.style.display = isCustom ? 'block' : 'none';
+    }
+
+    // Mouse interactions for custom placement
+    function setCustomFromEvent(ev){
+      const rect = previewCanvas.getBoundingClientRect();
+      const cx = Math.max(0, Math.min(previewCanvas.width, ev.clientX - rect.left));
+      const cy = Math.max(0, Math.min(previewCanvas.height, ev.clientY - rect.top));
+      const margin = Math.max(previewCanvas.width, previewCanvas.height) * 0.06;
+      const innerW = Math.max(1, previewCanvas.width - 2*margin);
+      const innerH = Math.max(1, previewCanvas.height - 2*margin);
+      customPos.x = Math.max(0, Math.min(1, (cx - margin) / innerW));
+      customPos.y = Math.max(0, Math.min(1, (cy - margin) / innerH));
+      drawPreview();
+    }
+    previewCanvas.addEventListener('mousedown', (ev)=>{ if (placementSelect.value !== 'custom') return; dragging=true; setCustomFromEvent(ev); });
+    window.addEventListener('mousemove', (ev)=>{ if (!dragging) return; setCustomFromEvent(ev); });
+    window.addEventListener('mouseup', ()=>{ dragging=false; });
+
+    // Redraw preview on inputs
+  [wmTextInput, wmOpacityInput, wmColorInput, sizeSelect].forEach(el=> el.addEventListener('input', drawPreview));
+    placementSelect.addEventListener('change', ()=>{ setPlacementUI(); drawPreview(); });
+    setPlacementUI();
+    drawPreview();
+
+    applyBtn.addEventListener('click', async ()=>{
+      if(!loaded) return; applyBtn.disabled=true; statusText.textContent='Applying watermark...';
+      try {
+        const outDoc = await PDFLib.PDFDocument.create();
+        const pageCount = loaded.getPageCount();
+        const pages = await outDoc.copyPages(loaded, Array.from({length:pageCount},(_,i)=>i));
+        const wmText = (wmTextInput.value||'').trim()||'WATERMARK';
+        const opacity = Math.min(1, Math.max(0.05, parseFloat(wmOpacityInput.value)||0.2));
+        // Color parsing (hex -> rgb)
+        function hexToRgb(hex){
+          const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex||'');
+          return m ? { r: parseInt(m[1],16), g: parseInt(m[2],16), b: parseInt(m[3],16) } : { r: 229, g: 57, b: 53 };
+        }
+        const rgb = hexToRgb(wmColorInput && wmColorInput.value);
+        const color = PDFLib.rgb(rgb.r/255, rgb.g/255, rgb.b/255);
+        const helv = await outDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+        const placement = placementSelect.value;
+        const sizeMode = sizeSelect.value;
+        function sizeFactor(mode){ return mode==='small'?0.08 : mode==='large'?0.18 : 0.12; }
+        pages.forEach(p=>{
+          outDoc.addPage(p);
+          const { width, height } = p.getSize();
+          const margin = Math.max(width, height) * 0.04;
+          function fontSizeForPage(){
+            if (placement==='diagonal' && sizeMode==='auto'){
+              const target = Math.hypot(width - 2*margin, height - 2*margin);
+              const unit = helv.widthOfTextAtSize(wmText, 1);
+              return unit>0 ? (target / unit) : (Math.min(width, height)/5);
+            }
+            return Math.min(width, height) * sizeFactor(sizeMode);
+          }
+          const fontSize = fontSizeForPage();
+          const textW = helv.widthOfTextAtSize(wmText, fontSize);
+          const textH = helv.heightAtSize(fontSize);
+          let x = margin, y = margin; // baseline
+          if (placement==='diagonal'){
+            x = margin; y = margin;
+          } else if (placement==='custom'){
+            const innerW = Math.max(1, width - 2*margin);
+            const innerH = Math.max(1, height - 2*margin);
+            x = margin + customPos.x * innerW - textW/2;
+            y = margin + customPos.y * innerH - textH/2;
+          } else {
+            if (placement==='center'){ x = (width - textW)/2; y = (height - textH)/2; }
+            else if (placement==='top-left'){ x = margin; y = height - margin - textH; }
+            else if (placement==='top-center'){ x = (width - textW)/2; y = height - margin - textH; }
+            else if (placement==='top-right'){ x = width - margin - textW; y = height - margin - textH; }
+            else if (placement==='middle-left'){ x = margin; y = (height - textH)/2; }
+            else if (placement==='middle-right'){ x = width - margin - textW; y = (height - textH)/2; }
+            else if (placement==='bottom-left'){ x = margin; y = margin; }
+            else if (placement==='bottom-center'){ x = (width - textW)/2; y = margin; }
+            else if (placement==='bottom-right'){ x = width - margin - textW; y = margin; }
+          }
+          p.drawText(wmText, { x, y, size: fontSize, font: helv, opacity, rotate: PDFLib.degrees(45), color });
+        });
+        const bytes = await outDoc.save();
+        outBlob = new Blob([bytes], {type:'application/pdf'});
+        downloadBtn.style.display='inline-block';
+        statusText.textContent='Watermark applied diagonally (bottom-left to top-right).';
+      } catch(e){ console.error(e); statusText.textContent='Failed.'; }
+      finally { applyBtn.disabled=false; }
+    });
+
+    downloadBtn.addEventListener('click', ()=>{
+      if(!outBlob) return; const url = URL.createObjectURL(outBlob); const a=document.createElement('a'); a.href=url; a.download=getOutputName('watermarked'); a.click(); URL.revokeObjectURL(url);
+    });
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+    <title>Add Page Numbers - EditMyPDFs.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <style>
+      main.feature { max-width: 820px; }
+      .pn-card { max-width:760px; margin:0 auto; padding:2.5rem; }
+  .pn-card .upload-box { margin-top: .5rem; margin-bottom: 2rem; min-height:170px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; }
+      /* Stacked, centered fields like Protect */
+      .field { max-width: 520px; margin: 1rem auto 0; text-align: left; }
+      .field label { display:block; margin:.25rem 0 .45rem; color:#444; font-weight:600; font-size:.9rem; }
+      .field input[type="text"], .field input[type="number"], .field select, .field input[type="color"] { width:100%; }
+      .pn-options { display:flex; flex-wrap:wrap; gap:1.25rem; justify-content:flex-start; max-width:520px; margin:1rem auto 0; }
+      .pn-options label { font-size:.9rem; display:flex; align-items:center; gap:.4rem; }
+      /* Position + Preview row */
+  .pos-row { display:grid; grid-template-columns: 1fr auto; align-items:start; gap:1rem; max-width:520px; margin:1.25rem auto 0; }
+      .pos-row .field { margin:0; }
+      .pn-preview { display:flex; justify-content:center; margin: 0; pointer-events:none; }
+      .pn-preview .page { position:relative; width:220px; height:300px; background:#fff; border:1px solid #e5e5e5; border-radius:6px; box-shadow:0 4px 14px rgba(0,0,0,.06) inset; overflow:hidden; }
+      .pn-preview .marker { position:absolute; color:#444; font: 600 14px/1.2 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      .pn-actions { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:1.25rem; }
+      .pn-actions .file-field { flex:2 1 320px; text-align:left; }
+      .pn-actions .file-field label { display:block; font-size:.85rem; font-weight:600; color:var(--muted); margin-bottom:.4rem; }
+      .preview-desc { font-size:.8rem; color:#777; margin-top:.75rem; max-width:640px; }
+      @media (max-width:640px){ .pn-actions{ flex-direction:column; align-items:stretch; } .pn-actions button{ width:100%; } .pos-row{ grid-template-columns:1fr; } }
+    </style>
+  </head>
+  <body>
+    <header data-include="navbar"></header>
+  <main class="feature">
+      <h2>Add Page Numbers</h2>
+      <p class="sub">Stamp page numbers (e.g. “Page 3 of 12”) on each page of your PDF. All client-side.</p>
+      <div class="card feature-enter pn-card">
+        <label class="upload-box" id="drop-zone">📄 Drop PDF or click to upload
+          <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+        </label>
+        <div class="pos-row">
+          <div class="field">
+            <label for="position">Position</label>
+            <select id="position">
+              <option value="bottom-center" selected>Bottom Center</option>
+              <option value="bottom-right">Bottom Right</option>
+              <option value="bottom-left">Bottom Left</option>
+              <option value="top-center">Top Center</option>
+              <option value="top-right">Top Right</option>
+              <option value="top-left">Top Left</option>
+            </select>
+          </div>
+          <div class="pn-preview" aria-hidden="true">
+            <div class="page">
+              <div id="mini-marker" class="marker">Page 1 of 12</div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="font-size">Font Size</label>
+          <input type="number" id="font-size" value="12" min="6" max="48" />
+        </div>
+        <div class="field">
+          <label for="color">Color</label>
+          <input type="color" id="color" value="#444444" />
+        </div>
+        <div class="field">
+          <label for="y-offset">Offset (px)</label>
+          <input type="number" id="y-offset" value="12" min="0" max="100" title="Vertical offset (px) from edge" />
+        </div>
+        <div class="pn-options">
+          <label><input type="checkbox" id="include-total" checked />Include total pages</label>
+          <label><input type="checkbox" id="bold" />Bold</label>
+          <label><input type="checkbox" id="shadow" />Shadow</label>
+        </div>
+        <div id="status" class="progress" style="margin-top:.8rem"></div>
+        <div class="pn-actions">
+          <div class="file-field">
+            <label for="output-name">Output filename</label>
+            <input type="text" id="output-name" value="numbered" placeholder="e.g., numbered" />
+          </div>
+          <button id="process" class="primary" disabled style="flex:1 1 200px">Add Numbers</button>
+          <button id="download" class="primary" style="display:none; flex:1 1 200px">Download PDF</button>
+        </div>
+  <div class="preview-desc">Live preview shows an approximate placement on a blank page. Actual PDF font metrics may vary slightly.</div>
+      </div>
+      <div class="ad-box" data-ad-slot="page-numbers-bottom">Ad Space</div>
+    </main>
+    <div data-include="footer"></div>
+    <script>
+  const fileInput = document.getElementById('file-input');
+      const dropZone = document.getElementById('drop-zone');
+      const statusText = document.getElementById('status');
+      const processBtn = document.getElementById('process');
+      const downloadBtn = document.getElementById('download');
+  const miniMarker = document.getElementById('mini-marker');
+      let srcBytes = null; let outBlob = null; let loadedDoc = null;
+
+      dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await loadFile(f); });
+      fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await loadFile(f); e.target.value=''; });
+
+      async function loadFile(f){
+        statusText.textContent='Reading PDF...'; outBlob=null; downloadBtn.style.display='none';
+        srcBytes = new Uint8Array(await f.arrayBuffer());
+        try { loadedDoc = await PDFLib.PDFDocument.load(srcBytes, { ignoreEncryption:true }); processBtn.disabled=false; statusText.textContent='Loaded '+loadedDoc.getPageCount()+' page(s). Ready.'; } catch(e){ console.error(e); statusText.textContent='Failed to read PDF.'; processBtn.disabled=true; }
+      }
+
+      function getOutputName(defaultBase){ const el=document.getElementById('output-name'); let name=(el&&el.value?el.value:'').trim()||defaultBase||'output'; name=name.replace(/[\\/:*?"<>|]/g,'-'); if(!/\.pdf$/i.test(name)) name+='.pdf'; return name; }
+
+      processBtn.addEventListener('click', async ()=>{
+        if(!loadedDoc) return; processBtn.disabled=true; statusText.textContent='Stamping page numbers...';
+        try {
+          const outDoc = await PDFLib.PDFDocument.create();
+          const pages = await outDoc.copyPages(loadedDoc, loadedDoc.getPageIndices());
+          const total = pages.length;
+          const includeTotal = document.getElementById('include-total').checked;
+          const fontSize = parseFloat(document.getElementById('font-size').value)||12;
+          const colorHex = document.getElementById('color').value || '#444444';
+          const bold = document.getElementById('bold').checked;
+          const shadow = document.getElementById('shadow').checked;
+          const pos = document.getElementById('position').value;
+          const yOffset = parseFloat(document.getElementById('y-offset').value)||12;
+          const rgb = hexToRgb(colorHex) || { r:68,g:68,b:68 };
+          const color = PDFLib.rgb(rgb.r/255, rgb.g/255, rgb.b/255);
+          const font = bold ? await outDoc.embedFont(PDFLib.StandardFonts.HelveticaBold) : await outDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+
+          pages.forEach((p, idx)=>{
+            outDoc.addPage(p);
+            const { width, height } = p.getSize();
+            const n = idx+1;
+            let text = includeTotal ? `Page ${n} of ${total}` : `Page ${n}`;
+            const textWidth = font.widthOfTextAtSize(text, fontSize);
+            let x = 0; let y = 0;
+            const isTop = pos.startsWith('top');
+            const isBottom = pos.startsWith('bottom');
+            if (pos.endsWith('center')) x = (width - textWidth)/2; else if (pos.endsWith('right')) x = width - textWidth - 16; else x = 16;
+            if (isTop) y = height - fontSize - yOffset; else if (isBottom) y = yOffset; else y = fontSize + yOffset;
+            if (shadow){
+              p.drawText(text, { x: x+0.8, y: y-0.8, size: fontSize, font, color: PDFLib.rgb(0,0,0), opacity:0.25 });
+            }
+            p.drawText(text, { x, y, size: fontSize, font, color });
+          });
+
+          const outBytes = await outDoc.save();
+          outBlob = new Blob([outBytes], { type:'application/pdf' });
+          downloadBtn.style.display='inline-block'; statusText.textContent='Done. Ready to download.';
+        } catch(e){ console.error(e); statusText.textContent='Failed to stamp numbers.'; }
+        finally { processBtn.disabled=false; }
+      });
+
+      downloadBtn.addEventListener('click', ()=>{
+        if(!outBlob) return; const url=URL.createObjectURL(outBlob); const a=document.createElement('a'); a.href=url; a.download=getOutputName('numbered'); a.click(); URL.revokeObjectURL(url);
+      });
+
+      function hexToRgb(hex){ const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex); return m?{r:parseInt(m[1],16),g:parseInt(m[2],16),b:parseInt(m[3],16)}:null; }
+
+      // Mini live preview
+      const controls = ['position','font-size','color','include-total','bold','y-offset'];
+      controls.forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        const evt = (el.tagName==='SELECT' || el.type==='checkbox')? 'change':'input';
+        el.addEventListener(evt, updatePreview);
+      });
+      updatePreview();
+
+      function updatePreview(){
+        if(!miniMarker) return;
+        const includeTotal = document.getElementById('include-total').checked;
+        const pos = document.getElementById('position').value;
+        const fontSize = parseFloat(document.getElementById('font-size').value)||12;
+        const colorHex = document.getElementById('color').value || '#444444';
+        const bold = document.getElementById('bold').checked;
+        const yOffset = parseFloat(document.getElementById('y-offset').value)||12;
+        miniMarker.textContent = includeTotal ? 'Page 1 of 12' : 'Page 1';
+        miniMarker.style.fontWeight = bold ? '700' : '600';
+        miniMarker.style.fontSize = Math.max(10, Math.min(22, fontSize)) + 'px';
+        miniMarker.style.color = colorHex;
+        const page = miniMarker.parentElement;
+        const pad = 12; // inner page padding for preview
+        // compute left based on width of marker
+        const pageRect = { w: page.clientWidth, h: page.clientHeight };
+        // temporary set to measure
+        miniMarker.style.left = '0px';
+        miniMarker.style.top = '0px';
+        const markerWidth = miniMarker.getBoundingClientRect().width;
+        let left = pad; let top = pad;
+        if(pos.endsWith('center')) left = (pageRect.w - markerWidth)/2;
+        else if (pos.endsWith('right')) left = pageRect.w - markerWidth - pad;
+        else left = pad;
+        if(pos.startsWith('top')) top = pad + yOffset;
+        else if (pos.startsWith('bottom')) top = pageRect.h - (fontSize+8) - yOffset - pad/2;
+        else top = pageRect.h/2;
+        miniMarker.style.left = left + 'px';
+        miniMarker.style.top = top + 'px';
+      }
+    </script>
+    <script src="../assets/app.js"></script>
+  </body>
+</html>

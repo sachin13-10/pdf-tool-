@@ -16,7 +16,10 @@
       rel="stylesheet"
     />
 
-    <!-- Styles -->
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="./assets/styles.css" />
+
+    <!-- Page Styles (kept minimal for main layout) -->
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -24,26 +27,6 @@
         margin: 0;
         padding: 0;
         color: #111;
-      }
-
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-        border-bottom: 1px solid #eee;
-      }
-
-      header h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-
-      header nav a {
-        margin-left: 1.5rem;
-        text-decoration: none;
-        color: #111;
-        font-weight: 500;
       }
 
       main {
@@ -120,27 +103,10 @@
         font-weight: 500;
       }
 
-      footer {
-        text-align: center;
-        color: #777;
-        padding: 2rem;
-        font-size: 0.9rem;
-        border-top: 1px solid #eee;
-        margin-top: 3rem;
-      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>EDITMYPDFS<span style="font-weight: 400">.com</span></h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="terms.html">Terms</a>
-        <a href="about.html#contact">Contact</a>
-      </nav>
-    </header>
+    <header data-include="navbar"></header>
 
     <main>
       <h2>Edit Your PDFs For Free</h2>
@@ -236,124 +202,84 @@
           <h3>Unlock PDF</h3>
           <p>Remove password protection</p>
         </a>
+
+        <a
+          class="tool"
+          href="features/rotate.html"
+          aria-label="Rotate PDF - Rotate pages clockwise or counterclockwise"
+        >
+          <div class="tool-icon">🔄</div>
+          <h3>Rotate PDF</h3>
+          <p>Rotate pages 90° / 180°</p>
+        </a>
+
+        <a
+          class="tool"
+          href="features/watermark.html"
+          aria-label="Watermark PDF - Add text watermark to each page"
+        >
+          <div class="tool-icon">💧</div>
+          <h3>Watermark PDF</h3>
+          <p>Add a translucent text mark</p>
+        </a>
+
+        <a
+          class="tool"
+          href="features/extract-images.html"
+          aria-label="Extract Images - Pull raster images out of a PDF"
+        >
+          <div class="tool-icon">🧲</div>
+          <h3>Extract Images</h3>
+          <p>Export embedded images</p>
+        </a>
+
+        <a
+          class="tool"
+          href="features/pdf-to-images.html"
+          aria-label="PDF to Images - Render each page to PNG/JPEG"
+        >
+          <div class="tool-icon">🖨️</div>
+          <h3>PDF to Images</h3>
+          <p>Convert pages to pictures</p>
+        </a>
+
+        <a
+          class="tool"
+          href="features/reorder.html"
+          aria-label="Reorder Pages - Drag to change page order"
+        >
+          <div class="tool-icon">🔀</div>
+          <h3>Reorder Pages</h3>
+          <p>Drag & re‑sequence pages</p>
+        </a>
+
+        <a
+          class="tool"
+          href="features/page-numbers.html"
+          aria-label="Add Page Numbers - Stamp page numbers on each page"
+        >
+          <div class="tool-icon">#️⃣</div>
+          <h3>Page Numbers</h3>
+          <p>Stamp page counts</p>
+        </a>
+
+        <a
+          class="tool"
+          href="features/ocr.html"
+          aria-label="OCR PDF - Recognize text in scanned pages (experimental)"
+        >
+          <div class="tool-icon">🔍</div>
+          <h3>OCR (Beta)</h3>
+          <p>Recognize scanned text</p>
+        </a>
       </div>
 
-      <!-- Ad placeholder -->
-      <div class="ad-banner">AD</div>
+      <!-- Ad placeholder (auto-converted when AdSense client configured) -->
+      <div class="ad-banner" data-ad-slot="index-top">AD</div>
     </main>
+    <div data-include="footer"></div>
 
-    <footer>© 2025 EditMyPDFs.com — Free Online PDF Tools</footer>
-
-    <!-- Cookie consent (minimal) -->
-    <div
-      id="cookie-consent"
-      style="
-        display: none;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1000;
-        background: #111;
-        color: #fff;
-        padding: 12px 16px;
-        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-      "
-    >
-      <span style="font-size: 14px">
-        We use cookies for ads and measurement. See our
-        <a
-          href="privacy.html"
-          style="color: #93c5fd; text-decoration: underline"
-          >Privacy Policy</a
-        >.
-      </span>
-      <button
-        data-accept
-        style="
-          background: #22c55e;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          padding: 8px 12px;
-          font-weight: 600;
-          cursor: pointer;
-        "
-      >
-        Accept
-      </button>
-    </div>
-    <script>
-      (function () {
-        var bar = document.getElementById("cookie-consent");
-        try {
-          if (localStorage.getItem("cookieConsent") === "accepted") {
-            if (bar) bar.style.display = "none";
-            return;
-          }
-        } catch (e) {}
-        if (!bar) return;
-        bar.style.display = "flex";
-        var btn = bar.querySelector("button[data-accept]");
-        if (btn)
-          btn.addEventListener("click", function () {
-            try {
-              localStorage.setItem("cookieConsent", "accepted");
-            } catch (e) {}
-            bar.remove();
-          });
-      })();
-    </script>
-    <!-- Suppress local banner and load Funding Choices CMP when configured -->
-    <script>
-      (function () {
-        function loadFundingChoices(id) {
-          var bar = document.getElementById("cookie-consent");
-          if (bar) bar.remove();
-          var s = document.createElement("script");
-          s.async = true;
-          s.crossOrigin = "anonymous";
-          s.src =
-            "https://fundingchoicesmessages.google.com/i/" +
-            encodeURIComponent(id);
-          document.head.appendChild(s);
-        }
-        var meta = document.querySelector('meta[name="fc-id"]');
-        var id =
-          (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-          (meta && (meta.content || "").trim());
-        if (id && !/^REPLACE_/i.test(id)) {
-          loadFundingChoices(id);
-          return;
-        }
-        // Optionally load centralized ID from vendor/cmp-id.js if present
-        var base =
-          location.pathname.indexOf("/features/") !== -1
-            ? "../vendor/"
-            : "./vendor/";
-        var tagId = "cmp-id-loader";
-        if (!document.getElementById(tagId)) {
-          var t = document.createElement("script");
-          t.id = tagId;
-          t.async = true;
-          t.src = base + "cmp-id.js";
-          t.onload = function () {
-            var id2 =
-              (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-              (meta && (meta.content || "").trim());
-            if (id2 && !/^REPLACE_/i.test(id2)) loadFundingChoices(id2);
-          };
-          t.onerror = function () {
-            /* ignore missing file */
-          };
-          document.head.appendChild(t);
-        }
-      })();
-    </script>
+    <!-- App bootstrap (injects navbar/footer, cookie banner, optional ads) -->
+    <script src="./assets/app.js"></script>
   </body>
 </html>

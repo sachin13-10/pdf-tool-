@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+    <title>Rotate PDF - EditMyPDFs.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <style>
+      body { font-family: 'Inter', sans-serif; margin:0; background:#fff; color:#111; }
+      main { max-width:760px; margin:3rem auto; padding:1rem; text-align:center; }
+      h2 { font-size:2rem; margin:.5rem 0 1rem; }
+      p.sub { color:#555; margin-top:0; }
+      .card { border:1px solid #eee; border-radius:16px; padding:2rem; box-shadow:0 2px 6px rgba(0,0,0,.05); text-align:left; }
+      .upload-box { border:2px dashed #ccc; border-radius:12px; padding:2rem; cursor:pointer; transition:.25s; text-align:center; }
+      .upload-box:hover { background:#f8faff; }
+      .upload-box.dragover { border-color:#e53935; background:#fff; }
+      label,input,select,button { display:block; margin:.75rem auto; font-size:1rem; }
+      input[type=text] { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:240px; }
+      select { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:240px; }
+      button { background:linear-gradient(90deg,#e53935,#c62828); color:#fff; border:none; border-radius:10px; padding:.85rem 1.6rem; font-weight:600; cursor:pointer; transition:.3s; }
+      button:hover { opacity:.9; }
+      .file-info { margin-top:.5rem; color:#333; font-weight:500; font-size:.95rem; }
+      .pages-preview { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
+  .page-thumb { position:relative; width:110px; height:140px; background:#fafafa; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.9rem; font-weight:600; color:#555; cursor:pointer; transition:.25s; overflow:hidden; }
+  .page-thumb:hover { background:#ffe5e5; border-color:#e53935; }
+      .page-thumb.active { outline:2px solid #e53935; outline-offset:2px; background:#fff; }
+  .page-thumb canvas { max-width:100%; max-height:100%; transition: transform .2s ease; }
+  .thumb-tools { position:absolute; left:4px; right:4px; bottom:4px; display:flex; gap:4px; justify-content:center; }
+  .thumb-tools button { background:rgba(17,17,17,.8); color:#fff; border:1px solid rgba(255,255,255,.25); padding:4px 6px; border-radius:8px; font-size:.8rem; }
+  .thumb-tools button:hover { background:rgba(17,17,17,.95); }
+      .actions-row { display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; margin-top:1rem; }
+      .actions-row button { flex:1 1 140px; }
+      .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
+      .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+    </style>
+  </head>
+  <body>
+    <header data-include="navbar"></header>
+  <main class="feature">
+      <h2>Rotate PDF</h2>
+      <p class="sub">Upload a PDF, select pages, then rotate clockwise or counter‑clockwise. All done privately in your browser.</p>
+      <div class="card">
+        <label class="upload-box" id="drop-zone">📄 Drop your PDF here or click to upload
+          <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+        </label>
+        <div id="file-info" class="file-info"></div>
+        <div class="pages-preview" id="pages"></div>
+        <div class="actions-row">
+          <button id="rotate-left" disabled title="Rotate selected pages 90° counter-clockwise">⟲ 90° Left</button>
+          <button id="rotate-right" disabled title="Rotate selected pages 90° clockwise">⟳ 90° Right</button>
+          <button id="rotate-180" disabled title="Rotate selected pages 180°">⇵ 180°</button>
+        </div>
+        <label for="output-name">Output filename</label>
+        <input type="text" id="output-name" value="rotated" placeholder="e.g., rotated" />
+        <button id="download-btn" style="display:none">Download Rotated PDF</button>
+        <div id="status" class="progress"></div>
+      </div>
+      <div class="ad-box" data-ad-slot="rotate-bottom">Ad Space</div>
+    </main>
+    <div data-include="footer"></div>
+    <script>
+      const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
+      if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+      }
+
+      const fileInput = document.getElementById('file-input');
+      const dropZone = document.getElementById('drop-zone');
+      const pagesWrap = document.getElementById('pages');
+      const statusText = document.getElementById('status');
+      const rotateLeftBtn = document.getElementById('rotate-left');
+      const rotateRightBtn = document.getElementById('rotate-right');
+      const rotate180Btn = document.getElementById('rotate-180');
+      const downloadBtn = document.getElementById('download-btn');
+      let originalBytes = null; let loadedDoc = null; let selected = new Set(); let outBlob = null;
+      let rotations = []; // per-page rotation in degrees (0/90/180/270)
+      let thumbCanvases = []; // per-page thumbnail canvas for live preview
+
+      dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', async e => { e.preventDefault(); dropZone.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f) await loadFile(f); });
+      fileInput.addEventListener('change', async e => { const f = e.target.files[0]; if (f) await loadFile(f); e.target.value=''; });
+
+  function enableActions(){ const disabled = selected.size === 0; rotateLeftBtn.disabled = disabled; rotateRightBtn.disabled = disabled; rotate180Btn.disabled = disabled; }
+      function clearOutput(){ downloadBtn.style.display='none'; outBlob=null; }
+
+      async function loadFile(file){
+        clearOutput();
+        statusText.textContent='Reading PDF...';
+        try {
+          originalBytes = new Uint8Array(await file.arrayBuffer());
+          loadedDoc = await PDFLib.PDFDocument.load(originalBytes, { ignoreEncryption:true });
+          const pageCount = loadedDoc.getPageCount();
+          pagesWrap.innerHTML=''; selected.clear(); enableActions(); rotations = new Array(pageCount).fill(0); thumbCanvases = new Array(pageCount).fill(null);
+
+          // Render thumbnails with pdf.js so user can see pages
+          const task = pdfjsLib.getDocument({ data: originalBytes });
+          const pdf = await task.promise;
+          for(let i=0;i<pageCount;i++){
+            const div = document.createElement('div');
+            div.className='page-thumb';
+            div.dataset.index = i;
+
+            // Canvas preview
+            const canvas = document.createElement('canvas');
+            canvas.style.pointerEvents = 'none';
+            div.appendChild(canvas);
+
+            // Per-thumb rotate controls
+            const tools = document.createElement('div');
+            tools.className = 'thumb-tools';
+            tools.innerHTML = '<button data-act="l" title="Rotate 90° left">⟲</button><button data-act="r" title="Rotate 90° right">⟳</button><button data-act="u" title="Rotate 180°">⇵</button>';
+            div.appendChild(tools);
+
+            // Selection toggle (click on empty area)
+            div.addEventListener('click', (ev) => {
+              if ((ev.target instanceof HTMLButtonElement)) return; // buttons handled below
+              if (selected.has(i)) { selected.delete(i); div.classList.remove('active'); }
+              else { selected.add(i); div.classList.add('active'); }
+              enableActions(); clearOutput();
+            });
+            tools.addEventListener('click', (ev)=>{
+              const btn = ev.target; if (!(btn instanceof HTMLButtonElement)) return; ev.stopPropagation();
+              if (btn.dataset.act === 'l') applyLocalRotation(i, -90);
+              else if (btn.dataset.act === 'r') applyLocalRotation(i, 90);
+              else if (btn.dataset.act === 'u') applyLocalRotation(i, 180);
+            });
+
+            pagesWrap.appendChild(div);
+            thumbCanvases[i] = canvas;
+
+            // Render this page thumbnail
+            const page = await pdf.getPage(i+1);
+            const vp = page.getViewport({ scale: 1 });
+            const targetW = 100; // px
+            const scale = Math.max(0.15, Math.min(1.5, targetW / vp.width));
+            const vps = page.getViewport({ scale });
+            canvas.width = Math.floor(vps.width);
+            canvas.height = Math.floor(vps.height);
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport: vps }).promise;
+          }
+          statusText.textContent = 'Loaded ' + pageCount + ' page(s). Select pages or use per-page buttons to rotate.';
+        } catch(e){
+          console.error(e); statusText.textContent='Failed to read PDF.';
+        }
+      }
+
+      function getOutputName(defaultBase){
+        const el = document.getElementById('output-name');
+        let name = (el && el.value ? el.value : '').trim() || defaultBase || 'output';
+        name = name.replace(/[\\/:*?"<>|]/g,'-');
+        if (!/\.pdf$/i.test(name)) name += '.pdf';
+        return name;
+      }
+
+      function applyLocalRotation(index, deg){
+        if (!loadedDoc) return;
+        rotations[index] = ( (rotations[index]||0) + deg + 360 ) % 360;
+        const cnv = thumbCanvases[index];
+        if (cnv){ cnv.style.transform = `rotate(${rotations[index]}deg)`; }
+        statusText.textContent = `Page ${index+1} rotated by ${Math.abs(deg)}° ${deg<0?'left':'right'}.`;
+        downloadBtn.style.display='inline-block';
+      }
+
+      function applyRotationToSelected(deg){
+        if (!loadedDoc || selected.size===0) return;
+        selected.forEach(i => applyLocalRotation(i, deg));
+        const count = selected.size;
+        statusText.textContent = `Rotated ${count} page(s) by ${Math.abs(deg)}° ${deg<0?'left':'right'}.`;
+      }
+
+      // Click on thumbnail itself rotates 90° right for quick action
+      pagesWrap.addEventListener('dblclick', (e)=>{
+        const div = e.target.closest && e.target.closest('.page-thumb');
+        if (!div) return; const i = parseInt(div.dataset.index,10); if (Number.isInteger(i)) applyLocalRotation(i, 90);
+      });
+
+      rotateLeftBtn.addEventListener('click', () => applyRotationToSelected(-90));
+      rotateRightBtn.addEventListener('click', () => applyRotationToSelected(90));
+      rotate180Btn.addEventListener('click', () => applyRotationToSelected(180));
+      downloadBtn.addEventListener('click', async () => {
+        if (!loadedDoc) return;
+        statusText.textContent = 'Building rotated PDF...';
+        try {
+          const outDoc = await PDFLib.PDFDocument.create();
+          const total = loadedDoc.getPageCount();
+          const pages = await outDoc.copyPages(loadedDoc, Array.from({length:total}, (_,i)=>i));
+          pages.forEach((p,i)=>{
+            const base = p.getRotation().angle || 0;
+            const add = rotations[i] || 0;
+            p.setRotation(PDFLib.degrees((base + add) % 360));
+            outDoc.addPage(p);
+          });
+          const outBytes = await outDoc.save();
+          outBlob = new Blob([outBytes], { type:'application/pdf' });
+          const url = URL.createObjectURL(outBlob);
+          const a=document.createElement('a'); a.href=url; a.download=getOutputName('rotated'); a.click(); URL.revokeObjectURL(url);
+          statusText.textContent = 'Downloaded rotated PDF successfully.';
+        } catch(e){ console.error(e); statusText.textContent='Failed to build rotated PDF.'; }
+      });
+    </script>
+    <script src="../assets/app.js"></script>
+  </body>
+</html>

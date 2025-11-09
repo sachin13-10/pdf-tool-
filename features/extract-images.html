@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+    <title>Extract Images - EditMyPDFs.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+      main.feature { max-width: 820px; }
+      .extract-card { max-width:760px; margin:0 auto; padding:2.5rem; }
+      .extract-card .upload-box { margin-top:.5rem; margin-bottom:1.5rem; min-height:160px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; }
+      .images-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:1rem; margin-top:1.25rem; }
+      .img-item { position:relative; background:#fafafa; border:1px solid #eee; border-radius:12px; padding:.5rem; box-shadow:0 1px 4px rgba(0,0,0,.06); animation:fadeIn .5s ease; }
+      .img-item canvas, .img-item img { width:100%; height:auto; display:block; border-radius:8px; }
+      .img-meta { font-size:.7rem; color:#555; margin-top:.35rem; line-height:1.1; }
+      .select-toggle { position:absolute; top:6px; right:6px; background:rgba(0,0,0,.55); color:#fff; border:none; border-radius:8px; padding:4px 6px; font-size:.65rem; cursor:pointer; }
+      .img-item.selected { outline:2px solid var(--accent); outline-offset:2px; }
+      .actions-row { display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; margin-top:1.25rem; }
+      .actions-row button { flex:1 1 220px; }
+      @media (max-width:640px){ .actions-row button{ width:100%; } }
+      .hint { font-size:.8rem; color:#777; margin-top:.5rem; }
+    </style>
+  </head>
+  <body>
+    <header data-include="navbar"></header>
+  <main class="feature">
+      <h2>Extract Images</h2>
+      <p class="sub">Pull embedded raster images from your PDF pages. Processing is 100% local.</p>
+      <div class="card feature-enter extract-card">
+        <label class="upload-box" id="drop-zone">📄 Drop PDF or click to upload
+          <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+        </label>
+        <div class="controls">
+          <select id="format">
+            <option value="png" selected>PNG</option>
+            <option value="jpeg">JPEG</option>
+          </select>
+          <select id="scale">
+            <option value="1">Scale 1x</option>
+            <option value="1.5" selected>Scale 1.5x</option>
+            <option value="2">Scale 2x</option>
+          </select>
+        </div>
+        <div id="status" class="progress"></div>
+        <div class="hint">Note: Some PDFs embed vector graphics instead of raster images; only raster XObjects are extractable here.</div>
+        <div id="images" class="images-grid"></div>
+        <div class="actions-row">
+          <button id="download-selected" class="primary" disabled>Download Selected</button>
+          <button id="download-zip" class="primary" disabled>Download All ZIP</button>
+        </div>
+      </div>
+      <div class="ad-box" data-ad-slot="extract-images-bottom">Ad Space</div>
+    </main>
+    <div data-include="footer"></div>
+    <script>
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const imagesGrid = document.getElementById('images');
+      const statusText = document.getElementById('status');
+      const dlSelBtn = document.getElementById('download-selected');
+      const dlZipBtn = document.getElementById('download-zip');
+      const fmtSel = document.getElementById('format');
+      const scaleSel = document.getElementById('scale');
+      let extracted = []; // {name, dataUrl, selected}
+
+      dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await processPDF(f); });
+      fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await processPDF(f); e.target.value=''; });
+
+      function reset(){ extracted=[]; imagesGrid.innerHTML=''; dlSelBtn.disabled=true; dlZipBtn.disabled=true; statusText.textContent=''; }
+      function updateButtons(){ dlSelBtn.disabled = !extracted.some(x=>x.selected); dlZipBtn.disabled = !extracted.length; }
+
+      async function processPDF(file){
+        reset(); statusText.textContent='Loading PDF...';
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+        statusText.textContent='Scanning pages for images...';
+        for (let pageNum=1; pageNum<=pdf.numPages; pageNum++){
+          const page = await pdf.getPage(pageNum);
+          // Render page (we rely on operatorList image paints referencing image objects)
+          const viewport = page.getViewport({ scale: parseFloat(scaleSel.value)||1.5 });
+          const opList = await page.getOperatorList();
+          const imageNames = new Set();
+          const OPS = pdfjsLib.OPS;
+          for (let i=0;i<opList.fnArray.length;i++){
+            const fn = opList.fnArray[i];
+            const args = opList.argsArray[i];
+            if (fn === OPS.paintImageXObject || fn === OPS.paintImageXObjectRepeat || fn === OPS.paintJpegXObject){
+              if (args && args[0]) imageNames.add(args[0]);
+            }
+          }
+          // Need to render to ensure image objs populated
+          await page.render({ canvasContext: document.createElement('canvas').getContext('2d'), viewport }).promise;
+          imageNames.forEach(name => {
+            const imgObj = page.objs.get(name); // pdf.js internal caching
+            if (!imgObj || !imgObj.data) return;
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = imgObj.width; canvas.height = imgObj.height;
+              const ctx = canvas.getContext('2d');
+              const imageData = ctx.createImageData(imgObj.width, imgObj.height);
+              imageData.data.set(imgObj.data);
+              ctx.putImageData(imageData,0,0);
+              const format = fmtSel.value === 'jpeg' ? 'image/jpeg' : 'image/png';
+              const dataUrl = canvas.toDataURL(format, 0.92);
+              const item = { name: `p${pageNum}-${name}.${fmtSel.value==='jpeg'?'jpg':'png'}`, dataUrl, selected:false };
+              extracted.push(item);
+              const div = document.createElement('div');
+              div.className='img-item';
+              const imgtag = document.createElement('img');
+              imgtag.src = dataUrl; imgtag.alt = item.name;
+              const meta = document.createElement('div'); meta.className='img-meta'; meta.textContent = `${item.name}\n${imgObj.width}x${imgObj.height}`;
+              const toggle = document.createElement('button'); toggle.className='select-toggle'; toggle.textContent='Pick';
+              toggle.addEventListener('click', ()=>{ item.selected = !item.selected; div.classList.toggle('selected', item.selected); toggle.textContent = item.selected? '✓' : 'Pick'; updateButtons(); });
+              div.appendChild(imgtag); div.appendChild(meta); div.appendChild(toggle); imagesGrid.appendChild(div);
+            } catch(e){ /* ignore extraction failure */ }
+          });
+          statusText.textContent = `Page ${pageNum}/${pdf.numPages} scanned. Total images: ${extracted.length}`;
+        }
+        if (!extracted.length){ statusText.textContent += ' — No raster images found.'; }
+        updateButtons();
+      }
+
+      dlSelBtn.addEventListener('click', ()=>{
+        extracted.filter(x=>x.selected).forEach(x=> triggerDownload(x.dataUrl, x.name));
+      });
+
+      dlZipBtn.addEventListener('click', async ()=>{
+        if (!extracted.length) return;
+        statusText.textContent='Preparing ZIP...';
+        const zip = new JSZip();
+        extracted.forEach(x=> zip.file(x.name, x.dataUrl.split(',')[1], { base64:true }));
+        const blob = await zip.generateAsync({ type:'blob' });
+        triggerBlobDownload(blob, 'extracted-images.zip');
+        statusText.textContent='ZIP downloaded.';
+      });
+
+      function triggerDownload(dataUrl, filename){
+        const a = document.createElement('a'); a.href=dataUrl; a.download=filename; a.click(); }
+      function triggerBlobDownload(blob, filename){ const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; a.click(); URL.revokeObjectURL(url); }
+    </script>
+    <script src="../assets/app.js"></script>
+  </body>
+</html>

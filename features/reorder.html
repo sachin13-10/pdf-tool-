@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+  <title>Reorder Pages - EditMyPDFs.com</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <style>
+    body { font-family:Inter,sans-serif; margin:0; background:#fff; color:#111; }
+    main { max-width:860px; margin:3rem auto; padding:1rem; text-align:center; }
+    h2 { font-size:2rem; margin:.5rem 0 1rem; }
+    p.sub { color:#555; }
+    .card { border:1px solid #eee; border-radius:16px; padding:2rem; box-shadow:0 2px 6px rgba(0,0,0,.05); text-align:left; }
+    .upload-box { border:2px dashed #ccc; border-radius:12px; padding:2rem; cursor:pointer; transition:.25s; text-align:center; }
+    .upload-box:hover { background:#f8faff; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:.75rem; margin-top:1rem; }
+  .thumb { position:relative; border:1px solid #ddd; border-radius:8px; padding:.5rem .5rem .75rem; background:#fff; cursor:move; user-select:none; box-shadow:0 2px 6px rgba(0,0,0,.05); display:flex; flex-direction:column; gap:.4rem; }
+  .thumb.dragging { opacity:.5; }
+  .thumb canvas { width:100%; height:auto; border:1px solid #eee; border-radius:6px; background:#fff; }
+  .thumb .pg-label { font-size:.7rem; font-weight:600; color:#555; text-align:center; letter-spacing:.5px; }
+  .thumb:hover { border-color:#e53935; }
+  .thumb.drag-over { outline:2px dashed #e53935; outline-offset:2px; }
+    .thumb.dragging { opacity:.5; }
+    label,input,button { display:block; margin:.75rem auto; font-size:1rem; }
+    input[type=text] { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:260px; }
+    button { background:linear-gradient(90deg,#e53935,#c62828); color:#fff; border:none; border-radius:10px; padding:.85rem 1.6rem; font-weight:600; cursor:pointer; }
+    button:hover { opacity:.9; }
+    .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
+    .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+  </style>
+</head>
+<body>
+  <header data-include="navbar"></header>
+  <main class="feature">
+    <h2>Reorder Pages</h2>
+    <p class="sub">Drag the thumbnails to change the order, then download a new PDF.</p>
+    <div class="card">
+      <label class="upload-box" id="drop-zone">📄 Drop your PDF or click to upload
+        <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+      </label>
+      <div id="grid" class="grid"></div>
+      <label for="output-name">Output filename</label>
+      <input id="output-name" type="text" value="reordered" />
+      <button id="download-btn" style="display:none">Download PDF</button>
+      <div id="status" class="progress"></div>
+    </div>
+    <div class="ad-box" data-ad-slot="reorder-bottom">Ad Space</div>
+  </main>
+  <div data-include="footer"></div>
+  <script>
+  const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
+  if (pdfjsLib && pdfjsLib.GlobalWorkerOptions){ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js'; }
+
+  const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const grid = document.getElementById('grid');
+    const statusText = document.getElementById('status');
+    const downloadBtn = document.getElementById('download-btn');
+    let srcDoc = null; let order = [];
+
+    dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await loadFile(f); });
+    fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await loadFile(f); e.target.value=''; });
+
+    async function loadFile(file){
+      statusText.textContent='Reading PDF...'; downloadBtn.style.display='none'; grid.innerHTML='';
+      try {
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        // Keep original pdf-lib doc for final export copy
+        srcDoc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true });
+        // Use pdf.js for thumbnails (higher fidelity if complex content)
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+        const n = pdf.numPages; order = Array.from({length:n}, (_,i)=>i);
+        await renderThumbs(pdf); statusText.textContent='Loaded '+n+' page(s). Drag thumbnails to reorder.';
+      } catch(e){ console.error(e); statusText.textContent='Failed to read PDF.'; }
+    }
+
+    async function renderThumbs(pdf){
+      grid.innerHTML='';
+      // Render sequentially to avoid heavy parallel CPU usage
+      for (let i=0;i<order.length;i++){
+        const pageIndex = order[i];
+        const div = document.createElement('div');
+        div.className='thumb';
+        div.draggable=true; div.dataset.index = String(i);
+        const label = document.createElement('div'); label.className='pg-label'; label.textContent = 'Page '+(pageIndex+1);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        // Render page thumbnail
+        try {
+          const page = await pdf.getPage(pageIndex+1);
+          const vp1 = page.getViewport({ scale: 1 });
+          const targetW = 120;
+          const scale = Math.max(0.15, Math.min(1.2, targetW / vp1.width));
+          const vp = page.getViewport({ scale });
+          canvas.width = Math.floor(vp.width);
+          canvas.height = Math.floor(vp.height);
+          await page.render({ canvasContext: ctx, viewport: vp }).promise;
+        } catch(err){
+          ctx.fillStyle='#f5f5f5'; ctx.fillRect(0,0,120,160); ctx.fillStyle='#999'; ctx.font='12px sans-serif'; ctx.fillText('Render error',10,50);
+        }
+        div.appendChild(canvas);
+        div.appendChild(label);
+
+        div.addEventListener('dragstart', e=>{ div.classList.add('dragging'); e.dataTransfer.setData('text/plain', i); });
+        div.addEventListener('dragend', ()=> div.classList.remove('dragging'));
+        div.addEventListener('dragenter', e=>{ e.preventDefault(); div.classList.add('drag-over'); });
+        div.addEventListener('dragleave', ()=> div.classList.remove('drag-over'));
+        div.addEventListener('dragover', e=> e.preventDefault());
+        div.addEventListener('drop', e=>{ e.preventDefault(); div.classList.remove('drag-over'); const from = parseInt(e.dataTransfer.getData('text/plain'),10); const to = i; move(from,to); });
+        grid.appendChild(div);
+      }
+    }
+
+    async function move(from, to){
+      if (from===to) return;
+      const [item] = order.splice(from,1);
+      order.splice(to,0,item);
+      try {
+        // Re-render with new order using cached srcDoc bytes via pdf.js again
+        const pdfBytes = await srcDoc.save();
+        const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+        await renderThumbs(pdf);
+      } catch(e){ console.error(e); }
+      downloadBtn.style.display='inline-block';
+      statusText.textContent='Order updated.';
+    }
+
+    function getOutputName(def){ const el=document.getElementById('output-name'); let name=(el&&el.value?el.value:'').trim()||def||'output'; name=name.replace(/[\\/:*?"<>|]/g,'-'); if(!/\.pdf$/i.test(name)) name+='.pdf'; return name; }
+
+    async function buildPDF(){
+      if(!srcDoc) return; statusText.textContent='Rebuilding PDF...';
+      try {
+        const outDoc = await PDFLib.PDFDocument.create();
+        const pages = await outDoc.copyPages(srcDoc, order);
+        pages.forEach(p => outDoc.addPage(p));
+        const outBytes = await outDoc.save();
+        const blob = new Blob([outBytes], { type:'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download=getOutputName('reordered'); a.click(); URL.revokeObjectURL(url);
+        statusText.textContent='Downloaded.';
+      } catch(e){ console.error(e); statusText.textContent='Failed.'; }
+    }
+
+    downloadBtn.addEventListener('click', buildPDF);
+    grid.addEventListener('dragover', e=> e.preventDefault());
+    grid.addEventListener('drop', e=> e.preventDefault());
+
+    // Show download button when user reorders at least once
+  grid.addEventListener('drop', ()=>{ if(srcDoc) downloadBtn.style.display='inline-block'; });
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

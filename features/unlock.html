@@ -6,149 +6,26 @@
     <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
     <title>Unlock PDF - EditMyPDFs.com</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-
     <style>
-      body {
-        font-family: "Inter", sans-serif;
-        background: #fff;
-        color: #111;
-        margin: 0;
-        padding: 0;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-        border-bottom: 1px solid #eee;
-      }
-      header h1 {
-        font-size: 1.4rem;
-        font-weight: 700;
-      }
-      header nav a {
-        margin-left: 1.5rem;
-        text-decoration: none;
-        color: #111;
-        font-weight: 500;
-      }
-      main {
-        max-width: 700px;
-        margin: 3rem auto;
-        padding: 1rem;
-        text-align: center;
-      }
-      h2 {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-      }
-      p.sub {
-        color: #555;
-        margin-bottom: 2rem;
-      }
-      .compress-card {
-        border: 1px solid #eee;
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      }
-      label,
-      input,
-      button {
-        display: block;
-        margin: 0.75rem auto;
-        font-size: 1rem;
-      }
-      input[type="password"],
-      input[type="text"] {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 0.6rem 0.9rem;
-        width: 260px;
-        text-align: center;
-      }
-      button {
-        background: linear-gradient(90deg, #6366f1, #2563eb);
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        padding: 0.9rem 1.8rem;
-        font-weight: 600;
-        margin-top: 1rem;
-        cursor: pointer;
-        transition: opacity 0.3s;
-      }
-      button:hover {
-        opacity: 0.9;
-      }
-      .upload-box {
-        border: 2px dashed #ccc;
-        border-radius: 12px;
-        padding: 2rem;
-        margin-top: 1.5rem;
-        transition: all 0.2s ease;
-        cursor: pointer;
-      }
-      .upload-box:hover {
-        background: #f8faff;
-      }
-      .upload-box.dragover {
-        border-color: #2563eb;
-        background: #f8faff;
-      }
-      .file-info {
-        margin-top: 1rem;
-        color: #333;
-        font-weight: 500;
-        font-size: 0.95rem;
-      }
-      .progress {
-        margin-top: 1rem;
-        color: #555;
-        min-height: 1.4rem;
-      }
-      .ad-box {
-        margin-top: 3rem;
-        height: 90px;
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #999;
-        font-weight: 500;
-      }
-      footer {
-        text-align: center;
-        padding: 2rem;
-        color: #777;
-        font-size: 0.9rem;
-        border-top: 1px solid #eee;
-        margin-top: 3rem;
-      }
+      /* Minimal, aligned layout mirroring Password Protect */
+      .unlock-card { max-width: 760px; margin: 0 auto; padding: 2.5rem; }
+      .unlock-card .upload-box { margin-top: .6rem; margin-bottom: 1.4rem; min-height:160px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; }
+      .field { max-width: 520px; margin: 1.1rem auto 0; text-align: left; }
+      .field label { display:block; margin:.25rem 0 .45rem; color:#444; font-weight:600; }
+      .field input { width:100%; }
+      .actions { display:flex; justify-content:center; gap:.9rem; flex-wrap:wrap; margin-top:1.25rem; }
+      .file-info { margin-top: .5rem; color:#333; font-weight:500; font-size:.95rem; min-height:1.1rem; }
     </style>
   </head>
   <body>
-    <header>
-      <h1>EDITMYPDFS<span style="font-weight: 400">.com</span></h1>
-      <nav>
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About</a>
-        <a href="../privacy.html">Privacy</a>
-        <a href="../terms.html">Terms</a>
-        <a href="../about.html#contact">Contact</a>
-      </nav>
-    </header>
+    <header data-include="navbar"></header>
 
-    <main>
+  <main class="feature">
       <h2>Unlock PDF</h2>
       <p class="sub">
         Remove password protection (processing happens entirely in your
@@ -156,7 +33,7 @@
         modify.
       </p>
 
-      <div class="compress-card">
+      <div class="card feature-enter unlock-card">
         <label class="upload-box" id="drop-zone">
           📄 Drop your PDF here or click to upload
           <input
@@ -169,32 +46,40 @@
 
         <div id="file-info" class="file-info"></div>
 
-        <label for="password">Password (if required)</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter password if prompted"
-        />
+        <div class="field">
+          <label for="password">Password (if required)</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password if prompted"
+          />
+        </div>
 
-        <label for="output-name">Output filename</label>
-        <input
-          type="text"
-          id="output-name"
-          placeholder="e.g., unlocked"
-          value="unlocked"
-        />
+        <div class="field">
+          <label for="output-name">Output filename</label>
+          <input
+            type="text"
+            id="output-name"
+            placeholder="e.g., unlocked"
+            value="unlocked"
+          />
+        </div>
 
-        <button id="unlock-btn" disabled>Unlock PDF</button>
+        <div class="actions">
+          <button id="unlock-btn" class="primary" disabled>Unlock PDF</button>
+        </div>
         <div id="status" class="progress"></div>
-        <button id="download-btn" style="display: none">
-          Download Unlocked PDF
-        </button>
+        <div class="actions">
+          <button id="download-btn" class="primary" style="display: none">
+            Download Unlocked PDF
+          </button>
+        </div>
       </div>
 
-      <div class="ad-box">Ad Space</div>
+      <div class="ad-box" data-ad-slot="unlock-bottom">Ad Space</div>
     </main>
 
-    <footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
+    <div data-include="footer"></div>
 
     <script>
       const pdfjsLib = window["pdfjs-dist/build/pdf"];
@@ -254,16 +139,9 @@
       }
 
       async function renderToImagesWithPassword(bytes, password) {
-        const task = pdfjsLib.getDocument({
-          data: bytes,
-          password: password || undefined,
-        });
-        // Provide a simple onPassword handler if pdf.js needs it
-        task.onPassword = (updatePassword, reason) => {
-          const pass = passwordInput.value || prompt("Enter PDF password");
-          updatePassword(pass || "");
-        };
-        const pdf = await task.promise;
+        // Attempt to open with provided password. If wrong/missing, will throw PasswordException.
+        const task = pdfjsLib.getDocument({ data: bytes, password: password || undefined });
+        const pdf = await task.promise; // will reject on incorrect password
         const pages = [];
         for (let i = 1; i <= pdf.numPages; i++) {
           const page = await pdf.getPage(i);
@@ -341,18 +219,26 @@
           // 2) Fallback: open with password via pdf.js, rasterize pages, rebuild unencrypted PDF
           statusText.textContent =
             "Encrypted PDF detected. Rendering pages (this may take a moment)...";
-          const pages = await renderToImagesWithPassword(
-            srcBytes,
-            passwordInput.value || undefined
-          );
+          const enteredPassword = passwordInput.value || undefined;
+          const pages = await renderToImagesWithPassword(srcBytes, enteredPassword);
           statusText.textContent = "Rebuilding unlocked PDF...";
           outBlob = await buildPDFViaPdfLib(pages);
           downloadBtn.style.display = "inline-block";
           statusText.textContent = "Unlocked PDF is ready.";
         } catch (e) {
           console.error(e);
-          statusText.textContent =
-            "Failed to unlock PDF (wrong password or unsupported encryption).";
+          // Distinguish wrong password vs other errors
+          if (e && e.name === 'PasswordException') {
+            if (/incorrect/i.test(e.message)) {
+              statusText.textContent = "Incorrect password. Please try again.";
+            } else if (/password/i.test(e.message)) {
+              statusText.textContent = "Password required. Enter it above and press Unlock.";
+            } else {
+              statusText.textContent = "Could not unlock: password error.";
+            }
+          } else {
+            statusText.textContent = "Failed to unlock PDF (unsupported encryption or corrupt file).";
+          }
         } finally {
           unlockBtn.disabled = false;
         }
@@ -368,113 +254,6 @@
         URL.revokeObjectURL(url);
       });
     </script>
-    <!-- Cookie consent (minimal) -->
-    <div
-      id="cookie-consent"
-      style="
-        display: none;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1000;
-        background: #111;
-        color: #fff;
-        padding: 12px 16px;
-        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-      "
-    >
-      <span style="font-size: 14px">
-        We use cookies for ads and measurement. See our
-        <a
-          href="../privacy.html"
-          style="color: #93c5fd; text-decoration: underline"
-          >Privacy Policy</a
-        >.
-      </span>
-      <button
-        data-accept
-        style="
-          background: #22c55e;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          padding: 8px 12px;
-          font-weight: 600;
-          cursor: pointer;
-        "
-      >
-        Accept
-      </button>
-    </div>
-    <script>
-      (function () {
-        var bar = document.getElementById("cookie-consent");
-        try {
-          if (localStorage.getItem("cookieConsent") === "accepted") {
-            if (bar) bar.style.display = "none";
-            return;
-          }
-        } catch (e) {}
-        if (!bar) return;
-        bar.style.display = "flex";
-        var btn = bar.querySelector("button[data-accept]");
-        if (btn)
-          btn.addEventListener("click", function () {
-            try {
-              localStorage.setItem("cookieConsent", "accepted");
-            } catch (e) {}
-            bar.remove();
-          });
-      })();
-    </script>
-    <!-- Suppress local banner and load Funding Choices CMP when configured -->
-    <script>
-      (function () {
-        function loadFundingChoices(id) {
-          var bar = document.getElementById("cookie-consent");
-          if (bar) bar.remove();
-          var s = document.createElement("script");
-          s.async = true;
-          s.crossOrigin = "anonymous";
-          s.src =
-            "https://fundingchoicesmessages.google.com/i/" +
-            encodeURIComponent(id);
-          document.head.appendChild(s);
-        }
-        var meta = document.querySelector('meta[name="fc-id"]');
-        var id =
-          (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-          (meta && (meta.content || "").trim());
-        if (id && !/^REPLACE_/i.test(id)) {
-          loadFundingChoices(id);
-          return;
-        }
-        var base =
-          location.pathname.indexOf("/features/") !== -1
-            ? "../vendor/"
-            : "./vendor/";
-        var tagId = "cmp-id-loader";
-        if (!document.getElementById(tagId)) {
-          var t = document.createElement("script");
-          t.id = tagId;
-          t.async = true;
-          t.src = base + "cmp-id.js";
-          t.onload = function () {
-            var id2 =
-              (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-              (meta && (meta.content || "").trim());
-            if (id2 && !/^REPLACE_/i.test(id2)) loadFundingChoices(id2);
-          };
-          t.onerror = function () {};
-          document.head.appendChild(t);
-        }
-      })();
-    </script>
+    <script src="../assets/app.js"></script>
   </body>
 </html>

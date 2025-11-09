@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="../assets/styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
@@ -20,23 +21,7 @@
         margin: 0;
         padding: 0;
       }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-        border-bottom: 1px solid #eee;
-      }
-      header h1 {
-        font-size: 1.4rem;
-        font-weight: 700;
-      }
-      header nav a {
-        margin-left: 1.5rem;
-        text-decoration: none;
-        color: #111;
-        font-weight: 500;
-      }
+      /* Header replaced by shared component */
       main {
         max-width: 700px;
         margin: 3rem auto;
@@ -145,29 +130,13 @@
         color: #999;
         font-weight: 500;
       }
-      footer {
-        text-align: center;
-        padding: 2rem;
-        color: #777;
-        font-size: 0.9rem;
-        border-top: 1px solid #eee;
-        margin-top: 3rem;
-      }
+      /* Footer replaced by shared component */
     </style>
   </head>
   <body>
-    <header>
-      <h1>EDITMYPDFS<span style="font-weight: 400">.com</span></h1>
-      <nav>
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About</a>
-        <a href="../privacy.html">Privacy</a>
-        <a href="../terms.html">Terms</a>
-        <a href="../about.html#contact">Contact</a>
-      </nav>
-    </header>
+    <header data-include="navbar"></header>
 
-    <main>
+  <main class="feature">
       <h2>Text to PDF</h2>
       <p class="sub">
         Paste your text or upload a .txt file, choose options, then click
@@ -239,275 +208,107 @@
         <button id="download-btn" style="display: none">Download PDF</button>
       </div>
 
-      <div class="ad-box">Ad Space</div>
+  <div class="ad-box" data-ad-slot="texttopdf-bottom">Ad Space</div>
     </main>
 
-    <footer>© 2025 EditMyPDFs.com — Free PDF Tools</footer>
+  <div data-include="footer"></div>
 
     <script>
       const { jsPDF } = window.jspdf;
-      const textInput = document.getElementById("text-input");
-      const paperSize = document.getElementById("paper-size");
-      const orientation = document.getElementById("orientation");
-      const fontFamily = document.getElementById("font-family");
-      const fontSizeInput = document.getElementById("font-size");
-      const marginInput = document.getElementById("margin");
-      const txtInput = document.getElementById("txt-input");
-      const txtDrop = document.getElementById("txt-drop");
-
-      const createBtn = document.getElementById("create-btn");
-      const statusText = document.getElementById("status");
-      const downloadBtn = document.getElementById("download-btn");
-      const fileInfo = document.getElementById("file-info");
-
+      const textInput = document.getElementById('text-input');
+      const paperSize = document.getElementById('paper-size');
+      const orientation = document.getElementById('orientation');
+      const fontFamily = document.getElementById('font-family');
+      const fontSizeInput = document.getElementById('font-size');
+      const marginInput = document.getElementById('margin');
+      const txtInput = document.getElementById('txt-input');
+      const txtDrop = document.getElementById('txt-drop');
+      const createBtn = document.getElementById('create-btn');
+      const statusText = document.getElementById('status');
+      const downloadBtn = document.getElementById('download-btn');
+      const fileInfo = document.getElementById('file-info');
       let outBlob = null;
 
-      function refreshButtonState() {
-        const hasText = (textInput.value || "").trim().length > 0;
-        createBtn.disabled = !hasText;
+      function refreshButtonState(){
+        createBtn.disabled = !(textInput.value || '').trim();
+      }
+      textInput.addEventListener('input', refreshButtonState);
+
+      // Drag/drop + file select for .txt
+      txtDrop.addEventListener('dragover', e => { e.preventDefault(); txtDrop.classList.add('dragover'); });
+      txtDrop.addEventListener('dragleave', () => txtDrop.classList.remove('dragover'));
+      txtDrop.addEventListener('drop', async e => { e.preventDefault(); txtDrop.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f) await loadTxtFile(f); });
+      txtInput.addEventListener('change', async e => { const f = e.target.files[0]; if (f) await loadTxtFile(f); e.target.value=''; });
+
+      async function loadTxtFile(file){
+        if (file.type !== 'text/plain') return;
+        const text = await file.text();
+        textInput.value = text;
+        fileInfo.textContent = `📄 Loaded ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+        refreshButtonState();
+        statusText.textContent = 'Text file loaded.';
       }
 
-      textInput.addEventListener("input", () => {
-        refreshButtonState();
-        statusText.textContent = "";
-        downloadBtn.style.display = "none";
-      });
-
-      // Clicking the label naturally triggers the hidden input
-      txtInput.addEventListener("click", (e) => e.stopPropagation());
-      txtInput.addEventListener("change", async (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (file) await readTxtFile(file);
-        e.target.value = "";
-      });
-
-      txtDrop.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        txtDrop.classList.add("dragover");
-      });
-      txtDrop.addEventListener("dragleave", () =>
-        txtDrop.classList.remove("dragover")
-      );
-      txtDrop.addEventListener("drop", async (e) => {
-        e.preventDefault();
-        txtDrop.classList.remove("dragover");
-        const file = e.dataTransfer.files && e.dataTransfer.files[0];
-        if (file && file.type === "text/plain") await readTxtFile(file);
-      });
-
-      async function readTxtFile(file) {
-        const reader = new FileReader();
-        const content = await new Promise((resolve, reject) => {
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsText(file);
-        });
-        const name = file.name || "file.txt";
-        const sizeKB = ((file.size || 0) / 1024).toFixed(1);
-        fileInfo.textContent = `📄 ${name} (${sizeKB} KB loaded)`;
-        textInput.value = String(content || "");
-        refreshButtonState();
-        statusText.textContent = "";
-        downloadBtn.style.display = "none";
-      }
-
-      createBtn.addEventListener("click", async () => {
-        const raw = (textInput.value || "").replace(/\r\n?/g, "\n");
-        const text = raw.trim();
-        if (!text) {
-          statusText.textContent =
-            "Please enter some text or upload a .txt file.";
-          return;
-        }
-
+      createBtn.addEventListener('click', async () => {
+        const raw = (textInput.value || '').trim();
+        if (!raw) return;
         createBtn.disabled = true;
-        statusText.textContent = "Creating PDF...";
-
+        statusText.textContent = 'Creating PDF...';
         try {
-          const size = paperSize.value || "a4";
-          const orient = orientation.value || "p";
-          const doc = new jsPDF({
-            orientation: orient,
-            unit: "mm",
-            format: size,
-          });
-
-          const font = fontFamily.value || "helvetica";
-          const fontSize = Math.max(
-            6,
-            Math.min(36, parseInt(fontSizeInput.value || "12", 10) || 12)
-          );
-          let margin = Math.max(
-            0,
-            Math.min(60, parseFloat(marginInput.value || "15"))
-          );
-          doc.setFont(font, "normal");
+          const size = paperSize.value === 'letter' ? 'letter' : 'a4';
+          const orient = orientation.value === 'l' ? 'l' : 'p';
+          const margin = Math.max(5, Math.min(40, parseInt(marginInput.value,10)||15));
+          const font = fontFamily.value;
+          const fontSize = Math.max(6, Math.min(36, parseInt(fontSizeInput.value,10)||12));
+          const doc = new jsPDF({ orientation: orient, unit: 'mm', format: size });
+          doc.setFont(font, 'normal');
           doc.setFontSize(fontSize);
-
           const pageWidth = doc.internal.pageSize.getWidth();
           const pageHeight = doc.internal.pageSize.getHeight();
-          const usableWidth = Math.max(10, pageWidth - 2 * margin);
-          const usableHeight = Math.max(10, pageHeight - 2 * margin);
+          const usableWidth = pageWidth - margin*2;
           const lineHeight = fontSize * 1.2;
-
-          // Wrap the text to available width
-          const lines = doc.splitTextToSize(text, usableWidth);
-          let x = margin;
-          let y = margin + lineHeight; // start a bit below top margin
-
-          let pageCount = 1;
-          for (let i = 0; i < lines.length; i++) {
-            if (y + lineHeight > margin + usableHeight) {
+          const lines = doc.splitTextToSize(raw, usableWidth);
+          let y = margin;
+          lines.forEach(line => {
+            if (y + lineHeight > pageHeight - margin){
               doc.addPage();
-              pageCount++;
-              y = margin + lineHeight;
+              doc.setFont(font, 'normal');
+              doc.setFontSize(fontSize);
+              y = margin;
             }
-            doc.text(lines[i], x, y);
+            doc.text(line, margin, y);
             y += lineHeight;
-          }
-
-          outBlob = doc.output("blob");
-          downloadBtn.style.display = "inline-block";
-          statusText.textContent = `PDF created successfully! (${pageCount} page${
-            pageCount > 1 ? "s" : ""
-          })`;
-        } catch (err) {
-          console.error(err);
-          statusText.textContent = "Failed to create PDF.";
+          });
+          const blob = doc.output('blob');
+          outBlob = blob;
+          downloadBtn.style.display = 'inline-block';
+          statusText.textContent = 'PDF created successfully!';
+        } catch(e){
+          console.error(e);
+          statusText.textContent = 'Failed to create PDF.';
         } finally {
           createBtn.disabled = false;
         }
       });
 
-      function getOutputName(defaultBase) {
-        const el = document.getElementById("output-name");
-        let name =
-          (el && el.value ? el.value : "").trim() || defaultBase || "output";
-        name = name.replace(/[\\/:*?"<>|]/g, "-");
-        if (!/\.pdf$/i.test(name)) name += ".pdf";
+      function getOutputName(defaultBase){
+        const el = document.getElementById('output-name');
+        let name = (el && el.value ? el.value : '').trim() || defaultBase || 'output';
+        name = name.replace(/[\\/:*?"<>|]/g,'-');
+        if (!/\.pdf$/i.test(name)) name += '.pdf';
         return name;
       }
-
-      downloadBtn.addEventListener("click", () => {
+      downloadBtn.addEventListener('click', () => {
         if (!outBlob) return;
         const url = URL.createObjectURL(outBlob);
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
-        a.download = getOutputName("text");
+        a.download = getOutputName('text');
         a.click();
         URL.revokeObjectURL(url);
       });
-
-      // Initialize button state
       refreshButtonState();
     </script>
-    <!-- Cookie consent (minimal) -->
-    <div
-      id="cookie-consent"
-      style="
-        display: none;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1000;
-        background: #111;
-        color: #fff;
-        padding: 12px 16px;
-        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-      "
-    >
-      <span style="font-size: 14px">
-        We use cookies for ads and measurement. See our
-        <a
-          href="../privacy.html"
-          style="color: #93c5fd; text-decoration: underline"
-          >Privacy Policy</a
-        >.
-      </span>
-      <button
-        data-accept
-        style="
-          background: #22c55e;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          padding: 8px 12px;
-          font-weight: 600;
-          cursor: pointer;
-        "
-      >
-        Accept
-      </button>
-    </div>
-    <script>
-      (function () {
-        var bar = document.getElementById("cookie-consent");
-        try {
-          if (localStorage.getItem("cookieConsent") === "accepted") {
-            if (bar) bar.style.display = "none";
-            return;
-          }
-        } catch (e) {}
-        if (!bar) return;
-        bar.style.display = "flex";
-        var btn = bar.querySelector("button[data-accept]");
-        if (btn)
-          btn.addEventListener("click", function () {
-            try {
-              localStorage.setItem("cookieConsent", "accepted");
-            } catch (e) {}
-            bar.remove();
-          });
-      })();
-    </script>
-    <!-- Suppress local banner and load Funding Choices CMP when configured -->
-    <script>
-      (function () {
-        function loadFundingChoices(id) {
-          var bar = document.getElementById("cookie-consent");
-          if (bar) bar.remove();
-          var s = document.createElement("script");
-          s.async = true;
-          s.crossOrigin = "anonymous";
-          s.src =
-            "https://fundingchoicesmessages.google.com/i/" +
-            encodeURIComponent(id);
-          document.head.appendChild(s);
-        }
-        var meta = document.querySelector('meta[name="fc-id"]');
-        var id =
-          (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-          (meta && (meta.content || "").trim());
-        if (id && !/^REPLACE_/i.test(id)) {
-          loadFundingChoices(id);
-          return;
-        }
-        var base =
-          location.pathname.indexOf("/features/") !== -1
-            ? "../vendor/"
-            : "./vendor/";
-        var tagId = "cmp-id-loader";
-        if (!document.getElementById(tagId)) {
-          var t = document.createElement("script");
-          t.id = tagId;
-          t.async = true;
-          t.src = base + "cmp-id.js";
-          t.onload = function () {
-            var id2 =
-              (window.__FC_ID && ("" + window.__FC_ID).trim()) ||
-              (meta && (meta.content || "").trim());
-            if (id2 && !/^REPLACE_/i.test(id2)) loadFundingChoices(id2);
-          };
-          t.onerror = function () {};
-          document.head.appendChild(t);
-        }
-      })();
-    </script>
+    <script src="../assets/app.js"></script>
   </body>
 </html>

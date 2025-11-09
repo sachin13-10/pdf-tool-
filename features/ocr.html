@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+    <title>OCR (Beta) - EditMyPDFs.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <style>
+      main.feature { max-width:820px; }
+      .ocr-card { max-width:760px; margin:0 auto; padding:2.5rem; }
+      .ocr-card .upload-box { margin-top:.5rem; margin-bottom:1.75rem; min-height:170px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; }
+      .field { max-width:520px; margin:1rem auto 0; text-align:left; }
+      .field label { display:block; margin:.25rem 0 .45rem; color:#444; font-weight:600; font-size:.9rem; }
+      .field select { width:100%; }
+      .actions-row { display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; margin-top:1rem; }
+      .actions-row button { flex:1 1 220px; }
+      .pages-wrap { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:1rem; margin-top:1.25rem; }
+      .ocr-page { position:relative; border:1px solid #eee; background:#fff; border-radius:12px; padding:.5rem; box-shadow:0 1px 4px rgba(0,0,0,.06); animation:fadeIn .5s ease; }
+      .ocr-page canvas { width:100%; height:auto; border-radius:8px; background:#fff; }
+      .ocr-text { font-size:.65rem; line-height:1.1; margin-top:.4rem; white-space:pre-wrap; max-height:140px; overflow:auto; background:#fafafa; padding:.4rem .5rem; border-radius:6px; border:1px solid #eee; }
+      .status-line { font-size:.7rem; color:#555; margin-top:.25rem; }
+      .progress-bar { position:relative; height:6px; background:#eee; border-radius:4px; overflow:hidden; margin-top:.75rem; }
+      .progress-bar span { position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg,var(--accent),var(--accent-dark)); transition:width .25s ease; }
+      .hint { font-size:.75rem; color:#777; margin-top:.5rem; }
+      @media (max-width:640px){ .actions-row button{ width:100%; } }
+    </style>
+  </head>
+  <body>
+    <header data-include="navbar"></header>
+  <main class="feature">
+      <h2>OCR (Beta)</h2>
+      <p class="sub">Recognize text in scanned PDF pages using Tesseract.js. Longer or complex documents may be slower. Your data never leaves your browser.</p>
+      <div class="card feature-enter ocr-card">
+        <label class="upload-box" id="drop-zone">📄 Drop PDF or click to upload
+          <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+        </label>
+        <div class="ocr-controls">
+          <div class="field">
+            <label for="lang">Language</label>
+            <select id="lang">
+              <option value="eng" selected>English (eng)</option>
+              <option value="spa">Spanish (spa)</option>
+              <option value="fra">French (fra)</option>
+              <option value="deu">German (deu)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="scale">Render scale</label>
+            <select id="scale">
+              <option value="1">Scale 1x (faster)</option>
+              <option value="1.5" selected>Scale 1.5x (balanced)</option>
+              <option value="2">Scale 2x (clearer)</option>
+            </select>
+          </div>
+          <div class="actions-row">
+            <button id="start" class="primary" disabled>Start OCR</button>
+            <button id="export-text" class="primary" disabled>Export Text (.txt)</button>
+          </div>
+        </div>
+        <div id="status" class="progress"></div>
+        <div class="progress-bar" aria-label="OCR progress"><span id="bar"></span></div>
+        <div class="hint">Tip: For best results choose an appropriate language and higher scale for small text.</div>
+        <div id="pages" class="pages-wrap"></div>
+      </div>
+      <div class="ad-box" data-ad-slot="ocr-bottom">Ad Space</div>
+    </main>
+    <div data-include="footer"></div>
+    <script>
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const pagesWrap = document.getElementById('pages');
+      const statusText = document.getElementById('status');
+      const startBtn = document.getElementById('start');
+      const exportBtn = document.getElementById('export-text');
+      const bar = document.getElementById('bar');
+      const langSel = document.getElementById('lang');
+      const scaleSel = document.getElementById('scale');
+      let pagesData = []; // {canvas, text}
+      let originalBytes = null;
+
+      dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await loadPDF(f); });
+      fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await loadPDF(f); e.target.value=''; });
+
+      async function loadPDF(file){
+        statusText.textContent='Loading PDF...'; pagesWrap.innerHTML=''; pagesData=[]; startBtn.disabled=true; exportBtn.disabled=true; bar.style.width='0%';
+        originalBytes = new Uint8Array(await file.arrayBuffer());
+        try {
+          const pdf = await pdfjsLib.getDocument({ data: originalBytes }).promise;
+          for(let i=1;i<=pdf.numPages;i++){
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: parseFloat(scaleSel.value)||1.5 });
+            const canvas = document.createElement('canvas'); const ctx=canvas.getContext('2d');
+            canvas.width=viewport.width; canvas.height=viewport.height;
+            await page.render({ canvasContext: ctx, viewport }).promise;
+            pagesData.push({ canvas, text:'' });
+            const div = document.createElement('div'); div.className='ocr-page';
+            div.appendChild(canvas);
+            const pStatus = document.createElement('div'); pStatus.className='status-line'; pStatus.textContent='Page '+i+' ready.';
+            const textBox = document.createElement('div'); textBox.className='ocr-text'; textBox.textContent='';
+            div.appendChild(pStatus); div.appendChild(textBox); pagesWrap.appendChild(div);
+          }
+          statusText.textContent='Loaded '+pagesData.length+' page(s). Ready for OCR.';
+          startBtn.disabled = pagesData.length === 0;
+        } catch(e){ console.error(e); statusText.textContent='Failed to read PDF.'; }
+      }
+
+      startBtn.addEventListener('click', async ()=>{
+        if(!pagesData.length) return; startBtn.disabled=true; exportBtn.disabled=true; statusText.textContent='Running OCR...';
+        let completed=0;
+        for(let i=0;i<pagesData.length;i++){
+          const entry = pagesData[i];
+          const canvas = entry.canvas;
+          const textBox = pagesWrap.children[i].querySelector('.ocr-text');
+          const statusLine = pagesWrap.children[i].querySelector('.status-line');
+          statusLine.textContent='OCR in progress...';
+          try {
+            const result = await Tesseract.recognize(canvas, langSel.value, { logger: m => { if(m.status==='recognizing text'){ statusLine.textContent = 'Progress '+Math.round(m.progress*100)+'%'; } } });
+            entry.text = result.data.text.trim();
+            textBox.textContent = entry.text || '[No text detected]';
+            statusLine.textContent='Done';
+          } catch(e){ console.error(e); statusLine.textContent='Failed'; textBox.textContent=''; }
+          completed++; bar.style.width = ((completed/pagesData.length)*100).toFixed(2)+'%';
+        }
+        statusText.textContent='OCR complete.'; exportBtn.disabled = !pagesData.every(p=>p.text!==undefined); exportBtn.disabled=false;
+      });
+
+      exportBtn.addEventListener('click', ()=>{
+        if(!pagesData.length) return; const all = pagesData.map((p,i)=>`--- Page ${i+1} ---\n${p.text}\n`).join('\n'); const blob=new Blob([all], { type:'text/plain' }); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ocr.txt'; a.click(); URL.revokeObjectURL(url);
+      });
+    </script>
+    <script src="../assets/app.js"></script>
+  </body>
+</html>

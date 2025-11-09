@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
+  <title>PDF to Images - EditMyPDFs.com</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    body { font-family:Inter,sans-serif; margin:0; background:#fff; color:#111; }
+    main { max-width:860px; margin:3rem auto; padding:1rem; text-align:center; }
+    h2 { font-size:2rem; margin:.5rem 0 1rem; }
+    p.sub { color:#555; }
+    .card { border:1px solid #eee; border-radius:16px; padding:2rem; box-shadow:0 2px 6px rgba(0,0,0,.05); text-align:left; }
+    .upload-box { border:2px dashed #ccc; border-radius:12px; padding:2rem; cursor:pointer; transition:.25s; text-align:center; }
+    .upload-box:hover { background:#f8faff; }
+    .upload-box.dragover { border-color:#e53935; }
+    label,input,select,button { display:block; margin:.75rem auto; font-size:1rem; }
+    select { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:240px; }
+    button { background:linear-gradient(90deg,#e53935,#c62828); color:#fff; border:none; border-radius:10px; padding:.85rem 1.6rem; font-weight:600; cursor:pointer; }
+    button:hover { opacity:.9; }
+    .thumbs { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:.75rem; margin-top:1rem; }
+    .thumbs img { width:100%; height:auto; border-radius:8px; border:1px solid #eee; background:#fafafa; }
+    .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
+    .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+  </style>
+</head>
+<body>
+  <header data-include="navbar"></header>
+  <main class="feature">
+    <h2>PDF to Images</h2>
+    <p class="sub">Render each PDF page to PNG or JPEG and download them, or zip them all.</p>
+    <div class="card">
+      <label class="upload-box" id="drop-zone">📄 Drop your PDF or click to upload
+        <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+      </label>
+      <div class="controls">
+        <select id="img-format"><option value="png" selected>PNG</option><option value="jpeg">JPEG</option></select>
+        <select id="scale"><option value="1">Scale 1x</option><option value="1.5" selected>Scale 1.5x</option><option value="2">Scale 2x</option></select>
+      </div>
+      <div id="status" class="progress"></div>
+      <div class="thumbs" id="thumbs"></div>
+      <button id="zip-btn" style="display:none">Download All as ZIP</button>
+    </div>
+    <div class="ad-box" data-ad-slot="pdf-to-images-bottom">Ad Space</div>
+  </main>
+  <div data-include="footer"></div>
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const thumbs = document.getElementById('thumbs');
+    const statusText = document.getElementById('status');
+    const zipBtn = document.getElementById('zip-btn');
+    const fmtSel = document.getElementById('img-format');
+    const scaleSel = document.getElementById('scale');
+
+    let images = [];
+
+    dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await loadPDF(f); });
+    fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await loadPDF(f); e.target.value=''; });
+
+    async function loadPDF(file){
+      statusText.textContent='Rendering pages...'; thumbs.innerHTML=''; images=[]; zipBtn.style.display='none';
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+      for (let i=1; i<=pdf.numPages; i++){
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: parseFloat(scaleSel.value)||1.5 });
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        const format = fmtSel.value === 'jpeg' ? 'image/jpeg' : 'image/png';
+        const url = canvas.toDataURL(format, 0.92);
+        const img = document.createElement('img');
+        img.src = url; img.alt = 'Page ' + i;
+        thumbs.appendChild(img);
+        images.push({ url, name: `page-${String(i).padStart(3,'0')}.${fmtSel.value==='jpeg'?'jpg':'png'}` });
+        statusText.textContent = `Rendered ${i}/${pdf.numPages}`;
+      }
+      zipBtn.style.display = images.length ? 'inline-block' : 'none';
+      statusText.textContent += ' — Done';
+    }
+
+    zipBtn.addEventListener('click', async ()=>{
+      if (!images.length) return;
+      statusText.textContent = 'Zipping images...';
+      const zip = new JSZip();
+      images.forEach(img => zip.file(img.name, img.url.split(',')[1], { base64: true }));
+      const blob = await zip.generateAsync({ type:'blob' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'pdf-images.zip'; a.click(); URL.revokeObjectURL(url);
+      statusText.textContent = 'ZIP downloaded.';
+    });
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>
