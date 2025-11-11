@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Merge PDFs - EditMyPDFs.com</title>
+  <title>Merge PDFs - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/merge.html" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
     <style>
@@ -107,6 +107,29 @@
         font-weight: 500;
       }
       /* Footer replaced by shared component */
+
+      /* Scoped styles for embedded Merge guide */
+      .merge-guide { text-align:left; max-width:900px; margin:2.6rem auto; padding:0 1rem; line-height:1.7; }
+      .merge-guide .eyebrow { display:inline-block; padding:.25rem .6rem; border-radius:999px; border:1px solid #e9ecf3; background:linear-gradient(90deg,#fff,#f7f8ff); font-size:.85rem; color:#333; }
+      .merge-guide h1 { font-size:2.15rem; line-height:1.2; margin:.65rem 0 .45rem; }
+      .merge-guide .sub { color:#60636c; margin:0 0 1.2rem; }
+      .merge-guide .meta { font-size:.92rem; color:#777; margin-bottom:1.2rem; }
+      .merge-guide .hero { display:grid; gap:1rem; grid-template-columns:1.1fr .9fr; align-items:center; border:1px solid #e9ecf3; border-radius:20px; padding:1.1rem; background:#fff; box-shadow:0 8px 24px rgba(0,0,0,.05); }
+      .merge-guide .cta { display:inline-flex; align-items:center; gap:.55rem; font-weight:700; background:linear-gradient(90deg,#6366f1,#2563eb); color:#fff; padding:.8rem 1.05rem; border-radius:12px; text-decoration:none; box-shadow:0 6px 16px rgba(37,99,235,.25); }
+      .merge-guide .viz { width:100%; height:auto; border:1px solid #e9ecf3; border-radius:16px; overflow:hidden; }
+      .merge-guide article { margin-top:2rem; }
+      .merge-guide h2 { font-size:1.35rem; margin:1.6rem 0 .6rem; }
+      .merge-guide p { margin:0 0 1rem; }
+      .merge-guide .grid { display:grid; gap:1rem; }
+      @media(min-width:800px){ .merge-guide .grid { grid-template-columns:1fr 1fr; } }
+      .merge-guide .card { border:1px solid #e9ecf3; border-radius:16px; padding:1rem; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.04); }
+      .merge-guide figure { margin:0; }
+      .merge-guide figcaption { font-size:.85rem; color:#666; margin-top:.5rem; }
+      .merge-guide .tip { background:#f8faff; border-left:4px solid #2563eb; border-radius:10px; padding:1rem; margin:.9rem 0; }
+      .merge-guide .faq details { border:1px solid #e9ecf3; border-radius:12px; padding:.75rem 1rem; background:#fff; }
+      .merge-guide .faq details+details { margin-top:.75rem; }
+      .merge-guide .kbd { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; background:#f5f7fb; border:1px solid #e7ebf3; padding:.15rem .35rem; border-radius:6px; font-size:.9rem; }
+      .merge-guide ul { padding-left:1.1rem; }
     </style>
   </head>
   <body>
@@ -148,7 +171,130 @@
         </button>
       </div>
 
-  <div class="ad-box" data-ad-slot="merge-bottom">Ad Space</div>
+    <div id="ad-top" class="ad-slot" aria-label="Top advertisement placeholder"></div>
+    <div id="ad-content" class="ad-slot" aria-label="Content advertisement placeholder"></div>
+      <!-- Inline feature blog: Merge PDFs (replaced with detailed guide) -->
+      <section class="feature-blog merge-guide" aria-labelledby="merge-guide-title">
+        <span class="eyebrow">Behind the Scenes</span>
+        <h1 id="merge-guide-title">Combine Multiple PDFs Into One — Fast, Clean &amp; Private</h1>
+        <p class="sub">Invoices for one client, chapters of a report, or class notes from different weeks — sometimes you just need a single tidy file. Here’s a human-friendly walkthrough of how our Merge PDFs tool works and how to get the best results.</p>
+        <p class="meta">Runs entirely in your browser • No uploads • Great for study packs and paperwork</p>
+
+        <!-- Hero -->
+        <section class="hero">
+          <div>
+            <p>
+              Our merge tool takes two or more PDFs and stitches them into a brand-new document in the exact order you choose. It uses a lightweight PDF engine in your browser, so your files <strong>never leave your device</strong>. That’s faster, safer, and perfect for sensitive content.
+            </p>
+            <a class="cta" href="/features/merge.html" aria-label="Open the Merge PDFs tool">📚 Merge PDFs Now</a>
+            <p style="margin:.6rem 0 0">Save with a clear name like <span class="kbd">project-proposal-merged.pdf</span> so versions don’t get mixed up.</p>
+          </div>
+
+          <!-- Inline, open-source safe SVG diagram -->
+          <figure class="viz" role="img" aria-label="PDF merge pipeline diagram">
+            <img alt="Merge PDF flow diagram"
+                 src="data:image/svg+xml;utf8,
+                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
+                   <defs><linearGradient id='g' x1='0' x2='1'>
+                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
+                   <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                   <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>PDF A</text>
+                   <rect x='60' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+                   <rect x='110' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+
+                   <rect x='300' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                   <text x='415' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>PDF B</text>
+                   <rect x='330' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+                   <rect x='380' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+
+                   <rect x='680' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                   <text x='795' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Merged PDF</text>
+                   <rect x='710' y='120' width='160' height='140' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/>
+
+                   <path d='M260 160 L300 160' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M530 160 L680 160' stroke='url(%23g)' stroke-width='6'/>
+                 </svg>"/>
+            <figcaption>We copy pages from each file and append them into a new, single PDF — locally.</figcaption>
+          </figure>
+        </section>
+
+        <article>
+          <h2>How merging works (in simple words)</h2>
+          <p>
+            A PDF is a stack of pages. When you choose files, our tool opens each one, reads how many pages it has, and then <em>copies</em> those pages into a fresh, empty document. No re-rendering or conversions — it’s like moving pages from separate folders into one binder. The original files stay exactly as they are.
+          </p>
+          <p>
+            Because the merge is a page-copy operation, your layouts, fonts, links, and vector graphics are preserved. Pages keep their original size and orientation, so a landscape slide deck can sit right next to a portrait invoice without any stretching.
+          </p>
+
+          <div class="grid">
+            <div class="card">
+              <h3 style="margin:.2rem 0 .4rem">Great use cases</h3>
+              <ul style="margin:.2rem 0 0 1rem">
+                <li>Combine lecture PDFs into one study pack</li>
+                <li>Bundle invoices/receipts for a single client</li>
+                <li>Attach appendices and signatures to a report</li>
+                <li>Create a single file for printing or sharing</li>
+              </ul>
+            </div>
+            <div class="card">
+              <figure>
+                <img alt="Before and after merge illustration"
+                     src="data:image/svg+xml;utf8,
+                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
+                       <rect width='1200' height='620' fill='%23ffffff'/>
+                       <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Separate Files</text>
+                       <rect x='120' y='120' width='190' height='260' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
+                       <rect x='330' y='120' width='190' height='260' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
+                       <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>One Merged PDF</text>
+                       <rect x='780' y='120' width='280' height='380' rx='14' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                     </svg>"/>
+                <figcaption>Left: multiple documents. Right: a single clean PDF for easy sharing.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <h2>Step-by-step: from many files to one</h2>
+          <ol>
+            <li><strong>Open the tool:</strong> go to <span class="kbd">/features/merge.html</span>.</li>
+            <li><strong>Add PDFs:</strong> drag &amp; drop or click to select two or more files. You can add more afterward.</li>
+            <li><strong>Check order:</strong> the merge follows your selection order. If needed, re-select in the right sequence.</li>
+            <li><strong>Merge:</strong> click <strong>Merge PDFs</strong> to build a new document.</li>
+            <li><strong>Download:</strong> save it with a clear name like <span class="kbd">jan-expenses-merged.pdf</span>.</li>
+          </ol>
+
+          <div class="tip">
+            <strong>Pro tips:</strong><br />
+            • If a file is password-protected and can’t be read, the tool will skip it — merge the rest, then handle that file separately.<br />
+            • Merging very large PDFs? Close heavy tabs first; memory frees up for faster processing.<br />
+            • Need a different order after merging? Use the Reorder tool or run another quick merge.
+          </div>
+
+          <h2>Why local merging is better for privacy</h2>
+          <p>
+            Your PDFs aren’t uploaded to any server. Everything happens in the same browser tab you’re using. That’s essential for contracts, ID documents, academic work, or anything you wouldn’t want to leave your device. Close the tab and the working data goes with it.
+          </p>
+
+          <h2>FAQs</h2>
+          <div class="faq">
+            <details>
+              <summary>Do page sizes change?</summary>
+              <p>No. Each page keeps its original size and orientation. Mixed sizes are allowed inside one merged PDF.</p>
+            </details>
+            <details>
+              <summary>Will links and text still work?</summary>
+              <p>Yes. We copy pages as pages, preserving embedded text, links, and vector graphics.</p>
+            </details>
+            <details>
+              <summary>Can I merge 100+ pages?</summary>
+              <p>Yes, but it depends on your device memory. If it feels slow, merge in batches and then combine the batches.</p>
+            </details>
+          </div>
+
+          <p class="sub" style="margin-top:1rem">Ready to tidy your files? Add your PDFs, pick the order, and export one neat document in seconds.</p>
+          <p><a class="cta" href="/features/merge.html">Open Merge Tool</a></p>
+        </article>
+      </section>
     </main>
 
   <div data-include="footer"></div>

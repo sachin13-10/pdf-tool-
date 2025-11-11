@@ -1,0 +1,8 @@
+# robots.txt for editmypdf.tech
+User-agent: *
+Allow: /
+
+# Disallow internal vendor or build artifacts if any (none currently)
+# Disallow: /internal/
+
+Sitemap: https://editmypdf.tech/sitemap.xml

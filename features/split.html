@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Split PDF - EditMyPDFs.com</title>
+  <title>Split PDF - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/split.html" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
     <style>
@@ -111,10 +111,32 @@
         font-weight: 500;
       }
       /* Footer replaced by shared component */
+      /* Scoped Split guide styles */
+      .split-guide{max-width:900px;margin:2.5rem auto 0;padding:0 .5rem;text-align:left}
+      .split-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
+      .split-guide h2{font-size:2rem;line-height:1.25;margin:.65rem 0 .45rem}
+      .split-guide .sub{color:#60636c;margin:0 0 1.1rem}
+      .split-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
+      .split-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+      .split-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,#6366f1,#2563eb);color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
+      .split-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
+      .split-guide article{margin-top:2rem}
+      .split-guide h3{font-size:1.3rem;margin:1.6rem 0 .6rem}
+      .split-guide p{margin:0 0 1rem}
+      .split-guide .grid{display:grid;gap:1rem}
+      @media (min-width:800px){ .split-guide .grid{grid-template-columns:1fr 1fr} }
+      .split-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
+      .split-guide figure{margin:0}
+      .split-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
+      .split-guide .tip{background:#f8faff;border-left:4px solid #2563eb;border-radius:10px;padding:1rem;margin:.9rem 0}
+      .split-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
+      .split-guide .faq details+details{margin-top:.75rem}
+      .split-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
 
   <main class="feature">
       <h2>Split PDF</h2>
@@ -153,9 +175,106 @@
         </button>
       </div>
 
-  <div class="ad-box" data-ad-slot="split-bottom">Ad Space</div>
-    </main>
+    <div id="ad-content" class="ad-slot"></div>
+    <!-- Long-form Split PDF guide -->
+    <section class="feature-blog split-guide" aria-labelledby="split-guide-title">
+      <span class="eyebrow">Behind the Scenes</span>
+      <h2 id="split-guide-title">Extract Only the Pages You Need — Fast, Clean &amp; Private</h2>
+      <p class="sub">Big document, tiny requirement? Maybe you just need the summary, the receipts section, or a chapter for class. Here&rsquo;s a friendly guide to how our Split PDF tool works, why it&rsquo;s private by design, and how to get perfect results.</p>
+      <p class="meta">Runs entirely in your browser • No uploads • Keeps original quality and links</p>
 
+      <div class="hero" role="group" aria-label="Split PDF overview and diagram">
+        <div>
+          <p>
+            The Split tool takes a source PDF and builds a <strong>new</strong> PDF that contains only the pages you select. You type a quick range like <span class="kbd">1-3,7,10-12</span>, click split, and you&rsquo;re done. It all happens <strong>locally</strong> on your device using a lightweight PDF engine&mdash;so sensitive files never leave your browser.
+          </p>
+          <a class="cta" href="/features/split.html" aria-label="Open the Split PDF tool">✂️ Split a PDF</a>
+          <p style="margin:.6rem 0 0">Save with a clear name like <span class="kbd">report-chapter3.pdf</span> so versions don&rsquo;t get mixed up.</p>
+        </div>
+
+        <figure class="viz" role="img" aria-label="Split PDF pipeline diagram">
+          <img alt="Split PDF flow diagram" style="display:block;width:100%;height:auto"
+               src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 340'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs><rect x='30' y='70' width='230' height='200' rx='16' fill='%23fff' stroke='%23dbe1ff'/><text x='145' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Original PDF</text><rect x='60' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/><rect x='125' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/><rect x='190' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/><rect x='330' y='60' width='280' height='70' rx='12' fill='%23eaf9ff' stroke='%23cfeaff'/><text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Ranges: 1–3, 7, 10–12</text><rect x='650' y='70' width='260' height='200' rx='16' fill='%23fff' stroke='%23dbe1ff'/><text x='780' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Subset PDF</text><rect x='680' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/><rect x='745' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/><rect x='810' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/><path d='M260 170 L330 95' stroke='url(%23g)' stroke-width='6'/><path d='M610 95 L650 170' stroke='url(%23g)' stroke-width='6'/></svg>"/>
+          <figcaption>We copy chosen pages into a fresh PDF&mdash;no re-rendering, no quality loss, done locally.</figcaption>
+        </figure>
+      </div>
+
+      <article aria-labelledby="split-guide-title">
+        <h3>How splitting works (in plain English)</h3>
+        <p>
+          A PDF is a stack of pages. When you load your file, our tool reads the page count and waits for your instructions. Your ranges tell us which page numbers you want to keep. On split, we <em>copy</em> those page objects into a new, empty document in the same order you requested. The original file stays exactly the same.
+        </p>
+        <p>
+          Because this is a page-copy operation (not screenshots), your <strong>text, links, vector graphics, and image quality</strong> are preserved. Mixed orientations and sizes are fine&mdash;portrait pages can sit next to landscape slides without any stretching.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h4 style="margin:.2rem 0 .4rem">Great use cases</h4>
+            <ul style="margin:.2rem 0 0 1rem">
+              <li>Submit only the required pages for an assignment</li>
+              <li>Share the “Summary” or “Results” sections without the full report</li>
+              <li>Send just receipts or annexures to a client</li>
+              <li>Split a large e-book into chapters for easier studying</li>
+            </ul>
+          </div>
+          <div class="card">
+            <figure>
+              <img alt="Before and after split illustration" style="display:block;width:100%;height:auto"
+                   src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'><rect width='1200' height='620' fill='%23ffffff'/><text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Full Document</text><rect x='120' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/><rect x='160' y='155' width='300' height='14' rx='7' fill='%23111' opacity='.08'/><rect x='160' y='180' width='260' height='14' rx='7' fill='%23111' opacity='.08'/><text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Extracted Subset</text><rect x='720' y='120' width='240' height='340' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/><rect x='750' y='155' width='180' height='14' rx='7' fill='%23111' opacity='.08'/></svg>"/>
+              <figcaption>Left: the whole PDF. Right: only the section you need, in a smaller file.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <h3>Step-by-step: from big file to focused extract</h3>
+        <ol>
+          <li><strong>Open the tool:</strong> go to <span class="kbd">/features/split.html</span>.</li>
+          <li><strong>Add your PDF:</strong> drag &amp; drop or click to select a file; we show the page count.</li>
+          <li><strong>Enter ranges:</strong> type something like <span class="kbd">1-3,7,10-12</span> (see examples below).</li>
+          <li><strong>Split:</strong> click <em>Extract Pages</em> to build the new document locally.</li>
+          <li><strong>Download:</strong> save it as <span class="kbd">summary-only.pdf</span> (keep your original too).</li>
+        </ol>
+
+        <div class="tip">
+          <strong>Range tips:</strong><br />
+          • Use commas to separate groups: <span class="kbd">2,5,9</span>.<br />
+          • Use a hyphen or “to” for spans: <span class="kbd">4-10</span> or <span class="kbd">4 to 10</span>.<br />
+          • We ignore duplicates and out-of-range numbers automatically.
+        </div>
+
+        <h3>What it is (and isn&rsquo;t)</h3>
+        <p>
+          Splitting <em>keeps</em> pages; it doesn&rsquo;t edit content inside a page. If you need to remove pages from the original, use <strong>Delete Pages</strong>. If you want to squeeze the new file smaller for email, run it through the <strong>Compressor</strong>. To combine multiple extracts, use the <strong>Merge</strong> tool afterward.
+        </p>
+
+        <h3>Privacy by default</h3>
+        <p>
+          Everything happens on your device. We don&rsquo;t upload, scan, or store your documents, which makes the tool safe for contracts, IDs, grades, and confidential reports. Close the tab, and the working data disappears with it.
+        </p>
+
+        <h3>FAQs</h3>
+        <div class="faq">
+          <details>
+            <summary>Will quality change after splitting?</summary>
+            <p>No. We copy page objects directly; text, links, and graphics remain intact.</p>
+          </details>
+          <details>
+            <summary>Can I split a very large PDF?</summary>
+            <p>Yes, but memory depends on your device. If it feels slow, split in chunks (e.g., chapters) and merge later if needed.</p>
+          </details>
+          <details>
+            <summary>Can I rearrange while splitting?</summary>
+            <p>Splitting follows numeric order. If you need a different sequence, export the subset then use the <strong>Reorder</strong> tool.</p>
+          </details>
+        </div>
+
+        <p class="sub" style="margin-top:1rem">Ready to trim the noise? Enter your page ranges, extract a focused PDF, and share only what matters.</p>
+        <p><a class="cta" href="/features/split.html">Open Split Tool</a></p>
+      </article>
+    </section>
+    </main>
+    <div id="ad-footer" class="ad-slot"></div>
   <div data-include="footer"></div>
 
     <script>

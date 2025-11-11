@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>OCR (Beta) - EditMyPDFs.com</title>
+  <title>OCR (Beta) - EDITSMYPDF</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/ocr.html" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
@@ -27,10 +27,32 @@
       .progress-bar span { position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg,var(--accent),var(--accent-dark)); transition:width .25s ease; }
       .hint { font-size:.75rem; color:#777; margin-top:.5rem; }
       @media (max-width:640px){ .actions-row button{ width:100%; } }
+  /* Scoped blog styles: OCR guide */
+  .ocr-guide{max-width:900px;margin:2rem auto 0;padding:0 0.5rem}
+  .ocr-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
+  .ocr-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
+  .ocr-guide .sub{color:#60636c;margin:0 0 1rem}
+  .ocr-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
+  .ocr-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+  .ocr-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
+  .ocr-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
+  .ocr-guide article{margin-top:2rem}
+  .ocr-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
+  .ocr-guide p{margin:0 0 1rem}
+  .ocr-guide .grid{display:grid;gap:1rem}
+  @media (min-width:800px){ .ocr-guide .grid{grid-template-columns:1fr 1fr} }
+  .ocr-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
+  .ocr-guide figure{margin:0}
+  .ocr-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
+  .ocr-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
+  .ocr-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
+  .ocr-guide .faq details+details{margin-top:.75rem}
+  .ocr-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
   <main class="feature">
       <h2>OCR (Beta)</h2>
       <p class="sub">Recognize text in scanned PDF pages using Tesseract.js. Longer or complex documents may be slower. Your data never leaves your browser.</p>
@@ -66,8 +88,135 @@
         <div class="hint">Tip: For best results choose an appropriate language and higher scale for small text.</div>
         <div id="pages" class="pages-wrap"></div>
       </div>
-      <div class="ad-box" data-ad-slot="ocr-bottom">Ad Space</div>
+  <div id="ad-content" class="ad-slot"></div>
+      <!-- Inline feature blog: OCR (Beta) - Replaced with detailed guide -->
+      <section class="feature-blog ocr-guide" aria-labelledby="ocr-guide-title">
+        <span class="eyebrow">Behind the Scenes</span>
+        <h2 id="ocr-guide-title">Turn Scanned PDFs Into Selectable Text — Right in Your Browser</h2>
+        <p class="sub">Got a scan where you can see the words but can’t select or search them? This guide explains how our OCR tool recognizes text on your device, what affects accuracy, and how to get clean results.</p>
+        <p class="meta">Private by design • Works locally • Great for notes, forms, receipts, and handouts</p>
+
+        <div class="hero">
+          <div>
+            <p>
+              Our OCR (Optical Character Recognition) feature reads the pixels from each scanned page and converts them into real, copyable text. It runs entirely in your browser using modern web tech — no uploads, no accounts, and no watermarks. Point it at a scan, pick a language, press start, and export a tidy <span class="kbd">.txt</span> file or paste results wherever you need.
+            </p>
+            <a class="cta" href="/features/ocr.html" aria-label="Open the OCR tool">🔍 Try OCR (Beta)</a>
+            <p style="margin:.6rem 0 0">Tip: choose a higher render scale for tiny print; use default for normal documents.</p>
+          </div>
+
+          <figure class="viz" role="img" aria-label="OCR pipeline diagram">
+            <img alt="OCR flow diagram"
+                 src="data:image/svg+xml;utf8,
+                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
+                   <defs><linearGradient id='g' x1='0' x2='1'>
+                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
+                   <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                   <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Scanned PDF</text>
+                   <rect x='60' y='120' width='170' height='120' rx='10' fill='#eef2ff' stroke='%23dbe1ff'/>
+                   <rect x='320' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
+                   <text x='460' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Render page → pixel image</text>
+                   <rect x='320' y='150' width='280' height='70' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
+                   <text x='460' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>OCR engine finds characters</text>
+                   <rect x='650' y='60' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                   <text x='780' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Recognized Text</text>
+                   <rect x='690' y='120' width='180' height='120' rx='12' fill='#dcfce7' stroke='%23bbf7d0'/>
+                   <path d='M260 160 L320 95' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M260 160 L320 185' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M600 95 L650 160' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M600 185 L650 160' stroke='url(%23g)' stroke-width='6'/>
+                 </svg>"/>
+            <figcaption>The browser renders a page to pixels, the OCR engine recognizes characters, and you export the text.</figcaption>
+          </figure>
+        </div>
+
+        <article>
+          <h3>How OCR works (in plain English)</h3>
+          <p>
+            A scanned PDF is just a stack of pictures — no live text inside. Our tool first paints each page to an invisible canvas at the scale you choose. Then the OCR engine analyzes those pixels, looking for letter shapes, words, and lines. The recognized text is assembled into paragraphs you can copy, search, or export.
+          </p>
+          <p>
+            Because we process the original pixels on your device, there’s no waiting for uploads or server queues. Close the tab and the working data disappears with it.
+          </p>
+
+          <div class="grid">
+            <div class="card">
+              <h3 style="margin:.2rem 0 .4rem">Best use cases</h3>
+              <ul style="margin:.2rem 0 0 1rem">
+                <li>Lecture notes or book scans where you want searchable text</li>
+                <li>Receipts and forms you need to copy into spreadsheets</li>
+                <li>Reports or letters you want to quote or summarize</li>
+              </ul>
+            </div>
+            <div class="card">
+              <figure>
+                <img alt="Before and after OCR illustration"
+                     src="data:image/svg+xml;utf8,
+                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
+                       <rect width='1200' height='620' fill='%23ffffff'/>
+                       <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Scan (Image Only)</text>
+                       <rect x='120' y='120' width='380' height='280' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
+                       <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Selectable Text</text>
+                       <rect x='720' y='120' width='380' height='280' rx='10' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                       <rect x='740' y='160' width='340' height='14' rx='7' fill='%23111' opacity='.12'/>
+                       <rect x='740' y='185' width='320' height='14' rx='7' fill='%23111' opacity='.12'/>
+                       <rect x='740' y='210' width='300' height='14' rx='7' fill='%23111' opacity='.12'/>
+                     </svg>"/>
+                <figcaption>Left: a flat scan. Right: real text you can copy and search.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <h3>Step-by-step: from scan to text</h3>
+          <ol>
+            <li><strong>Open:</strong> go to <span class="kbd">/features/ocr.html</span>.</li>
+            <li><strong>Add your PDF:</strong> drag &amp; drop the scanned file or click to choose.</li>
+            <li><strong>Pick a language:</strong> start with English; switch if the document is in another language.</li>
+            <li><strong>Choose render scale:</strong> <span class="kbd">1x</span> for speed, <span class="kbd">1.5x</span> balanced, <span class="kbd">2x</span> for small text.</li>
+            <li><strong>Run OCR:</strong> watch progress per page; review the recognized text panels.</li>
+            <li><strong>Export:</strong> download as <span class="kbd">ocr.txt</span> or copy sections you need.</li>
+          </ol>
+
+          <div class="tip">
+            <strong>Accuracy boosters:</strong><br />
+            • Aim for clear scans at ≈ <span class="kbd">300 DPI</span> with good contrast.<br />
+            • Keep pages straight — skewed or rotated pages hurt accuracy.<br />
+            • For multilingual docs, run once per language and combine results.<br />
+            • Very small fonts? Try scale <span class="kbd">2x</span>, but avoid over-blurry upscales.
+          </div>
+
+          <h3>Limits to keep in mind</h3>
+          <p>
+            OCR isn’t magic. Handwriting, decorative fonts, low-resolution photos, and heavy compression will reduce accuracy. Large books with hundreds of pages can also be slow in a browser — it’s fine to process in smaller chunks and merge the text afterward.
+          </p>
+
+          <h3>Privacy by default</h3>
+          <p>
+            Your PDF never leaves your device. The recognition happens on the same machine you’re using right now. That’s essential for IDs, medical papers, contracts, and exam notes — edit and export without exposing your data to external servers.
+          </p>
+
+          <h3>FAQs</h3>
+          <div class="faq">
+            <details>
+              <summary>Does OCR change my PDF?</summary>
+              <p>No. We read the pages to extract text, but your original file stays exactly the same.</p>
+            </details>
+            <details>
+              <summary>Can I make a searchable PDF?</summary>
+              <p>This tool exports recognized text. For a fully “searchable PDF” layer, first run OCR to get the text, then use our Edit tool to attach notes, or keep the text separately for search and quoting.</p>
+            </details>
+            <details>
+              <summary>Which languages work best?</summary>
+              <p>Printed English, Spanish, French, and German work well. Try multiple runs if your document mixes languages.</p>
+            </details>
+          </div>
+
+          <p class="sub" style="margin-top:1rem">Ready to unlock your scans? Open the OCR tool, pick a language, and turn pictures of pages into real text you can use.</p>
+          <p><a class="cta" href="/features/ocr.html">Open OCR (Beta)</a></p>
+        </article>
+      </section>
     </main>
+    <div id="ad-footer" class="ad-slot"></div>
     <div data-include="footer"></div>
     <script>
       const dropZone = document.getElementById('drop-zone');

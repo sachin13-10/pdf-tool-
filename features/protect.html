@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Password Protect - EditMyPDFs.com</title>
+  <title>Password Protect - EDITSMYPDF</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/protect.html" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
     <style>
@@ -20,10 +20,32 @@
       .actions { display:flex; justify-content:center; gap:.9rem; flex-wrap:wrap; margin-top:1.25rem; }
       .progress { margin-top: 1rem; }
   .file-info { margin-top: .5rem; color:#333; font-weight:500; font-size:.95rem; min-height:1.1rem; }
+      /* Scoped blog styles: Protect guide */
+      .protect-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
+      .protect-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
+      .protect-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
+      .protect-guide .sub{color:#60636c;margin:0 0 1rem}
+      .protect-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
+      .protect-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+      .protect-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
+      .protect-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
+      .protect-guide article{margin-top:2rem}
+      .protect-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
+      .protect-guide p{margin:0 0 1rem}
+      .protect-guide .grid{display:grid;gap:1rem}
+      @media (min-width:800px){ .protect-guide .grid{grid-template-columns:1fr 1fr} }
+      .protect-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
+      .protect-guide figure{margin:0}
+      .protect-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
+      .protect-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
+      .protect-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
+      .protect-guide .faq details+details{margin-top:.75rem}
+      .protect-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
 
   <main class="feature">
       <h2>Password Protect</h2>
@@ -71,9 +93,134 @@
         </div>
       </div>
 
-      <div class="ad-box" data-ad-slot="protect-bottom">Ad Space</div>
-    </main>
+  <div id="ad-content" class="ad-slot"></div>
+      <!-- Inline feature blog: Password Protect (replaced with detailed guide) -->
+      <section class="feature-blog protect-guide" aria-labelledby="protect-guide-title">
+        <span class="eyebrow">Behind the Scenes</span>
+        <h2 id="protect-guide-title">Lock Your PDF with a Password — Simple, Fast &amp; Private</h2>
+        <p class="sub">Sharing a proposal, marksheet, ID scan, or invoice? Add a password so only the right people can open it. This guide explains how our Password Protect tool works in your browser and how to choose a strong passphrase.</p>
+        <p class="meta">Runs fully on your device • No uploads • Good for sensitive docs and quick sharing</p>
 
+        <div class="hero">
+          <div>
+            <p>
+              Our Password Protect tool creates a new, locked copy of your PDF. You pick a password, we encrypt the file locally, and you download the protected version. Your original remains unchanged, and nothing leaves your computer. It’s a quick privacy boost for everyday documents.
+            </p>
+            <a class="cta" href="/features/protect.html" aria-label="Open the Password Protect tool">🔒 Protect a PDF</a>
+            <p style="margin:.6rem 0 0">Use a passphrase like <span class="kbd">river-sky-7!caps</span> — long, memorable, and hard to guess.</p>
+          </div>
+
+          <figure class="viz" role="img" aria-label="Password protection pipeline diagram">
+            <img alt="PDF password protection flow"
+                 src="data:image/svg+xml;utf8,
+                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
+                   <defs><linearGradient id='g' x1='0' x2='1'>
+                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
+                   <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                   <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your PDF</text>
+                   <rect x='60' y='120' width='170' height='120' rx='10' fill='#eef2ff' stroke='%23dbe1ff'/>
+                   <rect x='330' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
+                   <text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Choose password &amp; options</text>
+                   <rect x='330' y='150' width='280' height='70' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
+                   <text x='470' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Encrypt &amp; rebuild locally</text>
+                   <rect x='650' y='60' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                   <text x='780' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Locked PDF</text>
+                   <rect x='690' y='120' width='180' height='120' rx='12' fill='#dcfce7' stroke='%23bbf7d0'/>
+                   <path d='M260 160 L330 95' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M260 160 L330 185' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M610 95 L650 160' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M610 185 L650 160' stroke='url(%23g)' stroke-width='6'/>
+                 </svg>"/>
+            <figcaption>Pick a password → we encrypt a new copy on your device → you download the locked PDF.</figcaption>
+          </figure>
+        </div>
+
+        <article>
+          <h3>How it works (in plain English)</h3>
+          <p>
+            A PDF is like a sealed folder of pages. When you protect it, we make a new copy of that folder and attach an <em>unlock rule</em>: “ask for this password before opening.” The encryption scrambles the file’s contents so a viewer app can’t read it until the right password is supplied. Once you enter it, the viewer decrypts the pages in memory and shows them normally.
+          </p>
+          <p>
+            Everything happens inside your browser tab. There’s no upload, processing queue, or server storage. Close the tab, and the temporary working data goes away with it.
+          </p>
+
+          <div class="grid">
+            <div class="card">
+              <h3 style="margin:.2rem 0 .4rem">Great use cases</h3>
+              <ul style="margin:.2rem 0 0 1rem">
+                <li>Sending invoices, marksheets, or offer letters by email</li>
+                <li>Sharing report drafts with a limited group</li>
+                <li>Storing ID scans or medical slips in personal archives</li>
+                <li>Handing in coursework that requires privacy</li>
+              </ul>
+            </div>
+            <div class="card">
+              <figure>
+                <img alt="Before and after protection illustration"
+                     src="data:image/svg+xml;utf8,
+                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
+                       <rect width='1200' height='620' fill='%23ffffff'/>
+                       <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Unprotected</text>
+                       <rect x='120' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
+                       <rect x='160' y='470' width='300' height='16' rx='8' fill='%23111' opacity='.08'/>
+                       <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Protected</text>
+                       <rect x='720' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
+                       <rect x='840' y='300' width='120' height='120' rx='20' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                       <circle cx='900' cy='330' r='36' fill='none' stroke='%23065f46' stroke-width='10'/>
+                       <rect x='885' y='343' width='30' height='25' rx='4' fill='%23065f46'/>
+                     </svg>"/>
+                <figcaption>Left: a normal PDF. Right: a locked copy that prompts for a password before opening.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <h3>Step-by-step: from open file to locked PDF</h3>
+          <ol>
+            <li><strong>Open the tool:</strong> go to <span class="kbd">/features/protect.html</span>.</li>
+            <li><strong>Add your PDF:</strong> drag &amp; drop or click to choose a file.</li>
+            <li><strong>Set a password:</strong> use at least 10 characters, with words + numbers + a symbol.</li>
+            <li><strong>Protect:</strong> click <em>Protect PDF</em> to build the encrypted copy locally.</li>
+            <li><strong>Download &amp; test:</strong> save it (e.g., <span class="kbd">offer-letter-protected.pdf</span>) and reopen to confirm the prompt.</li>
+          </ol>
+
+          <div class="tip">
+            <strong>Strong password recipe:</strong> pick <em>three random words</em> + <em>a number</em> + <em>a symbol</em> (e.g., <span class="kbd">violet-train-lake-47!</span>). Avoid names, birthdays, or common words like “password123”.
+          </div>
+
+          <h3>What password protection is (and isn’t)</h3>
+          <p>
+            Password protection is a smart first layer: it prevents casual access and keeps shared files private. But it isn’t a silver bullet. If the password is weak or reused, determined attackers could guess it. Also, some viewers ignore “no copy/print” flags — those are advisory, not strict DRM. Your best defense is a <strong>strong, unique password</strong> and sharing it <strong>securely</strong>.
+          </p>
+
+          <h3>Safe sharing basics</h3>
+          <ul>
+            <li>Send the PDF and the password via <em>different channels</em> (email + message).</li>
+            <li>Rotate the password if the file is reused across terms or clients.</li>
+            <li>Keep an unprotected original in a private archive for future edits.</li>
+          </ul>
+
+          <h3>FAQs</h3>
+          <div class="faq">
+            <details>
+              <summary>Does this change my original file?</summary>
+              <p>No. We create a new locked copy. Your original remains untouched.</p>
+            </details>
+            <details>
+              <summary>Will everyone be asked for the password?</summary>
+              <p>Yes. Any standard PDF reader will prompt for the password before opening.</p>
+            </details>
+            <details>
+              <summary>Can I remove the password later?</summary>
+              <p>Yes. Open with the password, export an unlocked copy, or use our tools to rebuild without protection.</p>
+            </details>
+          </div>
+
+          <p class="sub" style="margin-top:1rem">Ready to lock it down? Pick a strong passphrase, protect your file locally, and share with confidence.</p>
+          <p><a class="cta" href="/features/protect.html">Open Password Protect</a></p>
+        </article>
+      </section>
+    </main>
+    <div id="ad-footer" class="ad-slot"></div>
     <div data-include="footer"></div>
 
     <script>

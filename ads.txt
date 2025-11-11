@@ -1,0 +1,6 @@
+# ads.txt – Authorized Digital Sellers for editmypdf.tech
+# Replace pub-XXXXXXXXXXXXXXX with your own AdSense publisher ID after your account is approved.
+# Format: domain, publisher-id, relationship, certification-authority-id
+# Learn more: https://support.google.com/adsense/answer/7532444
+
+google.com, pub-REPLACE_WITH_YOUR_PUBLISHER_ID, DIRECT, f08c47fec0942fa0

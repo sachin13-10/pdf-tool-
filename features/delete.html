@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Delete Pages - EditMyPDFs.com</title>
+  <title>Delete Pages - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/delete.html" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
     <style>
@@ -110,10 +110,70 @@
         font-weight: 500;
       }
       /* Footer replaced by shared component */
+
+      /* Scoped styles for embedded blog section */
+      .delete-guide {
+        text-align: left;
+        max-width: 900px;
+        margin: 2.7rem auto;
+        padding: 0 1rem;
+      }
+      .delete-guide h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .delete-guide .sub {
+        color: #555;
+        margin-bottom: 1.8rem;
+      }
+      .delete-guide figure {
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+      .delete-guide img.blog-img {
+        max-width: 100%;
+        border-radius: 14px;
+        border: 1px solid #eee;
+      }
+      .delete-guide figcaption {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.4rem;
+      }
+      .delete-guide .cta {
+        display: inline-block;
+        margin-top: 1.4rem;
+        padding: 0.75rem 1.3rem;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #fff;
+        background: linear-gradient(90deg, #6366f1, #2563eb);
+        font-weight: 600;
+      }
+      .delete-guide .tip {
+        background: #f8faff;
+        border-left: 4px solid #2563eb;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+      }
+      .delete-guide ol,
+      .delete-guide ul {
+        margin-bottom: 1rem;
+        padding-left: 1.2rem;
+      }
+      .delete-guide .faq details {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        background: #fff;
+      }
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
 
   <main class="feature">
       <h2>Delete Pages</h2>
@@ -149,11 +209,109 @@
         <button id="start-btn" disabled>Delete Pages</button>
         <div id="status" class="progress"></div>
         <button id="download-btn" style="display: none">Download PDF</button>
-      </div>
+    </div>
 
-  <div class="ad-box" data-ad-slot="delete-bottom">Ad Space</div>
+    <div id="ad-content" class="ad-slot"></div>
+  <!-- Inline feature blog: Delete Pages (replaced with detailed guide) -->
+  <section class="feature-blog delete-guide" aria-labelledby="delete-guide-title">
+  <h1 id="delete-guide-title">How to Delete Pages from a PDF (Quick &amp; Secure) – EDITSMYPDF</h1>
+    <p class="sub">
+  Whether it’s a blank scan page, a duplicated sheet, or a confidential section – removing unwanted pages from a PDF should be quick, safe, and stress-free. Here’s how EDITSMYPDF makes that possible.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="https://upload.wikimedia.org/wikipedia/commons/0/08/PDF_file_icon_%28black%29.svg" width="130" alt="PDF icon">
+      <figcaption>Work directly in your browser — no file upload required.</figcaption>
+    </figure>
+
+    <p>
+      Many PDF editing tools require you to upload your file to a server, where the editing happens online. But this raises privacy concerns, especially if your PDF includes:
+    </p>
+
+    <ul>
+      <li>School assignments or study notes</li>
+      <li>Business proposals or contracts</li>
+      <li>ID proofs or banking documents</li>
+      <li>Private scanned paperwork</li>
+    </ul>
+
+    <p>
+  With <strong>EDITSMYPDF’s Delete Pages tool</strong>, everything happens <strong>on your device</strong>. The PDF never leaves your browser. This means:
+    </p>
+
+    <ul>
+      <li><strong>No upload</strong> → No privacy risk</li>
+      <li><strong>No account needed</strong></li>
+      <li><strong>No watermark</strong></li>
+      <li><strong>Works offline</strong> after first load</li>
+    </ul>
+
+    <a href="/features/delete.html" class="cta">Open Delete Pages Tool</a>
+
+    <h2 style="margin-top:2.2rem;">How the Delete Pages Tool Works (In Simple Words)</h2>
+
+    <p>
+      Think of your PDF as a stack of pages. Our tool simply lets you <strong>pick the pages you don’t want</strong>. Then it rebuilds the PDF again <strong>without those pages</strong>.
+    </p>
+
+    <figure>
+      <img class="blog-img" src="data:image/svg+xml;utf8,
+      <svg xmlns='http://www.w3.org/2000/svg' width='900' height='260'>
+        <rect x='60' y='80' width='220' height='100' rx='14' fill='#eef2ff' stroke='#cdd8ff'/>
+        <text x='170' y='135' text-anchor='middle' font-family='Arial' fill='#333'>Original PDF (10 Pages)</text>
+
+        <rect x='380' y='30' width='200' height='40' rx='10' fill='#ffe9e9' stroke='#ffcaca'/>
+        <text x='480' y='55' text-anchor='middle' font-family='Arial' fill='#cc0000'>Remove Pages 3, 7</text>
+
+        <rect x='660' y='80' width='220' height='100' rx='14' fill='#e5f9ff' stroke='#bae8ff'/>
+        <text x='770' y='135' text-anchor='middle' font-family='Arial' fill='#333'>New PDF (8 Pages)</text>
+
+        <line x1='280' y1='130' x2='380' y2='50' stroke='#2563eb' stroke-width='6'/>
+        <line x1='580' y1='50' x2='660' y2='130' stroke='#2563eb' stroke-width='6'/>
+      </svg>"
+      alt="Page removal diagram" />
+      <figcaption>We simply remove selected pages — nothing else changes.</figcaption>
+    </figure>
+
+    <h2>Step-by-Step: Delete Pages in Seconds</h2>
+
+    <ol>
+      <li>Open the tool here → <a href="/features/delete.html">/features/delete.html</a></li>
+      <li>Upload your PDF (or drag &amp; drop)</li>
+      <li>Enter the page numbers you want to delete</li>
+      <li>Click <strong>Delete Pages</strong></li>
+      <li>Download your clean, trimmed PDF</li>
+    </ol>
+
+    <div class="tip">
+      <strong>Example input formats:</strong><br>
+      <code>2</code> → delete page 2<br>
+      <code>2, 5, 9</code> → delete pages 2, 5, and 9<br>
+      <code>4-8</code> → delete pages 4 through 8<br>
+      <code>3, 7-11</code> → delete page 3 and pages 7 to 11 together
+    </div>
+
+    <h2>Why This Tool is Really Useful</h2>
+    <ul>
+      <li>Clean up scanned PDFs full of blank pages</li>
+      <li>Remove annexures or appendix pages before submitting</li>
+      <li>Trim lecture PDFs to only the important slides</li>
+      <li>Exclude private content before sharing</li>
+    </ul>
+
+    <h2>FAQ</h2>
+
+    <div class="faq">
+      <details><summary>Does this reduce PDF quality?</summary><p>No, we only remove pages — the rest stays exactly the same.</p></details>
+      <details><summary>Will my file be uploaded to your server?</summary><p>No. All processing happens in your browser.</p></details>
+      <details><summary>What if I remove the wrong page?</summary><p>Just reopen the original PDF and try again — your source file is never modified.</p></details>
+    </div>
+
+    <a href="/features/delete.html" class="cta">Try Delete Pages Now</a>
+
+  </section>
     </main>
-
+    <div id="ad-footer" class="ad-slot"></div>
   <div data-include="footer"></div>
 
     <script>

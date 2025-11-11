@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Extract Images - EditMyPDFs.com</title>
+  <title>Extract Images - EDITSMYPDF</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/extract-images.html" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
@@ -23,10 +23,34 @@
       .actions-row button { flex:1 1 220px; }
       @media (max-width:640px){ .actions-row button{ width:100%; } }
       .hint { font-size:.8rem; color:#777; margin-top:.5rem; }
+
+      /* Scoped styles for embedded Extract Images guide */
+      .extract-guide { text-align:left; max-width:900px; margin:2.5rem auto; padding:0 1rem; line-height:1.7; }
+      .extract-guide .eyebrow { display:inline-block; padding:.25rem .6rem; border-radius:999px; border:1px solid #e9ecf3; background:linear-gradient(90deg,#fff,#f7f8ff); font-size:.85rem; color:#333; }
+      .extract-guide h1 { font-size:2.2rem; line-height:1.2; margin:.6rem 0 .4rem; }
+      .extract-guide .sub { color:#60636c; margin:0 0 1.2rem; }
+      .extract-guide .meta { font-size:.9rem; color:#777; margin-bottom:1.25rem; }
+      .extract-guide .hero { display:grid; gap:1rem; grid-template-columns:1.2fr .8fr; align-items:center; border:1px solid #e9ecf3; border-radius:20px; padding:1.1rem; background:#fff; box-shadow:0 8px 24px rgba(0,0,0,.05); }
+      .extract-guide .cta { display:inline-flex; align-items:center; gap:.55rem; font-weight:700; background:linear-gradient(90deg,#6366f1,#2563eb); color:#fff; padding:.8rem 1.05rem; border-radius:12px; text-decoration:none; box-shadow:0 6px 16px rgba(37,99,235,.25); }
+      .extract-guide .viz { width:100%; height:auto; border:1px solid #e9ecf3; border-radius:16px; overflow:hidden; }
+      .extract-guide article { margin-top:2rem; }
+      .extract-guide h2 { font-size:1.35rem; margin:1.6rem 0 .5rem; }
+      .extract-guide p { margin:0 0 1rem; }
+      .extract-guide .grid { display:grid; gap:1rem; }
+      @media(min-width:800px){ .extract-guide .grid { grid-template-columns:1fr 1fr; } }
+      .extract-guide .card { border:1px solid #e9ecf3; border-radius:16px; padding:1rem; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.04); }
+      .extract-guide figure { margin:0; }
+      .extract-guide figcaption { font-size:.85rem; color:#666; margin-top:.5rem; }
+      .extract-guide .tip { background:#f8faff; border-left:4px solid #2563eb; border-radius:10px; padding:1rem; margin:.75rem 0; }
+      .extract-guide .faq details { border:1px solid #e9ecf3; border-radius:12px; padding:.75rem 1rem; background:#fff; }
+      .extract-guide .faq details+details { margin-top:.75rem; }
+      .extract-guide .kbd { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; background:#f5f7fb; border:1px solid #e7ebf3; padding:.15rem .35rem; border-radius:6px; font-size:.9rem; }
+      .extract-guide ul { padding-left:1.1rem; }
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
   <main class="feature">
       <h2>Extract Images</h2>
       <p class="sub">Pull embedded raster images from your PDF pages. Processing is 100% local.</p>
@@ -53,8 +77,145 @@
           <button id="download-zip" class="primary" disabled>Download All ZIP</button>
         </div>
       </div>
-      <div class="ad-box" data-ad-slot="extract-images-bottom">Ad Space</div>
+  <div id="ad-content" class="ad-slot"></div>
+      <!-- Inline feature blog: Extract Images (replaced with detailed guide) -->
+      <section class="feature-blog extract-guide" aria-labelledby="extract-guide-title">
+        <span class="eyebrow">Behind the Scenes</span>
+        <h1 id="extract-guide-title">Extract Images from a PDF — Fast, Private, and In-Browser</h1>
+        <p class="sub">Need just the pictures from a long PDF report, brochure, or assignment? Here’s a clear, human-friendly tour of how our Extract Images tool works and how to get the best results.</p>
+        <p class="meta">Private by design • Nothing uploads • Perfect for logos, photos, and diagrams</p>
+
+        <!-- Hero -->
+        <section class="hero">
+          <div>
+            <p>
+              The Extract Images tool pulls out the actual bitmap images embedded inside your PDF — the photos and graphics that were inserted by whoever created it. Everything runs <strong>locally in your browser</strong>. That means sensitive files never leave your device and you can quickly download images as individual files or a ZIP.
+            </p>
+            <a class="cta" href="/features/extract-images.html" aria-label="Open the Extract Images tool">🖼️ Try Image Extractor</a>
+            <p style="margin:.6rem 0 0">Use PNG for crisp logos; use JPEG for photos when you want smaller files.</p>
+          </div>
+
+          <!-- Inline, open-source safe SVG diagram -->
+          <figure class="viz" role="img" aria-label="Extraction pipeline diagram">
+            <img alt="PDF image extraction pipeline"
+                 src="data:image/svg+xml;utf8,
+                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 340'>
+                   <defs>
+                     <linearGradient id='g' x1='0' x2='1'>
+                       <stop offset='0%' stop-color='%236366f1'/>
+                       <stop offset='100%' stop-color='%232563eb'/>
+                     </linearGradient>
+                   </defs>
+                   <rect x='40' y='120' width='240' height='100' rx='14' fill='#ffffff' stroke='%23dbe1ff'/>
+                   <text x='160' y='175' text-anchor='middle' font-size='16' fill='%23333' font-family='Inter,Arial'>Your PDF</text>
+
+                   <rect x='360' y='60' width='260' height='60' rx='12' fill='#eef2ff' stroke='%23dbe1ff'/>
+                   <text x='490' y='95' text-anchor='middle' font-size='14' fill='%23333' font-family='Inter,Arial'>Scan page ops for image draws</text>
+
+                   <rect x='360' y='160' width='260' height='60' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
+                   <text x='490' y='195' text-anchor='middle' font-size='14' fill='%23333' font-family='Inter,Arial'>Decode raster data (XObjects)</text>
+
+                   <rect x='700' y='120' width='220' height='100' rx='14' fill='#ffffff' stroke='%23dbe1ff'/>
+                   <text x='810' y='175' text-anchor='middle' font-size='16' fill='%23333' font-family='Inter,Arial'>PNG / JPEG / ZIP</text>
+
+                   <path d='M280 170 L360 90' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M280 170 L360 190' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M620 90 L700 170' stroke='url(%23g)' stroke-width='6'/>
+                   <path d='M620 190 L700 170' stroke='url(%23g)' stroke-width='6'/>
+                 </svg>"/>
+            <figcaption>We detect image draw operations, decode the pixels, and export them as PNG/JPEG — locally.</figcaption>
+          </figure>
+        </section>
+
+        <article>
+          <h2>What actually happens under the hood?</h2>
+          <p>
+            A PDF page is basically a list of drawing instructions: “paint this image here, draw that line there, place this text here.” Our extractor walks through those instructions and looks for <em>image paints</em> (often called <strong>image XObjects</strong>). When it finds one, it decodes the pixel data and turns it into a normal image file that you can download.
+          </p>
+          <p>
+            Because we work with the original raster data, you get images at their <strong>native resolution</strong> — not a low-quality screenshot. That’s perfect for reusing product photos, diagrams, and scanned pictures.
+          </p>
+
+          <div class="grid">
+            <div class="card">
+              <h3 style="margin:.2rem 0 .4rem">What you can expect to extract</h3>
+              <ul style="margin:.2rem 0 0 1rem">
+                <li>Photos embedded in reports, brochures, and notes</li>
+                <li>Logos and icons that were inserted as bitmaps</li>
+                <li>Scanned pages that include separate image objects</li>
+              </ul>
+              <p class="tip"><strong>Heads-up:</strong> Some PDFs are 100% vector (no bitmaps) — in that case there’s nothing to “extract” as an image file.</p>
+            </div>
+            <div class="card">
+              <figure>
+                <img alt="Before and after extraction illustration"
+                     src="data:image/svg+xml;utf8,
+                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='600'>
+                       <rect width='1200' height='600' fill='%23ffffff'/>
+                       <rect x='70' y='90' width='460' height='360' rx='12' fill='%23ffffff' stroke='%23e1e5ff'/>
+                       <text x='300' y='130' text-anchor='middle' font-size='22' fill='%23333'>PDF Page</text>
+                       <rect x='120' y='180' width='180' height='120' rx='8' fill='%23eef2ff' stroke='%23dde3ff'/>
+                       <rect x='320' y='180' width='180' height='120' rx='8' fill='%23eef2ff' stroke='%23dde3ff'/>
+                       <rect x='120' y='310' width='380' height='100' rx='8' fill='%23fafafa' stroke='%23eee'/>
+                       <rect x='680' y='90' width='460' height='360' rx='12' fill='%23ffffff' stroke='%23e1e5ff'/>
+                       <text x='910' y='130' text-anchor='middle' font-size='22' fill='%23333'>Extracted Images</text>
+                       <rect x='720' y='180' width='180' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                       <rect x='920' y='180' width='180' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                     </svg>"/>
+                <figcaption>Left: a page with two embedded bitmaps. Right: the two exported PNG/JPEG files.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <h2>Step-by-step: from PDF to a folder of images</h2>
+          <ol>
+            <li><strong>Open the tool:</strong> go to <span class="kbd">/features/extract-images.html</span>.</li>
+            <li><strong>Upload your PDF:</strong> drag &amp; drop or click to choose a file.</li>
+            <li><strong>Pick a format:</strong> <span class="kbd">PNG</span> for logos/diagrams (lossless), <span class="kbd">JPEG</span> for photos (smaller size).</li>
+            <li><strong>Choose scale:</strong> increase if the document uses small raster assets; leave at default for most files.</li>
+            <li><strong>Preview &amp; select:</strong> mark the images you want, or export everything as a ZIP.</li>
+            <li><strong>Download:</strong> save files with clear names (e.g., <span class="kbd">page2-hero.jpg</span>).</li>
+          </ol>
+
+          <div class="tip">
+            <strong>Pro tips:</strong><br />
+            • Need just a logo? Choose PNG to keep crisp edges and transparency.<br />
+            • Photos going to the web? JPEG keeps size low with minimal visible loss.<br />
+            • If no images appear, the PDF may be fully vector (charts drawn by lines, not pixels).
+          </div>
+
+          <h2>What this tool can’t pull (and why)</h2>
+          <p>
+            If the content was drawn as <strong>vectors</strong> (think lines, shapes, text outlines) there isn’t a bitmap to export. Likewise, live text isn’t an image. You can still screenshot those, but that’s different from extraction and won’t deliver true native resolution.
+          </p>
+
+          <h2>Privacy matters — and it’s built in</h2>
+          <p>
+            The entire process happens on your device. We don’t upload or store your documents, which is essential when handling confidential slides, proposal decks, or identity papers. Close the tab, and the working data goes away with it.
+          </p>
+
+          <h2>FAQs</h2>
+          <div class="faq">
+            <details>
+              <summary>Will the images be the original quality?</summary>
+              <p>Yes, we export at the image’s native pixel dimensions whenever the PDF embeds a bitmap. For JPEG, you can trade size for quality if needed.</p>
+            </details>
+            <details>
+              <summary>Nothing shows up — is something wrong?</summary>
+              <p>Probably not. Many PDFs contain only vector art and text. In those cases, there are simply no raster images to extract.</p>
+            </details>
+            <details>
+              <summary>Can I download everything at once?</summary>
+              <p>Yes. Use the ZIP option to bundle all extracted images into a single download.</p>
+            </details>
+          </div>
+
+          <p class="sub" style="margin-top:1rem">Ready to grab those visuals? Open the extractor, pick your format, and save exactly the images you need — no noise, no upload, no risk.</p>
+          <p><a class="cta" href="/features/extract-images.html">Open Extract Images</a></p>
+        </article>
+      </section>
     </main>
+    <div id="ad-footer" class="ad-slot"></div>
     <div data-include="footer"></div>
     <script>
       const dropZone = document.getElementById('drop-zone');

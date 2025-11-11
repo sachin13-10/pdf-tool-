@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-  <title>Reorder Pages - EditMyPDFs.com</title>
+  <title>Reorder Pages - EDITSMYPDF</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/reorder.html" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
@@ -32,10 +32,32 @@
     button:hover { opacity:.9; }
     .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
     .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+    /* Scoped blog styles: Reorder guide */
+    .reorder-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
+    .reorder-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
+    .reorder-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
+    .reorder-guide .sub{color:#60636c;margin:0 0 1rem}
+    .reorder-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
+    .reorder-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+    .reorder-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
+    .reorder-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
+    .reorder-guide article{margin-top:2rem}
+    .reorder-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
+    .reorder-guide p{margin:0 0 1rem}
+    .reorder-guide .grid{display:grid;gap:1rem}
+    @media (min-width:800px){ .reorder-guide .grid{grid-template-columns:1fr 1fr} }
+    .reorder-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
+    .reorder-guide figure{margin:0}
+    .reorder-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
+    .reorder-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
+    .reorder-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
+    .reorder-guide .faq details+details{margin-top:.75rem}
+    .reorder-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
   </style>
 </head>
 <body>
   <header data-include="navbar"></header>
+  <div id="ad-top" class="ad-slot"></div>
   <main class="feature">
     <h2>Reorder Pages</h2>
     <p class="sub">Drag the thumbnails to change the order, then download a new PDF.</p>
@@ -49,8 +71,143 @@
       <button id="download-btn" style="display:none">Download PDF</button>
       <div id="status" class="progress"></div>
     </div>
-    <div class="ad-box" data-ad-slot="reorder-bottom">Ad Space</div>
+  <div id="ad-content" class="ad-slot"></div>
+    <!-- Inline feature blog: Reorder Pages (replaced with detailed guide) -->
+    <section class="feature-blog reorder-guide" aria-labelledby="reorder-guide-title">
+      <span class="eyebrow">Behind the Scenes</span>
+      <h2 id="reorder-guide-title">Reorder PDF Pages in Seconds — Drag, Drop, Done</h2>
+      <p class="sub">Slides out of order? Title page at the end? This guide shows how our Reorder Pages tool works in your browser, why it’s private by design, and a few tricks for clean, professional results.</p>
+      <p class="meta">Runs fully on your device • No uploads • Great for study packs, reports, and scanned sets</p>
+
+      <div class="hero">
+        <div>
+          <p>
+            The Reorder Pages tool lets you shuffle page thumbnails into the exact sequence you want and export a new PDF. Everything runs <strong>locally</strong> in your browser using efficient PDF libraries, so your document never leaves your device. It’s quick, safe, and ideal for sensitive course notes or paperwork.
+          </p>
+          <a class="cta" href="/features/reorder.html" aria-label="Open the Reorder Pages tool">🧩 Reorder Pages Now</a>
+          <p style="margin:.6rem 0 0">Tip: save as <span class="kbd">project-reordered.pdf</span> to keep the original untouched.</p>
+        </div>
+
+        <figure class="viz" role="img" aria-label="Reorder pages pipeline diagram">
+          <img alt="Reorder PDF flow diagram"
+               src="data:image/svg+xml;utf8,
+               <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 340'>
+                 <defs><linearGradient id='g' x1='0' x2='1'>
+                   <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
+                 <!-- Original stack -->
+                 <rect x='30' y='70' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                 <text x='145' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Original Order</text>
+                 <rect x='60' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+                 <rect x='125' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+                 <rect x='190' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+
+                 <!-- Drag action -->
+                 <rect x='330' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
+                 <text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Drag &amp; drop thumbnails</text>
+
+                 <!-- New stack -->
+                 <rect x='650' y='70' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                 <text x='780' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>New Order</text>
+                 <rect x='680' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                 <rect x='745' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                 <rect x='810' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
+
+                 <path d='M260 170 L330 95' stroke='url(%23g)' stroke-width='6'/>
+                 <path d='M610 95 L650 170' stroke='url(%23g)' stroke-width='6'/>
+               </svg>"/>
+          <figcaption>We copy pages into a fresh PDF using your new order — locally, without uploads.</figcaption>
+        </figure>
+      </div>
+
+      <article>
+        <h3>How reordering actually works (in plain English)</h3>
+        <p>
+          A PDF is a stack of pages. When you load your file, we display small previews (thumbnails) to make dragging easy. As you move thumbnails, you’re changing a list of page indices — think “page 5 goes here, page 2 goes there.” When you click <strong>Download</strong>, we build a <em>new</em> PDF by copying the original pages in your chosen order. Your source file stays exactly the same.
+        </p>
+        <p>
+          Because we copy page objects directly (not screenshots), the final document preserves <strong>text, links, vector graphics, and image quality</strong>. Mixed page sizes and orientations are supported, so a landscape slide can sit next to portrait notes without stretching.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h3 style="margin:.2rem 0 .4rem">Great use cases</h3>
+            <ul style="margin:.2rem 0 0 1rem">
+              <li>Fix out-of-order scans after photographing pages</li>
+              <li>Move a title page or TOC to the front</li>
+              <li>Group lectures or chapters for one clean study pack</li>
+              <li>Prepare a report for printing or submission</li>
+            </ul>
+          </div>
+          <div class="card">
+            <figure>
+              <img alt="Before and after reorder illustration"
+                   src="data:image/svg+xml;utf8,
+                   <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
+                     <rect width='1200' height='620' fill='%23ffffff'/>
+                     <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Before</text>
+                     <rect x='120' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
+                     <rect x='160' y='155' width='300' height='14' rx='7' fill='%23111' opacity='.08'/>
+                     <rect x='160' y='180' width='260' height='14' rx='7' fill='%23111' opacity='.08'/>
+                     <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>After</text>
+                     <rect x='720' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
+                     <rect x='760' y='155' width='300' height='14' rx='7' fill='%23111' opacity='.08'/>
+                     <rect x='760' y='180' width='260' height='14' rx='7' fill='%23111' opacity='.08'/>
+                     <rect x='870' y='505' width='110' height='18' rx='9' fill='%23222' opacity='.06'/>
+                     <text x='925' y='518' text-anchor='middle' font-size='14' fill='%23666'>Page 1 / New Order</text>
+                   </svg>"/>
+              <figcaption>Drag thumbnails to rearrange, then export a clean, reorganized PDF.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <h3>Step-by-step: from messy to perfect order</h3>
+        <ol>
+          <li><strong>Open:</strong> go to <span class="kbd">/features/reorder.html</span>.</li>
+          <li><strong>Add your PDF:</strong> drag &amp; drop or click to choose a file.</li>
+          <li><strong>Drag to rearrange:</strong> move thumbnails until the sequence matches your plan.</li>
+          <li><strong>Preview key pages:</strong> check the first and last pages once more.</li>
+          <li><strong>Download:</strong> save as <span class="kbd">reordered.pdf</span> (keep the original for safety).</li>
+        </ol>
+
+        <div class="tip">
+          <strong>Helpful tips:</strong><br />
+          • For huge PDFs, reorder in sections (e.g., chapters), export, then merge the sections.<br />
+          • Rename the output with a version tag like <span class="kbd">report-v2-reordered.pdf</span> to avoid confusion.<br />
+          • If a page is rotated, fix rotation first (or after) using your viewer; ordering won’t change orientation.
+        </div>
+
+        <h3>What it is (and isn’t)</h3>
+        <p>
+          This tool changes <em>order</em> only. It doesn’t edit content inside a page or delete pages. For those, use the <strong>Edit</strong> and <strong>Delete Pages</strong> tools. If you need to compress a very large result, run the final file through the <strong>Compressor</strong> to reduce size without changing order.
+        </p>
+
+        <h3>Privacy by default</h3>
+        <p>
+          Your file never uploads to a server. Thumbnails and page copying happen in the same tab you’re using right now. That’s ideal for contracts, IDs, classroom material, and any sensitive documents. Close the tab and the working data is gone.
+        </p>
+
+        <h3>FAQs</h3>
+        <div class="faq">
+          <details>
+            <summary>Will quality or links change after reordering?</summary>
+            <p>No. We copy the original page objects directly, so text, links, and graphics stay intact.</p>
+          </details>
+          <details>
+            <summary>Can I reorder 100+ pages?</summary>
+            <p>Yes, but rendering many thumbnails can take time. Reorder in parts if your device is low on memory.</p>
+          </details>
+          <details>
+            <summary>Does it support mixed page sizes?</summary>
+            <p>Yes. Each page keeps its original size and orientation inside the new PDF.</p>
+          </details>
+        </div>
+
+        <p class="sub" style="margin-top:1rem">Ready to fix the flow? Open the tool, drag pages where they belong, and download a perfectly ordered PDF.</p>
+        <p><a class="cta" href="/features/reorder.html">Open Reorder Pages</a></p>
+      </article>
+    </section>
   </main>
+  <div id="ad-footer" class="ad-slot"></div>
   <div data-include="footer"></div>
   <script>
   const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;

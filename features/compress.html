@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Compress PDF - EditMyPDFs.com</title>
+  <title>Compress PDF - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/compress.html" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -114,6 +114,7 @@
   </head>
   <body>
     <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot" aria-label="Top advertisement placeholder"></div>
 
   <main class="feature">
       <h2>Compress PDF</h2>
@@ -121,7 +122,7 @@
         Upload your PDF, set desired size, then click “Start Compression”.
       </p>
 
-      <div class="compress-card">
+  <div class="compress-card">
         <label>Enter desired size:</label>
         <input type="number" id="target-size" placeholder="256" value="256" />
         <select id="size-unit">
@@ -157,9 +158,102 @@
         </button>
       </div>
 
-  <div class="ad-box" data-ad-slot="compress-bottom">Ad Space</div>
-    </main>
+  <div id="ad-content" class="ad-slot" aria-label="Content advertisement placeholder"></div>
+      <!-- Inline feature blog: replaced with in-depth explainer -->
+      <section class="feature-blog" aria-labelledby="compress-blog-title">
+        <h3 id="compress-blog-title" class="blog-title">How Our PDF Compressor Works (In Plain English)</h3>
+        <p class="sub">You dropped in a big PDF, clicked compress, and—boom—your file got smaller. Here’s the human-friendly tour of what actually happens, why quality still looks good, and how to get the best results every time.</p>
 
+        <h4>What actually happens under the hood?</h4>
+        <p>
+          Think of a PDF like a folder. Inside are pages, and each page can hold text, vector drawings, and images. Our tool opens that “folder” right in your browser and visits each page. For every page, we make a high‑resolution snapshot on an invisible canvas. Then we write those snapshots back into a brand‑new PDF—but this time, each page image is saved at a smart, slightly lower quality to reduce the file size.
+        </p>
+        <p>
+          That’s the core idea: <strong>render → snapshot → rebuild</strong>. The quality is tuned adaptively so you can aim for a specific size (say <em>256&nbsp;KB</em> or <em>2&nbsp;MB</em>) without crushing readability.
+        </p>
+
+        <div class="blog-figures">
+          <figure>
+            <img src="data:image/svg+xml;utf8,
+              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
+                <rect width='1200' height='700' fill='%23fafbff'/>
+                <rect x='70' y='120' width='480' height='420' rx='12' fill='white' stroke='%23d9ddff'/>
+                <text x='310' y='165' text-anchor='middle' fill='%23333' font-size='28'>Before</text>
+                <rect x='120' y='200' width='380' height='220' rx='8' fill='%23eef2ff' stroke='%23e0e7ff'/>
+                <text x='310' y='340' text-anchor='middle' fill='%23666' font-size='18'>~ 4.2 MB</text>
+                <rect x='650' y='120' width='480' height='420' rx='12' fill='white' stroke='%23d9ddff'/>
+                <text x='890' y='165' text-anchor='middle' fill='%23333' font-size='28'>After</text>
+                <rect x='700' y='200' width='380' height='220' rx='8' fill='%23eefaf5' stroke='%23d1fae5'/>
+                <text x='890' y='340' text-anchor='middle' fill='%23065f46' font-size='18'>~ 780 KB</text>
+              </svg>"
+              alt="Before/After size comparison preview" style="width:100%;height:auto;border-radius:12px;">
+            <figcaption>Illustration: typical scanned PDFs shrink a lot; vector‑heavy brochures shrink less.</figcaption>
+          </figure>
+        </div>
+
+        <h4>Step‑by‑step, from click to download</h4>
+        <ol class="blog-steps">
+          <li><strong>You choose a target size.</strong> Pick in KB or MB. A realistic goal helps quality.</li>
+          <li><strong>We scan your pages.</strong> Each page is rendered to a canvas at a sensible scale.</li>
+          <li><strong>We encode images.</strong> The page snapshot is stored as a JPEG with an initial quality.</li>
+          <li><strong>We check the size.</strong> If the PDF is still larger than your target, we retry at a slightly lower quality.</li>
+          <li><strong>We stop when it fits.</strong> Once it meets the target (or the quality floor), we package your new, smaller PDF.</li>
+        </ol>
+
+        <h4>Privacy first: your file stays with you</h4>
+        <p>
+          Everything happens locally in your browser. We don’t upload, scan, or store your document — and when you close the tab, the working data disappears. It’s compression without compromise.
+        </p>
+
+        <div class="ad-slot" aria-label="In-article advertisement placeholder">Ad</div>
+
+        <h4>Pro tips for best results</h4>
+        <ul>
+          <li><strong>Start moderate.</strong> Aim for a 40–60% reduction first. If it still looks great, go lower.</li>
+          <li><strong>Check small text.</strong> If tiny fonts look fuzzy, bump the target size up a notch.</li>
+          <li><strong>Split and compress.</strong> For huge docs, compress sections separately to keep quality consistent.</li>
+          <li><strong>Keep originals safe.</strong> Use a clear output name (e.g., <em>filename‑compressed.pdf</em>).</li>
+        </ul>
+
+        <div class="blog-figures">
+          <figure>
+            <img src="data:image/svg+xml;utf8,
+              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='560'>
+                <rect width='1200' height='560' fill='%23ffffff'/>
+                <text x='600' y='70' text-anchor='middle' font-size='24' fill='%23333'>Quality vs. Size</text>
+                <line x1='120' y1='460' x2='1080' y2='460' stroke='%23d1d5db' stroke-width='2'/>
+                <line x1='120' y1='120' x2='120' y2='460' stroke='%23d1d5db' stroke-width='2'/>
+                <polyline fill='none' stroke='%232563eb' stroke-width='4' points='120,180 360,220 600,300 840,380 1080,430'/>
+                <circle cx='360' cy='220' r='6' fill='%232563eb'/>
+                <circle cx='600' cy='300' r='6' fill='%232563eb'/>
+                <circle cx='840' cy='380' r='6' fill='%232563eb'/>
+                <text x='1080' y='485' text-anchor='end' font-size='14' fill='%23666'>Smaller size →</text>
+                <text x='80' y='130' text-anchor='end' font-size='14' fill='%23666'>Higher quality →</text>
+              </svg>"
+              alt="Chart illustration showing quality decreasing as size target lowers"
+              style="width:100%;height:auto;border-radius:12px;">
+            <figcaption>Lower targets mean smaller files but more aggressive compression. Find your sweet spot.</figcaption>
+          </figure>
+        </div>
+
+        <h4>Quick FAQs</h4>
+        <details>
+          <summary>Will links, forms, or selectable text survive?</summary>
+          <p>Since pages are flattened into images, interactive elements (links, forms, selectable text) won’t behave the same afterward. If you need live text, try a lighter target or compress only scan‑heavy sections.</p>
+        </details>
+        <details>
+          <summary>Why does a 1‑page scan shrink more than a brochure?</summary>
+          <p>Scans are just images—easy to shrink. Brochures often mix vectors, icons, and crisp text that need more detail to look good, so savings are smaller.</p>
+        </details>
+        <details>
+          <summary>What if the output is still too big?</summary>
+          <p>Try a slightly lower target, or split the file and compress parts. Also remove unused pages before compressing—garbage in, garbage out.</p>
+        </details>
+
+        <p class="note">Ready to try? Drop your PDF above, set a goal, and you’ll see progress as each page is packed and optimized.</p>
+      </section>
+    </main>
+    <div id="ad-footer" class="ad-slot" aria-label="Footer advertisement placeholder"></div>
   <div data-include="footer"></div>
 
     <script>

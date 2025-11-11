@@ -3,11 +3,11 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-		<title>Edit PDF (Canvas) - EditMyPDFs.com</title>
+		<title>Edit PDF (Canvas) - EDITSMYPDF</title>
 
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="../assets/styles.css" />
+		<link rel="canonical" href="https://editmypdf.tech/features/edit.html" />
 
 		<!-- PDF.js and PDF-Lib for render + export -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -36,10 +36,34 @@
 			.file-info { color:#333; font-weight:500; font-size:.95rem; margin-top:.5rem; }
 			.upload-box { min-height: 160px; }
 			@media (max-width: 900px){ .work-area { grid-template-columns:1fr; } .canvas-wrap { max-height:60vh; } }
+
+			/* Scoped styles for embedded Edit blog/guide */
+			.edit-guide { text-align: left; max-width: 900px; margin: 2.5rem auto; padding: 0 1rem; }
+			.edit-guide .eyebrow { display:inline-block; padding:.25rem .6rem; border-radius:999px; border:1px solid #e9ecf3; background:linear-gradient(90deg,#fff,#f7f8ff); font-size:.85rem; color:#333; }
+			.edit-guide h1 { font-size:2.2rem; line-height:1.2; margin:.6rem 0 .4rem; }
+			.edit-guide .sub { color:#60636c; margin:0 0 1.25rem; }
+			.edit-guide .meta { font-size:.9rem; color:#777; margin-bottom:1.25rem; }
+			.edit-guide .hero { display:grid; gap:1rem; grid-template-columns:1.2fr .8fr; align-items:center; border:1px solid #e9ecf3; border-radius:20px; padding:1.1rem; background:#fff; box-shadow:0 8px 24px rgba(0,0,0,.05); }
+			.edit-guide .cta { display:inline-flex; align-items:center; gap:.55rem; font-weight:700; background:linear-gradient(90deg,#6366f1,#2563eb); color:#fff; padding:.8rem 1.05rem; border-radius:12px; text-decoration:none; box-shadow:0 6px 16px rgba(37,99,235,.25); }
+			.edit-guide .viz { width:100%; height:auto; border:1px solid #e9ecf3; border-radius:16px; overflow:hidden; }
+			.edit-guide article { margin-top:2rem; }
+			.edit-guide h2 { font-size:1.35rem; margin:1.6rem 0 .5rem; }
+			.edit-guide p { margin:0 0 1rem; }
+			.edit-guide .grid { display:grid; gap:1rem; }
+			@media(min-width:800px){ .edit-guide .grid { grid-template-columns:1fr 1fr; } }
+			.edit-guide .card { border:1px solid #e9ecf3; border-radius:16px; padding:1rem; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.04); }
+			.edit-guide figure { margin:0; }
+			.edit-guide figcaption { font-size:.85rem; color:#666; margin-top:.5rem; }
+			.edit-guide .tip { background:#f8faff; border-left:4px solid #2563eb; border-radius:10px; padding:1rem; margin:.75rem 0; }
+			.edit-guide .faq details { border:1px solid #e9ecf3; border-radius:12px; padding:.75rem 1rem; background:#fff; }
+			.edit-guide .faq details+details { margin-top:.75rem; }
+			.edit-guide .kbd { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; background:#f5f7fb; border:1px solid #e7ebf3; padding:.15rem .35rem; border-radius:6px; font-size:.9rem; }
+			.edit-guide .badge { background:#10b98115; color:#065f46; border:1px solid #10b98155; padding:.15rem .5rem; border-radius:999px; font-size:.8rem; font-weight:700; }
 		</style>
 	</head>
 	<body>
 		<header data-include="navbar"></header>
+		<div id="ad-top" class="ad-slot"></div>
 
 		<main class="feature">
 			<h2>Edit PDF (Canvas)</h2>
@@ -111,9 +135,147 @@
 				</div>
 			</div>
 
-			<div class="ad-box" data-ad-slot="editmy-bottom">Ad Space</div>
+			<div id="ad-content" class="ad-slot"></div>
+			<!-- Inline feature blog: Edit PDF (Canvas) replaced with detailed guide -->
+			<section class="feature-blog edit-guide" aria-labelledby="edit-guide-title">
+				<span class="eyebrow">Behind the Scenes</span>
+				<h1 id="edit-guide-title">Edit PDFs in Your Browser — No Uploads, No Stress</h1>
+				<p class="sub">Need to correct a label, highlight a paragraph, draw a box around an answer, or drop in a signature? Here’s how our Edit tool works—explained like we’re sitting next to you.</p>
+				<p class="meta">Private by design • Works on-device • Great for notes, forms, and quick fixes</p>
+
+				<!-- Hero with visual -->
+				<section class="hero">
+					<div>
+						<p>
+							The Edit tool lets you <strong>add text, highlights, drawings, shapes, images, and signatures</strong> directly on top of your PDF pages. Everything runs <strong>locally in your browser</strong> using Web Canvas + PDF libraries. Your document never leaves your device, so sensitive files stay yours.
+						</p>
+						<a class="cta" href="/features/edit.html" aria-label="Open the Edit PDF tool">✍️ Try the Editor</a>
+						<p style="margin:.6rem 0 0"><span class="badge">Tip</span> Use a clear output name like <span class="kbd">report-edited.pdf</span> to keep the original safe.</p>
+					</div>
+
+					<!-- Clean open-source SVG visual (inline, no external calls) -->
+					<figure class="viz" role="img" aria-label="Edit pipeline diagram">
+						<img alt="Edit PDF flow diagram"
+							 src="data:image/svg+xml;utf8,
+							 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 320'>
+							   <defs>
+							     <linearGradient id='g' x1='0' x2='1'>
+							       <stop offset='0%' stop-color='%236366f1'/>
+							       <stop offset='100%' stop-color='%232563eb'/>
+							     </linearGradient>
+							   </defs>
+							   <rect x='40' y='120' width='200' height='90' rx='14' fill='#ffffff' stroke='%23dbe1ff'/>
+							   <text x='140' y='172' text-anchor='middle' font-size='16' fill='%23333' font-family='Inter,Arial'>Your PDF</text>
+
+							   <rect x='340' y='40' width='220' height='60' rx='12' fill='#eef2ff' stroke='%23dbe1ff'/>
+							   <text x='450' y='76' text-anchor='middle' font-size='14' fill='%23333' font-family='Inter,Arial'>Canvas Overlay (Text/Draw/Highlight)</text>
+
+							   <rect x='340' y='140' width='220' height='60' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
+							   <text x='450' y='176' text-anchor='middle' font-size='14' fill='%23333' font-family='Inter,Arial'>Images &amp; Signatures</text>
+
+							   <rect x='640' y='120' width='220' height='90' rx='14' fill='#ffffff' stroke='%23dbe1ff'/>
+							   <text x='750' y='172' text-anchor='middle' font-size='16' fill='%23333' font-family='Inter,Arial'>Edited PDF</text>
+
+							   <path d='M240 165 L340 70' stroke='url(%23g)' stroke-width='6'/>
+							   <path d='M240 165 L340 170' stroke='url(%23g)' stroke-width='6'/>
+							   <path d='M560 70 L640 165' stroke='url(%23g)' stroke-width='6'/>
+							   <path d='M560 170 L640 165' stroke='url(%23g)' stroke-width='6'/>
+							 </svg>"/>
+						<figcaption>Beneath the hood: we layer your edits on a canvas and bake them into a new PDF on export.</figcaption>
+					</figure>
+				</section>
+
+				<article>
+					<h2>What actually happens when you edit?</h2>
+					<p>
+						Think of a PDF page like a print lying on a table. Our editor places a transparent sheet on top—your <em>overlay</em>. When you add a text box, draw with the pen, or drop a signature image, it’s added to that sheet. When you hit <strong>Download</strong>, we “press” the overlay onto a fresh copy of the page and save the result as a new PDF. Your original file stays untouched.
+					</p>
+					<p>
+						This approach is fast, safe, and flexible for the most common real-world needs: comments, small fixes, annotations, and signatures—without the heavy tooling of full document reconstruction.
+					</p>
+
+					<div class="grid">
+						<div class="card">
+							<h3 style="margin:.2rem 0 .4rem">Tools you’ll use most</h3>
+							<ul style="margin:.2rem 0 0 1rem">
+								<li><strong>Text:</strong> add labels, corrections, or notes; choose font size and color.</li>
+								<li><strong>Highlight:</strong> mark key sentences with adjustable opacity.</li>
+								<li><strong>Pen:</strong> freehand arrows, underlines, quick sketches.</li>
+								<li><strong>Shapes:</strong> rectangles and ellipses for tidy callouts.</li>
+								<li><strong>Image / Stamp:</strong> logos, watermarks, or a scanned signature.</li>
+							</ul>
+						</div>
+						<div class="card">
+							<figure>
+								<img alt="Before and after edit illustration"
+									 src="data:image/svg+xml;utf8,
+									 <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
+									   <rect width='1200' height='620' fill='%23ffffff'/>
+									   <rect x='60' y='100' width='480' height='360' rx='12' fill='%23ffffff' stroke='%23e1e5ff'/>
+									   <text x='300' y='140' text-anchor='middle' font-size='22' fill='%23333'>Before</text>
+									   <rect x='110' y='180' width='380' height='220' rx='8' fill='%23f7f8ff' stroke='%23e8ebff'/>
+									   <rect x='80' y='480' width='420' height='16' rx='8' fill='%23eef2ff'/>
+									   <rect x='660' y='100' width='480' height='360' rx='12' fill='%23ffffff' stroke='%23e1e5ff'/>
+									   <text x='900' y='140' text-anchor='middle' font-size='22' fill='%23333'>After</text>
+									   <rect x='710' y='180' width='380' height='220' rx='8' fill='%23fff9db' stroke='%23fde68a'/>
+									   <line x1='740' y1='210' x2='1010' y2='210' stroke='%23f59e0b' stroke-width='10' stroke-linecap='round'/>
+									   <rect x='680' y='480' width='420' height='16' rx='8' fill='%23dcfce7'/>
+									 </svg>"/>
+								<figcaption>Example: highlight a sentence, add a note, and export.</figcaption>
+							</figure>
+						</div>
+					</div>
+
+					<h2>Step-by-step: from upload to export</h2>
+					<ol>
+						<li><strong>Open the editor:</strong> go to <span class="kbd">/features/edit.html</span>.</li>
+						<li><strong>Add your PDF:</strong> drag &amp; drop or click to choose a file.</li>
+						<li><strong>Pick a tool:</strong> Text, Highlighter, Pen, Rectangle, Ellipse, or Image.</li>
+						<li><strong>Click on the page:</strong> place your text or draw; adjust color, size, and opacity.</li>
+						<li><strong>Navigate pages:</strong> use the arrows and zoom controls for precision.</li>
+						<li><strong>Download:</strong> choose a file name like <span class="kbd">edited.pdf</span> and export your new copy.</li>
+					</ol>
+
+					<div class="tip">
+						<strong>Pro tips:</strong><br />
+						• Use lower opacity (0.3–0.6) for smooth, readable highlights.<br />
+						• Keep consistent font sizes across related notes to maintain visual hierarchy.<br />
+						• For multi-page edits, export once halfway as a backup.
+					</div>
+
+					<h2>What this editor is (and isn’t)</h2>
+					<p>
+						Our editor shines for <em>overlay</em> work—annotations, signatures, shapes, and images. It doesn’t rewrite the original text layer or embedded fonts inside the PDF. If you need to <strong>reorder or delete pages</strong>, use the dedicated tools in the suite; if you need a smaller file afterward, run it through the <strong>Compressor</strong>.
+					</p>
+
+					<h2>Why local editing matters</h2>
+					<p>
+						Privacy is a feature, not a footnote. Because editing happens in your browser, your file isn’t uploaded, queued, or stored on external servers. This is especially important for contracts, IDs, medical records, class notes, and anything you wouldn’t want to leave your device.
+					</p>
+
+					<h2>FAQs</h2>
+					<div class="faq">
+						<details>
+							<summary>Will my original PDF be changed?</summary>
+							<p>No. We create a new PDF with your edits. Your original remains exactly the same.</p>
+						</details>
+						<details>
+							<summary>Can I sign a document?</summary>
+							<p>Yes. Add a signature image (PNG/JPG) or draw it with the Pen tool, then export.</p>
+						</details>
+						<details>
+							<summary>Do links and text still work?</summary>
+							<p>Existing content stays as is. Your new edits are added on top and baked in during export.</p>
+						</details>
+					</div>
+
+					<p class="sub" style="margin-top:1rem">Ready to make that quick fix? Open the editor, add your notes, and export a clean, shareable PDF in minutes.</p>
+					<p><a class="cta" href="/features/edit.html">Open Edit PDF</a></p>
+				</article>
+			</section>
 		</main>
 
+		<div id="ad-footer" class="ad-slot"></div>
 		<div data-include="footer"></div>
 
 		<script>

@@ -57,33 +57,16 @@
     } catch(e){}
   }
 
-  // Adsense loader (optional)
-  function initAds(){
-    var client = (window.ADSENSE_CLIENT || '').trim();
-    if (!client) return; // Only load when user configures
-    if (!document.querySelector('script[data-adsbygoogle]')){
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(client);
-      s.crossOrigin = 'anonymous';
-      s.setAttribute('data-adsbygoogle','1');
-      document.head.appendChild(s);
-    }
-    // Convert placeholders into real slots
-    document.querySelectorAll('.ad-banner, .ad-box, .ad-slot').forEach(function(el){
-      if (el.classList.contains('ads-init')) return;
-      el.classList.add('ads-init');
-      var ins = document.createElement('ins');
-      ins.className = 'adsbygoogle';
-      ins.style.display = 'block';
-      ins.setAttribute('data-ad-client', client);
-      ins.setAttribute('data-ad-slot', (el.getAttribute('data-ad-slot')||'').trim() || '0000000000');
-      ins.setAttribute('data-ad-format', 'auto');
-      ins.setAttribute('data-full-width-responsive', 'true');
-      el.innerHTML = '';
-      el.appendChild(ins);
-      try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
-    });
+  // Ads module loader (loads optional AdSense + placements logic from assets/ads/ads.js)
+  function loadAdsModule(){
+    // Only load if placeholders exist (keeps non-ad pages lean)
+    if (!document.querySelector('.ad-slot, .ad-box, .ad-banner')) return;
+    if (document.getElementById('ads-module')) return;
+    var s = document.createElement('script');
+    s.id = 'ads-module';
+    s.async = true;
+    s.src = base + '/assets/ads/ads.js';
+    document.head.appendChild(s);
   }
 
   // Simple cookie banner (hidden if Funding Choices CMP loads)
@@ -184,7 +167,8 @@
     initNavbar();
     ensureCookieBanner();
     loadFundingChoicesIfConfigured();
-    initAds();
+    // Load ads module which handles config, auto placement, and AdSense init
+    try { loadAdsModule(); } catch(e){}
     setupStickyActions();
   });
 
@@ -229,4 +213,9 @@
     ['scroll','resize','orientationchange'].forEach(function(evt){ window.addEventListener(evt, updateBar, { passive:true }); });
     updateBar();
   }
+
+  // (Legacy) Dynamic feature blog injection removed: each feature page now contains
+  // its own static <section class="feature-blog"> with unique educational content and ad slots.
+
+  // (Ad placement + AdSense logic moved to assets/ads/ads.js)
 })();

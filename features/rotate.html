@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-    <title>Rotate PDF - EditMyPDFs.com</title>
+  <title>Rotate PDF - EDITSMYPDF</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/rotate.html" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
@@ -37,10 +37,32 @@
       .actions-row button { flex:1 1 140px; }
       .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
       .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+        /* Scoped blog styles: Rotate guide */
+        .rotate-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
+        .rotate-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
+        .rotate-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
+        .rotate-guide .sub{color:#60636c;margin:0 0 1rem}
+        .rotate-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
+        .rotate-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+        .rotate-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
+        .rotate-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
+        .rotate-guide article{margin-top:2rem}
+        .rotate-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
+        .rotate-guide p{margin:0 0 1rem}
+        .rotate-guide .grid{display:grid;gap:1rem}
+        @media (min-width:800px){ .rotate-guide .grid{grid-template-columns:1fr 1fr} }
+        .rotate-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
+        .rotate-guide figure{margin:0}
+        .rotate-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
+        .rotate-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
+        .rotate-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
+        .rotate-guide .faq details+details{margin-top:.75rem}
+        .rotate-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
   <main class="feature">
       <h2>Rotate PDF</h2>
       <p class="sub">Upload a PDF, select pages, then rotate clockwise or counter‑clockwise. All done privately in your browser.</p>
@@ -60,8 +82,91 @@
         <button id="download-btn" style="display:none">Download Rotated PDF</button>
         <div id="status" class="progress"></div>
       </div>
-      <div class="ad-box" data-ad-slot="rotate-bottom">Ad Space</div>
+  <div id="ad-content" class="ad-slot"></div>
+      <!-- Long-form Rotate PDF guide -->
+      <section class="feature-blog rotate-guide" aria-labelledby="rotate-guide-title">
+        <span class="eyebrow">Guide</span>
+        <h2 id="rotate-guide-title">Rotate PDF Pages (Fix Sideways Documents Fast)</h2>
+        <p class="sub">Turn any sideways, upside-down or mixed-orientation PDF into a clean, consistently oriented document. All rotation happens locally in your browser for privacy.</p>
+        <p class="meta">Time to read: 4 min • Works offline after load • Powered by <strong>PDF.js</strong> + <strong>PDF-Lib</strong></p>
+        <div class="hero" role="group" aria-label="Before and after rotation illustration">
+          <div>
+            <p><strong>Why rotate?</strong> Scanners, mobile capture apps and multi-function copiers frequently output pages with inconsistent rotation flags (some 90° left, some 270°, a few 0°). This makes reading awkward and printing error prone.</p>
+            <a class="cta" href="/features/rotate.html" aria-label="Open Rotate PDF tool">Try the rotation tool →</a>
+          </div>
+          <figure class="viz">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='220'><rect width='420' height='220' rx='18' fill='%23f8faff'/><text x='25' y='40' font-family='Inter' font-size='16' fill='%23333'>Before</text><g transform='translate(25,60)'><rect width='110' height='140' rx='8' fill='%23fff' stroke='%23d0d6e2'/><text x='55' y='75' font-size='14' font-family='Inter' text-anchor='middle' fill='%23666' transform='rotate(90 55 75)'>Pg 1</text></g><g transform='translate(155,60)'><rect width='110' height='140' rx='8' fill='%23fff' stroke='%23d0d6e2'/><text x='55' y='75' font-size='14' font-family='Inter' text-anchor='middle' fill='%23666' transform='rotate(180 55 75)'>Pg 2</text></g><g transform='translate(285,60)'><rect width='110' height='140' rx='8' fill='%23fff' stroke='%23d0d6e2'/><text x='55' y='75' font-size='14' font-family='Inter' text-anchor='middle' fill='%23666' transform='rotate(270 55 75)'>Pg 3</text></g><text x='25' y='200' font-family='Inter' font-size='16' fill='%23333'>After → All upright</text></svg>" alt="Before and after rotation states" style="display:block;width:100%;height:auto" />
+            <figcaption>Mixed rotation flags become uniformly upright after processing.</figcaption>
+          </figure>
+        </div>
+        <article aria-labelledby="rotate-guide-title">
+          <h3>How It Works</h3>
+          <p>The viewer renders every page thumbnail with PDF.js. When you rotate a page we only adjust the page's rotation value – the underlying content stream is not re-encoded or rasterized, so there is <strong>zero quality loss</strong>. On export, <code class="kbd">PDF-Lib</code> copies each page to a new document and applies the accumulated rotation value.</p>
+          <div class="grid" aria-label="Rotation operations and benefits">
+            <div class="card">
+              <h4>Local &amp; Private</h4>
+              <p>All data stays in memory inside the browser. No uploads; ideal for confidential invoices, medical records or legal packets.</p>
+            </div>
+            <div class="card">
+              <h4>Non-Destructive</h4>
+              <p>Rotation modifies metadata only. Text layers, vector precision and embedded images remain untouched.</p>
+            </div>
+            <div class="card">
+              <h4>Batch Friendly</h4>
+              <p>Select multiple thumbnails and apply a single 90° left/right or 180° action. Mixed orientations are normalized in seconds.</p>
+            </div>
+            <div class="card">
+              <h4>Instant Preview</h4>
+              <p>Each thumbnail updates visually via a CSS transform so you see the cumulative result before exporting.</p>
+            </div>
+          </div>
+          <h3>Step-by-Step</h3>
+          <ol>
+            <li><strong>Drop</strong> your PDF into the upload area (or click to browse).</li>
+            <li><strong>Review</strong> the thumbnails – sideways pages stand out immediately.</li>
+            <li><strong>Select</strong> any set of pages (click toggles selection; selected pages gain a red outline).</li>
+            <li><strong>Rotate</strong> using the toolbar buttons (⟲ left 90°, ⟳ right 90°, ⇵ 180°) or per-page mini controls.</li>
+            <li><strong>Fine Tune</strong>: Double-click a single thumbnail for a quick 90° clockwise micro-adjust.</li>
+            <li><strong>Export</strong> once all pages are upright – the download triggers instantly, no server round trip.</li>
+          </ol>
+          <h3>Edge Cases &amp; Strategies</h3>
+          <div class="tip"><strong>Scanned bundles</strong>: Some scanners already embed a rotation flag. We add your chosen value on top of the existing flag, then normalize modulo 360° to ensure the visual orientation matches the exported file.</div>
+          <p><strong>Pages with different aspect ratios</strong>: Rotating a landscape page makes it portrait and vice versa. Layout remains intact – the page box is just reoriented.</p>
+          <p><strong>OCR concerns</strong>: If you plan to run OCR afterward (e.g., in the OCR tool), rotate first. OCR engines perform better on upright text baselines.</p>
+          <h3>Keyboard &amp; Speed Tips</h3>
+          <ul>
+            <li>Use double-click (fast 90° clockwise) for single-page corrections.</li>
+            <li>Rename output before download to keep version history clear (e.g., <code class="kbd">original-rotated.pdf</code>).</li>
+            <li>Do multiple passes: coarse batch rotate, then individual fixes.</li>
+            <li>If a thumbnail appears clipped, it is a rendering scale artifact only – exported content is not cropped.</li>
+          </ul>
+          <h3>Frequently Asked Questions</h3>
+          <div class="faq">
+            <details>
+              <summary>Does rotation degrade quality?</summary>
+              <p>No. We never rasterize pages. Rotation updates the page's rotation value; fonts, vectors and images are preserved verbatim.</p>
+            </details>
+            <details>
+              <summary>Can I undo a rotation?</summary>
+              <p>Yes. Apply the opposite 90° action (or a 180° if needed). The transform updates instantly; you can experiment freely before export.</p>
+            </details>
+            <details>
+              <summary>Maximum file size?</summary>
+              <p>Browser memory is the practical limit. Rotating huge (500+ page) PDFs works, but preview rendering may take time. You can rotate subsets progressively.</p>
+            </details>
+            <details>
+              <summary>Will bookmarks or forms break?</summary>
+              <p>Bookmarks and form fields remain intact. Form field widgets keep their relative positioning; only page rotation metadata changes.</p>
+            </details>
+          </div>
+          <h3>Why Choose This Tool</h3>
+          <p>Unlike server-based rotators, you avoid upload wait time, protect confidentiality, and retain perfect fidelity. The combination of PDF.js thumbnails plus PDF-Lib export delivers a trustworthy WYSIWYG rotation workflow.</p>
+          <p><strong>Next step:</strong> Need to reorder pages after rotating? Head over to the <a href="/features/reorder.html">Reorder PDF</a> tool.</p>
+          <p style="text-align:center;margin-top:2rem"><a class="cta" href="/features/rotate.html">Rotate your PDF now →</a></p>
+        </article>
+      </section>
     </main>
+    <div id="ad-footer" class="ad-slot"></div>
     <div data-include="footer"></div>
     <script>
       const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;

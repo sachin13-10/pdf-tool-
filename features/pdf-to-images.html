@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-  <title>PDF to Images - EditMyPDFs.com</title>
+  <title>PDF to Images - EDITSMYPDF</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/pdf-to-images.html" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
@@ -26,10 +26,32 @@
     .thumbs img { width:100%; height:auto; border-radius:8px; border:1px solid #eee; background:#fafafa; }
     .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
     .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+    /* Scoped blog styles: PDF to Images guide */
+    .pdf-images-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
+    .pdf-images-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
+    .pdf-images-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
+    .pdf-images-guide .sub{color:#60636c;margin:0 0 1rem}
+    .pdf-images-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
+    .pdf-images-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+    .pdf-images-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
+    .pdf-images-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
+    .pdf-images-guide article{margin-top:2rem}
+    .pdf-images-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
+    .pdf-images-guide p{margin:0 0 1rem}
+    .pdf-images-guide .grid{display:grid;gap:1rem}
+    @media (min-width:800px){ .pdf-images-guide .grid{grid-template-columns:1fr 1fr} }
+    .pdf-images-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
+    .pdf-images-guide figure{margin:0}
+    .pdf-images-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
+    .pdf-images-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
+    .pdf-images-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
+    .pdf-images-guide .faq details+details{margin-top:.75rem}
+    .pdf-images-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
   </style>
 </head>
 <body>
   <header data-include="navbar"></header>
+  <div id="ad-top" class="ad-slot"></div>
   <main class="feature">
     <h2>PDF to Images</h2>
     <p class="sub">Render each PDF page to PNG or JPEG and download them, or zip them all.</p>
@@ -45,8 +67,133 @@
       <div class="thumbs" id="thumbs"></div>
       <button id="zip-btn" style="display:none">Download All as ZIP</button>
     </div>
-    <div class="ad-box" data-ad-slot="pdf-to-images-bottom">Ad Space</div>
+  <div id="ad-content" class="ad-slot"></div>
+    <!-- Inline feature blog: PDF to Images (replaced with detailed guide) -->
+    <section class="feature-blog pdf-images-guide" aria-labelledby="pdf-images-guide-title">
+      <span class="eyebrow">Behind the Scenes</span>
+      <h2 id="pdf-images-guide-title">Turn Each PDF Page into an Image — Fast, Clear, and Private</h2>
+      <p class="sub">Need PNGs for a gallery, JPEGs for smaller posts, or thumbnails for a slideshow? Here’s a human-friendly tour of how our PDF ➜ Images tool works and how to pick the right settings for crisp results.</p>
+      <p class="meta">Runs fully in your browser • No uploads • Exports PNG or JPEG per page, plus ZIP</p>
+
+      <div class="hero">
+        <div>
+          <p>
+            Our converter takes each page from your PDF and renders it as a normal image. Everything happens <strong>locally</strong> in your browser window. That means sensitive files never leave your device, and you see results as they’re generated. Choose <span class="kbd">PNG</span> for sharp graphics (charts, line art) or <span class="kbd">JPEG</span> for photographs where small file size matters.
+          </p>
+          <a class="cta" href="/features/pdf-to-images.html" aria-label="Open the PDF to Images tool">🖼️ Convert PDF ➜ Images</a>
+          <p style="margin:.6rem 0 0">Quick rule: <span class="kbd">PNG</span> for crisp lines and text, <span class="kbd">JPEG</span> for photos and slides.</p>
+        </div>
+
+        <figure class="viz" role="img" aria-label="PDF to images pipeline diagram">
+          <img alt="PDF to Images flow diagram"
+               src="data:image/svg+xml;utf8,
+               <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
+                 <defs><linearGradient id='g' x1='0' x2='1'>
+                   <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
+                 <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                 <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your PDF</text>
+                 <rect x='320' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
+                 <text x='460' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Render page ➜ canvas (scale)</text>
+                 <rect x='320' y='150' width='280' height='70' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
+                 <text x='460' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Encode as PNG or JPEG</text>
+                 <rect x='650' y='60' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
+                 <text x='780' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Images / ZIP</text>
+                 <rect x='690' y='120' width='80' height='80' rx='10' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                 <rect x='790' y='120' width='80' height='80' rx='10' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                 <path d='M260 160 L320 95' stroke='url(%23g)' stroke-width='6'/>
+                 <path d='M260 160 L320 185' stroke='url(%23g)' stroke-width='6'/>
+                 <path d='M600 95 L650 160' stroke='url(%23g)' stroke-width='6'/>
+                 <path d='M600 185 L650 160' stroke='url(%23g)' stroke-width='6'/>
+               </svg>"/>
+          <figcaption>We render each page to a canvas at your chosen scale, then export as PNG or JPEG — locally.</figcaption>
+        </figure>
+      </div>
+
+      <article>
+        <h3>What actually happens under the hood?</h3>
+        <p>
+          A PDF is like a recipe: “draw this text here, place that image there.” Our tool reads a page, paints it onto an invisible canvas at the scale you choose (think zoom level), and then saves that canvas as a standard image file. We repeat for every page. No servers, no queues, and your originals stay exactly the same.
+        </p>
+        <p>
+          Because we render directly from the PDF instructions, you get crisp edges, proper fonts, and true colors. Choose a higher scale for small print or detailed diagrams; stick to the default for slides and handouts.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h3 style="margin:.2rem 0 .4rem">When to pick PNG vs JPEG</h3>
+            <ul style="margin:.2rem 0 0 1rem">
+              <li><strong>PNG:</strong> best for charts, icons, UI mockups, line drawings, and text-heavy pages.</li>
+              <li><strong>JPEG:</strong> best for photographs, scanned slides, and when you need smaller file sizes.</li>
+            </ul>
+            <p class="tip"><strong>Tip:</strong> If you’re unsure, export PNGs for key pages and JPEGs for photos, then ZIP them together.</p>
+          </div>
+          <div class="card">
+            <figure>
+              <img alt="Before and after rendering illustration"
+                   src="data:image/svg+xml;utf8,
+                   <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
+                     <rect width='1200' height='620' fill='%23ffffff'/>
+                     <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>PDF Pages</text>
+                     <rect x='120' y='120' width='180' height='240' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
+                     <rect x='330' y='120' width='180' height='240' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
+                     <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Rendered Images</text>
+                     <rect x='780' y='120' width='180' height='140' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                     <rect x='980' y='120' width='180' height='140' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/>
+                     <rect x='830' y='280' width='280' height='14' rx='7' fill='%23111' opacity='.08'/>
+                   </svg>"/>
+              <figcaption>Left: two PDF pages. Right: their image equivalents, ready for galleries or posts.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <h3>Step-by-step: from PDF to a folder of images</h3>
+        <ol>
+          <li><strong>Open the tool:</strong> go to <span class="kbd">/features/pdf-to-images.html</span>.</li>
+          <li><strong>Upload your PDF:</strong> drag &amp; drop or click to choose a file.</li>
+          <li><strong>Pick format:</strong> select <span class="kbd">PNG</span> or <span class="kbd">JPEG</span>.</li>
+          <li><strong>Choose scale:</strong> <span class="kbd">1.5×</span> is a good default; try <span class="kbd">2×</span> for tiny text.</li>
+          <li><strong>Download:</strong> save pages one-by-one or click <em>Download All as ZIP</em> for a tidy bundle.</li>
+        </ol>
+
+        <div class="tip">
+          <strong>Quality &amp; performance tips:</strong><br />
+          • For charts and code, use PNG with scale <span class="kbd">1.5×–2×</span> to keep edges razor-sharp.<br />
+          • For slide decks or photo-heavy PDFs, JPEG is smaller and still looks great.<br />
+          • Rendering hundreds of pages? Do it in chunks or close heavy tabs to free memory.
+        </div>
+
+        <h3>What this tool is (and isn’t)</h3>
+        <p>
+          You’re creating <em>pictures of pages</em>. That’s perfect for websites, LMS uploads, quick previews, and social posts. It isn’t meant for extracting editable text or graphics — for that, try our <strong>Extract Images</strong> or <strong>OCR</strong> tools. If you need to keep the PDF but reduce size, run the result through the <strong>Compressor</strong>.
+        </p>
+
+        <h3>Privacy by default</h3>
+        <p>
+          Everything happens on your device. We don’t upload, read, or store your documents. Close the tab and the working data is gone with it. This makes the tool safe for confidential notes, contracts, IDs, and classroom material.
+        </p>
+
+        <h3>FAQs</h3>
+        <div class="faq">
+          <details>
+            <summary>Will the images match what I see in the PDF viewer?</summary>
+            <p>Yes. We render from the same drawing instructions used by viewers, then save that result as PNG or JPEG at your chosen scale.</p>
+          </details>
+          <details>
+            <summary>What filename pattern do you use?</summary>
+            <p>Downloads are named like <span class="kbd">page-001.png</span>, <span class="kbd">page-002.png</span>… so they stay in order. The ZIP keeps this naming too.</p>
+          </details>
+          <details>
+            <summary>Can I pick only some pages?</summary>
+            <p>Export all, then keep the ones you need — or render in smaller batches by splitting the PDF first and converting those parts.</p>
+          </details>
+        </div>
+
+        <p class="sub" style="margin-top:1rem">Ready to go from document to gallery? Choose your format and scale, convert, and you’re done — clean images you can post, print, or reuse anywhere.</p>
+        <p><a class="cta" href="/features/pdf-to-images.html">Open PDF ➜ Images</a></p>
+      </article>
+    </section>
   </main>
+  <div id="ad-footer" class="ad-slot"></div>
   <div data-include="footer"></div>
   <script>
     const dropZone = document.getElementById('drop-zone');

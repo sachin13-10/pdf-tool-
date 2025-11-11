@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="fc-id" content="REPLACE_WITH_FUNDING_CHOICES_ID" />
-  <title>Watermark PDF - EditMyPDFs.com</title>
+  <title>Watermark PDF - EDITSMYPDF</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="canonical" href="https://editmypdf.tech/features/watermark.html" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <style>
     body { font-family:Inter,sans-serif; margin:0; background:#fff; color:#111; }
@@ -24,10 +24,33 @@
     .file-info { margin-top:.5rem; color:#333; font-weight:500; font-size:.95rem; }
     .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
     .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
+    /* Scoped Watermark guide styles */
+    .watermark-guide{max-width:900px;margin:2.6rem auto 0;padding:0 1rem;text-align:left}
+    .watermark-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
+    .watermark-guide h2{font-size:2.15rem;line-height:1.2;margin:.65rem 0 .45rem}
+    .watermark-guide .sub{color:#60636c;margin:0 0 1.2rem}
+    .watermark-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
+    .watermark-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+    .watermark-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,#6366f1,#2563eb);color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
+    .watermark-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
+    .watermark-guide article{margin-top:2rem}
+    .watermark-guide h3{font-size:1.35rem;margin:1.6rem 0 .6rem}
+    .watermark-guide p{margin:0 0 1rem}
+    .watermark-guide .grid{display:grid;gap:1rem}
+    @media (min-width:800px){ .watermark-guide .grid{grid-template-columns:1fr 1fr} }
+    .watermark-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
+    .watermark-guide figure{margin:0}
+    .watermark-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
+    .watermark-guide .tip{background:#f8faff;border-left:4px solid #2563eb;border-radius:10px;padding:1rem;margin:.9rem 0}
+    .watermark-guide .legal{background:#fff8f0;border-left:4px solid #f59e0b;border-radius:10px;padding:1rem;margin:1.1rem 0}
+    .watermark-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
+    .watermark-guide .faq details+details{margin-top:.75rem}
+    .watermark-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
   </style>
 </head>
 <body>
   <header data-include="navbar"></header>
+  <div id="ad-top" class="ad-slot"></div>
   <main class="feature">
     <h2>Watermark PDF</h2>
     <p class="sub">Add a translucent text watermark to every page client‑side. Your file never leaves your device.</p>
@@ -75,9 +98,112 @@
       <button id="apply-btn" disabled>Apply Watermark</button>
       <button id="download-btn" style="display:none">Download PDF</button>
       <div id="status" class="progress"></div>
-    </div>
-    <div class="ad-box" data-ad-slot="watermark-bottom">Ad Space</div>
+  </div>
+  <div id="ad-content" class="ad-slot"></div>
+    <!-- Long-form Watermark PDF guide -->
+    <section class="feature-blog watermark-guide" aria-labelledby="watermark-guide-title">
+      <span class="eyebrow">Behind the Scenes</span>
+      <h2 id="watermark-guide-title">Add Professional Watermarks to Any PDF — Clean, Consistent, and Private</h2>
+      <p class="sub">Need a subtle <em>CONFIDENTIAL</em>, a bold <em>DRAFT</em>, or your brand name across every page? Here&rsquo;s a human-friendly tour of how our Watermark tool works in your browser, what the options mean, and how to get a polished result without leaking your files.</p>
+      <p class="meta">Runs fully on your device • No uploads • Custom text, color, opacity, size, and placement</p>
+
+      <div class="hero" role="group" aria-label="Watermark overview and diagram">
+        <div>
+          <p>
+            The Watermark tool stamps a translucent line of text onto each page of your PDF. You control <strong>what it says</strong> (e.g., <span class="kbd">CONFIDENTIAL</span>), <strong>where it sits</strong> (center, corners, diagonal, or a custom position), <strong>how big</strong> it is, and <strong>how visible</strong> it appears. Everything happens <strong>locally</strong> in your browser—fast, private, and perfect for sensitive documents.
+          </p>
+          <a class="cta" href="/features/watermark.html" aria-label="Open the Watermark tool">💧 Add a Watermark</a>
+          <p style="margin:.6rem 0 0">Good starting point: <span class="kbd">opacity 0.2</span>, <span class="kbd">diagonal</span>, and a muted color.</p>
+        </div>
+
+        <figure class="viz" role="img" aria-label="Watermark pipeline diagram">
+          <img alt="PDF watermarking flow diagram" style="display:block;width:100%;height:auto"
+               src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 340'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs><rect x='28' y='70' width='230' height='200' rx='16' fill='%23fff' stroke='%23dbe1ff'/><text x='143' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your PDF</text><rect x='60' y='125' width='170' height='110' rx='10' fill='%23eef2ff' stroke='%23dbe1ff'/><rect x='330' y='60' width='280' height='70' rx='12' fill='%23eaf9ff' stroke='%23cfeaff'/><text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Text • Color • Opacity • Position</text><rect x='330' y='150' width='280' height='70' rx='12' fill='%23f7f8ff' stroke='%23e6e9ff'/><text x='470' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Stamp on each page (local)</text><rect x='650' y='70' width='260' height='200' rx='16' fill='%23fff' stroke='%23dbe1ff'/><text x='780' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Watermarked PDF</text><rect x='690' y='125' width='180' height='110' rx='10' fill='%23dcfce7' stroke='%23bbf7d0'/><path d='M258 170 L330 95' stroke='url(%23g)' stroke-width='6'/><path d='M258 170 L330 185' stroke='url(%23g)' stroke-width='6'/><path d='M610 95 L650 170' stroke='url(%23g)' stroke-width='6'/><path d='M610 185 L650 170' stroke='url(%23g)' stroke-width='6'/></svg>"/>
+          <figcaption>Choose text and style → stamp each page → download a polished watermarked PDF — all on your device.</figcaption>
+        </figure>
+      </div>
+
+      <article aria-labelledby="watermark-guide-title">
+        <h3>How it actually works (in plain English)</h3>
+        <p>
+          A PDF is a stack of pages. When you load a file, the tool reads the size of each page and decides where your watermark text should be drawn. If you choose <em>diagonal</em>, we rotate the text and position it across the page at a comfortable angle; for <em>center</em> or <em>corners</em>, the text is placed with margins so it looks balanced. Then we write a fresh copy of your PDF with the watermark <strong>baked into each page</strong>. Your original file remains unchanged.
+        </p>
+        <p>
+          Because the watermark is added as real vector text, it scales well and stays crisp when zooming or printing. Opacity keeps things readable without overwhelming content, and color helps it stand out just enough.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h4 style="margin:.2rem 0 .4rem">Where to place what (quick guide)</h4>
+            <ul style="margin:.2rem 0 0 1rem">
+              <li><strong>Diagonal:</strong> best for “CONFIDENTIAL” or “DRAFT” across reports; hard to crop out.</li>
+              <li><strong>Center:</strong> subtle brand names or “SAMPLE” on one-page documents.</li>
+              <li><strong>Bottom-center:</strong> review IDs, internal ticket numbers, or version strings.</li>
+              <li><strong>Custom:</strong> avoid signatures/logos by clicking a precise position on the preview.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <figure>
+              <img alt="Before and after watermark illustration" style="display:block;width:100%;height:auto"
+                   src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'><rect width='1200' height='620' fill='%23ffffff'/><text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Before</text><rect x='120' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/><rect x='160' y='160' width='300' height='12' rx='6' fill='%23111' opacity='.08'/><rect x='160' y='182' width='260' height='12' rx='6' fill='%23111' opacity='.08'/><text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>After</text><rect x='720' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/><g transform='translate(720,120) rotate(-24 190 210)'><rect x='35' y='190' width='300' height='32' rx='8' fill='%23e53935' opacity='.12'/><text x='185' y='213' text-anchor='middle' font-size='20' fill='%23e53935' opacity='.9' font-family='Inter,Arial'>CONFIDENTIAL</text></g></svg>"/>
+              <figcaption>Left: original document. Right: diagonal watermark, subtle but clear.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <h3>Step-by-step: from plain file to watermarked PDF</h3>
+        <ol>
+          <li><strong>Open:</strong> go to <span class="kbd">/features/watermark.html</span>.</li>
+          <li><strong>Add your PDF:</strong> drag &amp; drop or click to select a file.</li>
+          <li><strong>Type the message:</strong> common choices include <span class="kbd">CONFIDENTIAL</span>, <span class="kbd">DRAFT</span>, or your brand.</li>
+          <li><strong>Pick style:</strong> choose placement (diagonal/center/corners/custom), color, size, and opacity.</li>
+          <li><strong>Preview:</strong> check contrast; if using custom placement, click where it should land.</li>
+          <li><strong>Apply &amp; download:</strong> export the updated PDF and keep your original as a backup.</li>
+        </ol>
+
+        <div class="tip">
+          <strong>Look professional with these settings:</strong><br />
+          • <em>Opacity:</em> 0.15–0.30 is readable yet respectful of content.<br />
+          • <em>Color:</em> muted red (<span class="kbd">#e53935</span>) or navy (<span class="kbd">#1e3a8a</span>) works on light pages; switch to darker tones for pale scans.<br />
+          • <em>Size:</em> for diagonal marks, auto-fit keeps proportions across mixed page sizes.
+        </div>
+
+        <h3>Privacy by design</h3>
+        <p>
+          Your PDF never leaves your device. The stamping happens in the same tab you&rsquo;re using right now, which makes the tool safe for contracts, IDs, marksheets, and internal documents. Close the tab and the working data disappears with it.
+        </p>
+
+        <div class="legal">
+          <strong>Heads-up:</strong> Watermarks discourage casual misuse but aren&rsquo;t a substitute for security. If you&rsquo;re sharing sensitive content, combine a watermark with <strong>Password Protect</strong> and smart sharing (send the password via a separate channel).
+        </div>
+
+        <h3>What it is (and isn&rsquo;t)</h3>
+        <p>
+          A watermark here is a <em>visual overlay</em> baked into each page. It doesn&rsquo;t lock the file, hide text, or enforce rights management. Some viewers allow cropping or heavy edits—your watermark may still be visible but could be partially removed. That&rsquo;s why diagonal placement and lower opacity often strike the best balance between deterrence and readability.
+        </p>
+
+        <h3>FAQs</h3>
+        <div class="faq">
+          <details>
+            <summary>Will the file size change?</summary>
+            <p>Usually only a little, since we add lightweight text. For very large PDFs, consider running the result through the <strong>Compressor</strong>.</p>
+          </details>
+          <details>
+            <summary>Can I watermark just certain pages?</summary>
+            <p>This tool applies to all pages. If you need a subset, split the PDF first, watermark that portion, then merge back.</p>
+          </details>
+          <details>
+            <summary>Does it work on scans?</summary>
+            <p>Yes. Watermarks sit on top of scanned images. If the background is dark, raise opacity slightly or pick a contrasting color.</p>
+          </details>
+        </div>
+
+        <p class="sub" style="margin-top:1rem">Ready to mark your document clearly and cleanly? Choose your message and style, apply the watermark locally, and share with confidence.</p>
+        <p><a class="cta" href="/features/watermark.html">Open Watermark Tool</a></p>
+      </article>
+    </section>
   </main>
+  <div id="ad-footer" class="ad-slot"></div>
   <div data-include="footer"></div>
   <script>
     const fileInput = document.getElementById('file-input');
