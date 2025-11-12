@@ -696,10 +696,12 @@
       });
 
       function enableActions() {
-        const disabled = selected.size === 0;
-        rotateLeftBtn.disabled = disabled;
-        rotateRightBtn.disabled = disabled;
-        rotate180Btn.disabled = disabled;
+        // Enable rotate buttons once a PDF is loaded. If no pages are selected,
+        // clicking a rotate button will apply to ALL pages (handled below).
+        const hasDoc = !!loadedDoc && loadedDoc.getPageCount() > 0;
+        rotateLeftBtn.disabled = !hasDoc;
+        rotateRightBtn.disabled = !hasDoc;
+        rotate180Btn.disabled = !hasDoc;
       }
       function clearOutput() {
         downloadBtn.style.display = "none";
@@ -812,9 +814,13 @@
       }
 
       function applyRotationToSelected(deg) {
-        if (!loadedDoc || selected.size === 0) return;
-        selected.forEach((i) => applyLocalRotation(i, deg));
-        const count = selected.size;
+        if (!loadedDoc) return;
+        // If no pages selected, apply rotation to ALL pages for better UX
+        let targets = selected.size
+          ? Array.from(selected)
+          : Array.from({ length: loadedDoc.getPageCount() }, (_, i) => i);
+        targets.forEach((i) => applyLocalRotation(i, deg));
+        const count = targets.length;
         statusText.textContent = `Rotated ${count} page(s) by ${Math.abs(
           deg
         )}° ${deg < 0 ? "left" : "right"}.`;

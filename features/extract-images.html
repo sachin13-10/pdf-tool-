@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/styles.css" />
   <link rel="canonical" href="https://editmypdf.tech/features/extract-images.html" />    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
       * { box-sizing: border-box; }
@@ -319,6 +319,12 @@
     </section>
 
     <script>
+      // Configure PDF.js worker (prevents errors and major slowdowns)
+      const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
+      if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+      }
       // "Try it now" link functionality
       document.addEventListener('DOMContentLoaded', () => {
         const tryNowLinks = document.querySelectorAll('a[href="#file-input"]');
@@ -336,14 +342,14 @@
         });
       });
 
-      const dropZone = document.getElementById('drop-zone');
-      const fileInput = document.getElementById('file-input');
-      const imagesGrid = document.getElementById('images');
-      const statusText = document.getElementById('status');
-      const dlSelBtn = document.getElementById('download-selected');
-      const dlZipBtn = document.getElementById('download-zip');
-      const fmtSel = document.getElementById('format');
-      const scaleSel = document.getElementById('scale');
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const imagesGrid = document.getElementById('images');
+  const statusText = document.getElementById('status');
+  const dlSelBtn = document.getElementById('download-selected');
+  const dlZipBtn = document.getElementById('download-zip');
+  const fmtSel = document.getElementById('format');
+  const scaleSel = document.getElementById('scale');
       let extracted = []; // {name, dataUrl, selected}
 
       dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
@@ -361,44 +367,141 @@
         statusText.textContent='Scanning pages for images...';
         for (let pageNum=1; pageNum<=pdf.numPages; pageNum++){
           const page = await pdf.getPage(pageNum);
-          // Render page (we rely on operatorList image paints referencing image objects)
-          const viewport = page.getViewport({ scale: parseFloat(scaleSel.value)||1.5 });
+          // Render page offscreen (ensures image objects are decoded & cached)
+          const scale = parseFloat(scaleSel.value) || 1.5;
+          const viewport = page.getViewport({ scale });
           const opList = await page.getOperatorList();
-          const imageNames = new Set();
           const OPS = pdfjsLib.OPS;
+          const imagesToExtract = []; // entries: { type:'xobj'|'inline', name?, obj?, width?, height?, data? }
+
           for (let i=0;i<opList.fnArray.length;i++){
             const fn = opList.fnArray[i];
             const args = opList.argsArray[i];
-            if (fn === OPS.paintImageXObject || fn === OPS.paintImageXObjectRepeat || fn === OPS.paintJpegXObject){
-              if (args && args[0]) imageNames.add(args[0]);
+            if (fn === OPS.paintImageXObject || fn === OPS.paintImageXObjectRepeat || fn === OPS.paintJpegXObject) {
+              if (args && args[0]) imagesToExtract.push({ type:'xobj', name: args[0] });
+            } else if (fn === OPS.paintInlineImageXObject) {
+              // Inline image; args[0] often contains an object with image data/size
+              if (args && args[0]) imagesToExtract.push({ type:'inline', obj: args[0] });
             }
           }
-          // Need to render to ensure image objs populated
+
           await page.render({ canvasContext: document.createElement('canvas').getContext('2d'), viewport }).promise;
-          imageNames.forEach(name => {
-            const imgObj = page.objs.get(name); // pdf.js internal caching
-            if (!imgObj || !imgObj.data) return;
+
+          const formatMime = fmtSel.value === 'jpeg' ? 'image/jpeg' : 'image/png';
+          const ext = fmtSel.value === 'jpeg' ? 'jpg' : 'png';
+
+          // Helper: normalize raw data to RGBA regardless of source stride
+          function toRGBA(data, w, h){
+            const pixels = w * h;
+            const len = data ? data.length : 0;
+            const stride = pixels ? Math.round(len / pixels) : 0; // 1, 2, 3, 4 are common
+            const out = new Uint8ClampedArray(pixels * 4);
+            if (!data || !pixels) return out;
+            if (stride === 4){
+              out.set(data);
+              return out;
+            }
+            if (stride === 3){
+              for (let i=0, j=0; i<pixels; i++, j+=3){
+                const r=data[j], g=data[j+1], b=data[j+2];
+                const k=i*4; out[k]=r; out[k+1]=g; out[k+2]=b; out[k+3]=255;
+              }
+              return out;
+            }
+            if (stride === 2){ // grayscale + alpha
+              for (let i=0, j=0; i<pixels; i++, j+=2){
+                const g=data[j], a=data[j+1];
+                const k=i*4; out[k]=g; out[k+1]=g; out[k+2]=g; out[k+3]=a;
+              }
+              return out;
+            }
+            if (stride === 1){ // grayscale
+              for (let i=0; i<pixels; i++){
+                const g=data[i]; const k=i*4; out[k]=g; out[k+1]=g; out[k+2]=g; out[k+3]=255;
+              }
+              return out;
+            }
+            // Fallback: assume RGBA if unknown
+            out.set(data.subarray(0, out.length));
+            return out;
+          }
+
+          for (const entry of imagesToExtract){
             try {
-              const canvas = document.createElement('canvas');
-              canvas.width = imgObj.width; canvas.height = imgObj.height;
-              const ctx = canvas.getContext('2d');
-              const imageData = ctx.createImageData(imgObj.width, imgObj.height);
-              imageData.data.set(imgObj.data);
-              ctx.putImageData(imageData,0,0);
-              const format = fmtSel.value === 'jpeg' ? 'image/jpeg' : 'image/png';
-              const dataUrl = canvas.toDataURL(format, 0.92);
-              const item = { name: `p${pageNum}-${name}.${fmtSel.value==='jpeg'?'jpg':'png'}`, dataUrl, selected:false };
+              let baseCanvas = document.createElement('canvas');
+              const baseCtx = baseCanvas.getContext('2d');
+              let w=0, h=0;
+
+              if (entry.type === 'xobj') {
+                const imgObj = page.objs.get(entry.name);
+                if (!imgObj) continue;
+                if (imgObj.data && imgObj.width && imgObj.height) {
+                  // Raw pixel data (may be 1/2/3/4 bytes per pixel)
+                  w = imgObj.width; h = imgObj.height;
+                  baseCanvas.width = w; baseCanvas.height = h;
+                  const rgba = toRGBA(imgObj.data, w, h);
+                  const imageData = new ImageData(rgba, w, h);
+                  baseCtx.putImageData(imageData, 0, 0);
+                } else if (imgObj instanceof ImageBitmap || imgObj instanceof HTMLImageElement || imgObj instanceof HTMLCanvasElement) {
+                  w = imgObj.width; h = imgObj.height;
+                  baseCanvas.width = w; baseCanvas.height = h;
+                  baseCtx.drawImage(imgObj, 0, 0);
+                } else if (imgObj && imgObj.bitmap) {
+                  // Some builds expose { bitmap: ImageBitmap }
+                  const bmp = imgObj.bitmap; w = bmp.width; h = bmp.height;
+                  baseCanvas.width = w; baseCanvas.height = h;
+                  baseCtx.drawImage(bmp, 0, 0);
+                } else {
+                  continue;
+                }
+              } else if (entry.type === 'inline') {
+                const o = entry.obj;
+                if (o && o.width && o.height && (o.data || o._data)) {
+                  w = o.width; h = o.height;
+                  baseCanvas.width = w; baseCanvas.height = h;
+                  const raw = (o.data && o.data.length) ? o.data : (o._data || new Uint8ClampedArray(w*h*4));
+                  const rgba = toRGBA(raw, w, h);
+                  const imageData = new ImageData(rgba, w, h);
+                  baseCtx.putImageData(imageData, 0, 0);
+                } else if (o instanceof ImageBitmap || o instanceof HTMLImageElement || o instanceof HTMLCanvasElement) {
+                  w = o.width; h = o.height;
+                  baseCanvas.width = w; baseCanvas.height = h;
+                  baseCtx.drawImage(o, 0, 0);
+                } else {
+                  continue;
+                }
+              }
+
+              // Apply optional scaling for output
+              let outCanvas = baseCanvas;
+              if (scale && scale !== 1) {
+                const scaled = document.createElement('canvas');
+                scaled.width = Math.max(1, Math.round(w * scale));
+                scaled.height = Math.max(1, Math.round(h * scale));
+                const sctx = scaled.getContext('2d');
+                sctx.imageSmoothingEnabled = true;
+                sctx.imageSmoothingQuality = 'high';
+                sctx.drawImage(baseCanvas, 0, 0, scaled.width, scaled.height);
+                outCanvas = scaled;
+              }
+
+              const dataUrl = outCanvas.toDataURL(formatMime, 0.92);
+              const name = entry.type === 'xobj' && entry.name ? `p${pageNum}-${entry.name}.${ext}` : `p${pageNum}-inline-${extracted.length + 1}.${ext}`;
+
+              const item = { name, dataUrl, selected:false };
               extracted.push(item);
+
+              // UI card
               const div = document.createElement('div');
               div.className='img-item';
               const imgtag = document.createElement('img');
               imgtag.src = dataUrl; imgtag.alt = item.name;
-              const meta = document.createElement('div'); meta.className='img-meta'; meta.textContent = `${item.name}\n${imgObj.width}x${imgObj.height}`;
+              const meta = document.createElement('div'); meta.className='img-meta'; meta.textContent = `${item.name}\n${w}x${h}`;
               const toggle = document.createElement('button'); toggle.className='select-toggle'; toggle.textContent='Pick';
               toggle.addEventListener('click', ()=>{ item.selected = !item.selected; div.classList.toggle('selected', item.selected); toggle.textContent = item.selected? '✓' : 'Pick'; updateButtons(); });
               div.appendChild(imgtag); div.appendChild(meta); div.appendChild(toggle); imagesGrid.appendChild(div);
-            } catch(e){ /* ignore extraction failure */ }
-          });
+            } catch(e){ /* ignore single extraction failure and continue */ }
+          }
           statusText.textContent = `Page ${pageNum}/${pdf.numPages} scanned. Total images: ${extracted.length}`;
         }
         if (!extracted.length){ statusText.textContent += ' — No raster images found.'; }

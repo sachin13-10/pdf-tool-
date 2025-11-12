@@ -44,6 +44,21 @@
       el.appendChild(ins);
       try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
     });
+
+    // After a short delay, hide placeholders that failed to render (keep UX clean)
+    setTimeout(function hideEmptyAds(){
+      document.querySelectorAll('.ad-slot.ads-init, .ad-banner.ads-init, .ad-box.ads-init').forEach(function(el){
+        // If AdSense hasn't expanded the <ins> and height is tiny, collapse it completely
+        var h = el.offsetHeight;
+        var hasContent = el.querySelector('ins.adsbygoogle');
+        if (hasContent && h < 35){
+          el.style.display = 'none';
+        }
+        if (!hasContent && h < 20){
+          el.style.display = 'none';
+        }
+      });
+    }, 3000);
   }
 
   function tryLoadAdsenseConfig(){
