@@ -233,7 +233,7 @@
 
       <section>
         <h4>How It Works</h4>
-        <p>Our <strong>OCR tool (Beta)</strong> uses Tesseract.js to extract text from scanned PDFs and image-based documents. Upload your PDF, select the language, and the tool will analyze each page to recognize and extract readable text  all processed locally in your browser.</p>
+        <p>Our <strong>OCR tool (Beta)</strong> The tool employs Tesseract.js for extracting text from scanned PDF files and documents that rely on images. Users upload a PDF and select the desired language. Then the tool examines each page to identify and retrieve readable text content. This processing occurs entirely within the browser on the local device.</p>
       </section>
 
       <section>
@@ -264,22 +264,22 @@
         <h4>OCR Accuracy Tips</h4>
         <p>OCR is powerful, but getting good results requires understanding how it works and what affects accuracy. Here's what actually makes a difference:</p>
         <ul>
-          <li><strong>Image Quality is Everything:</strong> Higher resolution scans produce dramatically better OCR results. If you scanned at 150 DPI (dots per inch), expect mediocre accuracy. Scan at 300 DPI or higher for best results. Blurry, low-resolution images may produce gibberish or miss text entirely. The clearer the original scan, the better the output—there's no way around that.</li>
-          <li><strong>Language Selection is Critical:</strong> Always choose the correct language from the dropdown. If your document is in Spanish but you select English, accuracy will tank because the OCR engine is looking for the wrong character patterns and word structures. For mixed-language documents (like English with Spanish quotes), you may need to run OCR multiple times with different language settings and combine the results manually.</li>
-          <li><strong>Clean, Printed Text Works Best:</strong> OCR engines are optimized for clear, printed text—like typewriter output, laser-printed documents, or professionally published books. Handwriting, stylized fonts, decorative scripts, or poor contrast (light gray text on white backgrounds) reduce accuracy significantly. If you can barely read it yourself, OCR won't do much better.</li>
-          <li><strong>Processing Time Varies Wildly:</strong> OCR is computationally intensive. A single page can take 10-30 seconds depending on your device's speed, image resolution, and text complexity. A 10-page document might take 3-5 minutes total. This is normal for browser-based OCR—close other tabs and applications to speed things up, but don't expect instant results like other PDF tools.</li>
-          <li><strong>Beta Feature Means Occasional Hiccups:</strong> This tool is in beta, which means it's powerful but not perfect. Expect occasional inaccuracies, especially with complex layouts (multi-column text, tables, footnotes), decorative fonts, or documents with poor scanning quality. Always proofread the extracted text before using it for anything important—don't assume 100% accuracy.</li>
-          <li><strong>Background and Contrast Matter:</strong> Documents with clean white backgrounds and dark black text produce the best results. Yellowed paper, colored backgrounds, faded ink, or watermarks confuse the OCR engine. If your scanned document has a noisy background, consider cleaning it up in an image editor before running OCR.</li>
+          <li><strong>Image Quality is Everything:</strong> Scans with higher resolution generally yield much better outcomes in optical character recognition processes. When images are captured at 150 dots per inch, accuracy levels tend to remain only mediocre at best. Evidence points to scanning at 300 dots per inch or above as the way to secure optimal results overall. Low-resolution or blurry images often lead to outputs filled with nonsense or sections of text that get overlooked entirely. The sharper the initial scan appears to be, the more reliable the final text extraction usually becomes. This connection holds true without exception.</li>
+          <li><strong>Language Selection is Critical:</strong> Selecting the right language from the dropdown menu is essential. Choosing English for a document written in Spanish leads to poor accuracy. The OCR engine searches for incorrect character patterns and word structures in that case. Documents with mixed languages, such as English alongside Spanish quotes, require running the OCR process multiple times. Different language settings must be used each time. The results then get combined manually.</li>
+          <li><strong>Clean, Printed Text Works Best:</strong> OCR engines work best with clear printed text. That includes typewriter output, laser printed documents, or books from professional publishers. Handwriting tends to cause problems. So do stylized fonts, decorative scripts, or low contrast like light gray text on white backgrounds. All these factors cut accuracy down a lot. When the text looks hard to read even for a person, OCR software struggles just as much.</li>
+          <li><strong>Processing Time Varies Wildly:</strong> Performing optical character recognition is a computationally intensive task that demands considerable processing resources from the device. In practice, it often takes between ten and thirty seconds to handle a single page of material. The exact duration depends on factors such as the speed of the device in use, the resolution of the input image, and the complexity of the text involved. When processing a document consisting of ten pages, the overall time could amount to three to five minutes for completion. These durations represent standard performance levels for OCR operations conducted within a web browser setting. Closing additional open tabs and background applications can help accelerate the process to some extent. Even so, results will not appear as swiftly as those produced by many specialized PDF processing applications.</li>
+          <li><strong>Beta Feature Means Occasional Hiccups:</strong> The tool remains in its beta stage. This suggests strong functionality. Yet it falls short of flawless performance. Inaccuracies may arise now and then. These tend to show up more in tricky setups. Think multi-column pages. Or tables and footnotes. Fancy typefaces can trip it up too. So can scans that come out blurry or low-res. Evidence points to the need for careful checks. Always go over any pulled text with a fine eye. Do this before putting it to serious use. Absolute precision is not a given.</li>
+          <li><strong>Background and Contrast Matter:</strong> Documents that have clean white backgrounds along with dark black text tend to give the best results overall. Things like yellowed paper or colored backgrounds, faded ink, and watermarks just end up confusing the OCR engine pretty much every time. When a scanned document shows a noisy background, it makes sense to clean it up first using an image editor before you run the OCR on it.</li>
         </ul>
       </section>
 
       <section>
         <h4>📄 OCR vs. Regular Text Extraction: When to Use Each</h4>
         <p>Confused about whether you need OCR or just regular text extraction? Here's the difference and when to use each:</p>
-        <p><strong>Use OCR when:</strong> Your PDF is a scanned image of a physical document (like a scanned invoice, receipt, or contract). If you can't select or copy text in the PDF, it's image-based and needs OCR. PDFs created from photos, screenshots, or scanner output always require OCR to extract text.</p>
-        <p><strong>Use Regular Text Extraction when:</strong> Your PDF already has selectable text—meaning you can click and drag to highlight words. If copy/paste works, you don't need OCR. Just use your PDF reader's built-in copy function or a standard text extraction tool. OCR is overkill and slower for PDFs with existing text layers.</p>
-        <p><strong>Quick Test:</strong> Open your PDF and try to select some text with your mouse. If you can highlight and copy it, skip OCR. If clicking just selects the whole page as an image, you need OCR.</p>
-        <p><strong>Pro tip:</strong> Some PDFs look like they have text but are actually scanned images with invisible text layers added by previous OCR. If the text looks weird when you copy it (wrong characters, garbled words), try running our OCR tool again with the correct language setting—it might produce cleaner results than the embedded OCR layer.</p>
+        <p><strong>Use OCR when:</strong> Your PDF looks like a scanned picture from some real paper document. Think along the lines of an invoice that got scanned or a receipt or even a contract. When you try to highlight text or copy it and nothing happens in that PDF, it means the whole thing is just images. So it requires OCR to pull out any actual words. Those PDFs that come from snapping photos or taking screenshots or running them through a scanner, they all need that OCR step to get the text out.</p>
+        <p><strong>Use Regular Text Extraction when:</strong> Your PDF already has selectable text. That means you can click and drag to highlight words. If copy and paste works fine, there is no need for OCR at all. People can just rely on the PDF readers built in copy feature. Or they might turn to a basic text extraction tool instead. OCR ends up being unnecessary effort in these cases. It takes longer too, especially when the PDF comes with its own text layer already in place.</p>
+        <p><strong>Quick Test:</strong>Open the PDF file on your computer. Try selecting a bit of text there with the mouse cursor. If the text highlights easily and you can copy it to the clipboard, that means OCR is not necessary at all. When clicking instead grabs the entire page like a single image, OCR becomes essential to make the content editable.</p>
+        <p><strong>Pro tip:</strong>Certain PDFs appear to contain selectable text at first glance. In reality, they consist of scanned images overlaid with hidden text layers from prior OCR processing. When copied, this text often emerges distorted, featuring incorrect characters or scrambled phrasing. Users can address this by applying the OCR tool once more. Selecting the appropriate language option tends to yield sharper outcomes compared to the existing embedded layer.</p>
       </section>
 
       <section>
@@ -302,12 +302,12 @@
 
         <details>
           <summary>Why is OCR so slow compared to other PDF tools?</summary>
-          <p>OCR is computationally intensive because it must analyze every pixel in an image to recognize characters and words. Processing a single page can take 10-30 seconds depending on image size, quality, and your device'\''s performance. This is normal for browser-based OCR.</p>
+          <p>OCR takes a lot of computing power. It has to look at every single pixel in the image. That way it can pick out the characters and words. Handling just one page might run 10 to 30 seconds. The time depends on things like the image size and quality. Your devices performance plays a role too. This kind of delay is pretty standard for OCR that runs right in the browser.</p>
         </details>
 
         <details>
           <summary>How accurate is the OCR text extraction?</summary>
-          <p>Accuracy depends on <strong>image quality</strong>, <strong>text clarity</strong>, and <strong>language selection</strong>. High-quality scans with clear, printed text typically achieve 95%+ accuracy. Low-resolution images, handwriting, unusual fonts, or poor contrast will reduce accuracy significantly.</p>
+          <p>Accuracy depends on <strong>image quality</strong>, <strong>text clarity</strong>, and <strong>language selection</strong>. Scans of high quality, especially those with clear printed text, often reach accuracy levels above 95 percent. Factors like low resolution in images, handwritten elements, unusual typefaces, or weak contrast between elements can drop that accuracy quite a bit.</p>
         </details>
 
         <details>
@@ -317,12 +317,12 @@
 
         <details>
           <summary>What languages are supported?</summary>
-          <p>This tool supports <strong>100+ languages</strong> including English, Spanish, French, German, Italian, Portuguese, Chinese (Simplified/Traditional), Japanese, Korean, Arabic, Russian, and many more. Select the correct language from the dropdown for best results.</p>
+          <p>This tool supports <strong>100+ languages</strong> The languages covered here include English, Spanish, French, German, Italian, Portuguese, and Chinese. Chinese appears in both simplified and traditional forms. Japanese, Korean, Arabic, Russian, and many others round out the list. Selecting the proper language from the dropdown tends to yield the best outcomes.</p>
         </details>
 
         <details>
           <summary>Why does the tool say "No text found" after processing?</summary>
-          <p>This can happen if: (1) Your PDF already has selectable text (no OCR needed), (2) The page contains only images/graphics with no readable text, (3) Text quality is too poor for recognition, or (4) You selected the wrong language. Try adjusting the language setting or checking image quality.</p>
+          <p>This issue might come up for a few reasons. First, the PDF could already include selectable text, so OCR is not required at all. Second, the page might consist solely of images or graphics without any readable text embedded in it. Third, the text quality could be so low that recognition becomes impossible. Fourth, selecting the incorrect language might be the problem. Adjusting the language setting could help, or checking the image quality might make a difference.</p>
         </details>
       </div>
 
