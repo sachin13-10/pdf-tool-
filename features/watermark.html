@@ -278,8 +278,8 @@
     <main class="feature">
       <h2>Watermark PDF</h2>
       <p class="sub">
-        Add a translucent text watermark to every page client‑side. Your file
-        never leaves your device.
+        Add a see-through text watermark right on every page. It all happens
+        client-side. Your file stays put on your device.
       </p>
       <div class="card">
         <label class="upload-box" id="drop-zone"
@@ -379,10 +379,11 @@
             >Need to mark documents as confidential, add copyright protection,
             or brand your PDFs?</strong
           >
-          Our Watermark tool adds customizable text overlays to every page of
-          your PDF. Choose the text, color, opacity, position, and sizeall
-          processed <strong>entirely in your browser</strong> with complete
-          privacy.
+          The watermark tool we have puts in custom text layers across each page
+          in your PDF. Pick whatever text you want. Set the color. Adjust the
+          opacity. Choose where it goes. Decide on the size. Everything gets
+          handled that way. <strong>entirely in your browser</strong> with
+          complete privacy.
         </p>
 
         <img
@@ -393,19 +394,23 @@
 
         <h4>How It Works</h4>
         <p>
-          The Watermark tool uses pdf-lib to read your PDF, then draws your
-          custom text on every page at the position, size, color, and opacity
-          you specify. All processing happens
+          The watermark tool works with pdf-lib. It pulls in your PDF file
+          first. Then it lays down your custom text across each page. You get to
+          pick the spot, the size, the color, and how see-through it looks. All
+          the work gets done
           <strong>locally in your browser</strong> using JavaScript. No server
           uploads, no data collection. You preview the watermark on a canvas,
           adjust settings, and download the watermarked PDF.
         </p>
 
         <p>
-          Think of it like stamping every page of a physical document with a
-          translucent "CONFIDENTIAL" or "DRAFT" marking. The watermark appears
-          on all pages but doesn't obscure the underlying content, making it
-          perfect for status indicators, copyright notices, or branding.
+          People often think of it that way. Like when you stamp each page of an
+          actual paper document with a see through "CONFIDENTIAL" or "DRAFT"
+          label. The watermark shows up across every single page. Yet it leaves
+          the main content clear and readable underneath. That setup turns out
+          to be just right for marking document status. Or for adding copyright
+          details in the background. And it even works well for simple branding
+          touches.
         </p>
 
         <h4>Why Use This Tool</h4>
@@ -434,18 +439,23 @@
 
         <h4>Complete Privacy</h4>
         <p>
-          Your PDF never leaves your computer. All watermarking happens directly
-          in your browser using pdf-lib. No files are uploaded to any server.
-          This is essential when watermarking sensitive documents like
-          contracts, financial records, legal briefs, or confidential reports.
+          The PDF file stays right on your machine the whole time. Watermarking
+          gets done straight in the browser with pdf-lib. Nothing uploads to a
+          server at all. That setup matters a lot for handling touchy stuff.
+          Like when you deal with contracts or financial papers. Or legal briefs
+          and reports that need to stay private.
         </p>
 
         <div class="tip">
           <strong> Your Privacy Matters:</strong><br />
-          100% client-side processing - everything stays on your device<br />
-          No server uploads - your document never goes online<br />
-          No data logging - we never see your file contents or watermark text<br />
-          Works offline - watermark PDFs even without internet connection
+          Your privacy really counts here. All the processing happens right on
+          the clients side. Everything stays put on your own device.<br />
+          There are no uploads to any server at all.<br />
+          Your document never hits the online world. No kind of data logging
+          takes place either. <br />We do not get to see the contents of your
+          file or any watermark text you add. <br />The tool works fully offline
+          too. You can watermark those PDFs without needing an internet
+          connection.
         </div>
 
         <h4>Customization Options</h4>
@@ -478,93 +488,126 @@
 
         <h4>Watermark Tips</h4>
         <p>
-          Adding a watermark is straightforward, but getting it to look
-          professional takes a bit of finesse. Here's how to make your
-          watermarks stand out without overwhelming the document:
+          Putting a watermark on something is pretty easy. But making it come
+          across as really professional, that calls for some careful handling.
+          This covers ways to have those watermarks grab attention. They do not
+          take over the whole document.
         </p>
         <ul>
           <li>
-            <strong>Start Subtle with Opacity:</strong> Use opacity 0.2-0.3 for
-            professional-looking watermarks that don't interfere with
-            readability. Too high (0.7+) and your watermark becomes a
-            distraction; too low (under 0.15) and it's practically invisible.
-            The sweet spot is translucent but clearly visible when you're
-            looking for it.
+            <strong>Start Subtle with Opacity:</strong> People often go with
+            opacity levels around 0.2 to 0.3 when adding watermarks that keep a
+            professional feel. These settings let the main content stay easy to
+            read without any real issues. Going higher, say 0.7 or above, turns
+            the watermark into something that pulls attention away from the
+            important parts. On the other hand, dropping below 0.15 makes it
+            fade so much that it hardly shows up at all. The ideal balance comes
+            through translucency that stands out just enough once someone
+            actually looks for it.
           </li>
           <li>
             <strong>Diagonal is the Industry Standard:</strong> The default
-            diagonal placement isn't just for looks—it's harder to crop out than
-            corner or center watermarks. If someone tries to remove a diagonal
-            watermark by cropping, they'd lose significant content from the
-            page. That's why most legal documents and official PDFs use diagonal
-            orientation.
+            diagonal placement for watermarks does more than look appealing. It
+            proves tougher to remove through cropping compared to those in
+            corners or at the center. When a person attempts to crop out a
+            diagonal watermark, substantial portions of the page content end up
+            lost in the process. This explains the common choice of diagonal
+            orientation in most legal documents along with official PDFs.
           </li>
           <li>
-            <strong>ALL CAPS for Visibility:</strong> Watermarks like
-            "CONFIDENTIAL" or "DRAFT" are way more visible and authoritative in
-            capital letters. Lowercase text can blend in too much with the
-            document content, especially at low opacities. ALL CAPS = instant
-            recognition.
+            <strong>ALL CAPS for Visibility:</strong> Watermarks such as
+            CONFIDENTIAL or DRAFT stand out much better when they appear in
+            capital letters. That gives them a sense of real authority right
+            away. Lowercase versions tend to fade into the background of the
+            document. This happens especially if you set the opacity low. All
+            caps grab attention instantly. People notice them without even
+            trying.
           </li>
           <li>
-            <strong>Always Test on the Preview:</strong> Before applying the
-            watermark to all pages, check the canvas preview carefully. Make
-            sure the text is readable, positioned correctly, and doesn't obscure
-            critical content. Zoom in if needed—what looks fine at thumbnail
-            size might block important text when viewed full-screen.
+            <strong>Always Test on the Preview:</strong> Check the canvas
+            preview with care before putting the watermark on every page. The
+            text needs to come across clearly in that view. It also has to sit
+            in the proper spot without hiding any key parts of the content.
+            Sometimes zooming in helps a lot. Details that seem okay when things
+            are small might end up covering important words once someone looks
+            at the full screen size.
           </li>
           <li>
-            <strong>Color Communicates Meaning:</strong> Red signals urgency or
-            confidentiality (perfect for "CONFIDENTIAL" or "DO NOT DISTRIBUTE").
-            Gray works great for status indicators like "DRAFT" or "COPY"—it's
-            visible but neutral. Blue conveys official or formal status, like
-            company branding or copyright notices. Choose color intentionally.
+            <strong>Color Communicates Meaning:</strong> Red often points to
+            something urgent or meant to stay private. It fits right in for
+            labels like "CONFIDENTIAL" or "DO NOT DISTRIBUTE". Gray serves as a
+            solid choice for marking status details such as "DRAFT" or "COPY".
+            That color shows up enough without drawing too much attention. Blue
+            tends to suggest a more official or structured feel. People use it
+            for things tied to company images or copyright details. Selecting
+            the right color calls for some real thought.
           </li>
           <li>
-            <strong>Keep Watermarks Short:</strong> Stick to 1-3 words maximum.
-            "CONFIDENTIAL" works perfectly. "This document contains confidential
-            information and should not be shared" becomes a cluttered mess. Long
-            text either gets too small to read or dominates the page. Brevity
-            wins.
+            <strong>Keep Watermarks Short:</strong> Labels should be limited to
+            a maximum of just one to three words. The term "CONFIDENTIAL" works
+            perfectly for marking sensitive materials. A longer phrase like
+            "This document contains confidential information and should not be
+            shared" turns into a cluttered mess on the page. Long text in labels
+            either shrinks down too small for anyone to read comfortably, or it
+            dominates the entire space available. Brevity always comes out on
+            top in these cases.
           </li>
         </ul>
 
         <h4>💼 Common Watermark Use Cases</h4>
         <p>
-          Watermarks serve different purposes depending on what you're trying to
-          achieve. Here are the most common scenarios and how to approach them:
+          Watermarks can have all sorts of purposes. It really depends on the
+          goal someone has in mind. The typical situations come up quite often.
+          People handle them in certain ways.
         </p>
         <p>
-          <strong>Draft Documents:</strong> Use "DRAFT" in gray at 0.25 opacity,
-          diagonal placement. This clearly indicates the document isn't final
-          without screaming for attention. Perfect for circulating proposals,
-          reports, or contracts for internal review before finalizing.
+          <strong>Draft Documents:</strong>People sometimes stamp the word DRAFT
+          across pages in a light gray shade. They set the opacity to just 0.25
+          and tilt it at a diagonal angle. This setup marks the paper as
+          unfinished in a quiet way. It avoids grabbing eyes too harshly or
+          making a big fuss. Such marking fits nicely for passing around early
+          versions of proposals or reports. It also suits contracts that need
+          team checks before anyone signs off on the real thing.
         </p>
         <p>
-          <strong>Confidential Materials:</strong> Use "CONFIDENTIAL" in red at
-          0.3 opacity, diagonal. The red color immediately signals sensitive
-          content, reminding anyone who opens the file to handle it carefully.
-          Great for financial data, HR documents, or strategic business plans.
+          <strong>Confidential Materials:</strong> People sometimes put the word
+          CONFIDENTIAL right across their documents in red ink. They make it
+          faint at about 0.3 opacity and angle it diagonally for that watermark
+          look. The red stands out enough to warn folks about sensitive material
+          inside. It prompts anyone opening the file to treat everything with
+          real caution. This approach fits nicely for handling financial
+          records, human resources papers, or key business planning docs.
         </p>
         <p>
-          <strong>Copyright Protection:</strong> Use "© 2025 Your Company Name"
-          in gray or blue at 0.2 opacity. This subtle but clear attribution
-          discourages unauthorized redistribution and makes it obvious who owns
-          the content. Useful for white papers, guides, or any content you're
-          distributing publicly.
+          <strong>Copyright Protection:</strong> Put something like "© 2025 Your
+          Company Name" right there on the page. Make it in gray or maybe blue,
+          and keep the opacity down to about 0.2. That way, it stays subtle
+          enough not to mess up the look. But it still gets the point across
+          clearly about who owns the stuff. This kind of thing really helps cut
+          down on people grabbing and sharing without permission. Plus, it just
+          makes ownership obvious to anyone glancing at it. You can use this
+          approach in white papers or guides. Or really any content that goes
+          out to the public.
         </p>
         <p>
-          <strong>Review Copies:</strong> Use "FOR REVIEW ONLY" or "COPY" in
-          gray at 0.25 opacity. This indicates the PDF is meant for feedback,
-          not final distribution, and shouldn't be treated as the official
+          <strong>Review Copies:</strong> People often mark drafts with "FOR
+          REVIEW ONLY" or "COPY" in gray at 0.25 opacity. That setup makes it
+          clear the PDF is only for feedback purposes. It is not ready for final
+          distribution at all. Nobody should mistake it for the official
           version.
         </p>
         <p>
-          <strong>Pro tip:</strong> If you're watermarking multiple documents
-          for the same purpose (like marking 20 reports as confidential), note
-          your preferred settings (text, color, opacity, position) so you can
-          apply them consistently across all files. Consistency makes your
-          documents look more professional and organized.
+          <strong>Pro tip:</strong> Watermarking several documents at once often
+          involves a shared goal. Take marking 20 reports as confidential, for
+          instance. In such cases, recording the chosen settings proves useful.
+          These include the specific text, the color selected, the level of
+          opacity, and the exact position on the page. Applying them uniformly
+          to every file follows naturally from this step. Documents then present
+          a more professional appearance overall. They seem organized too, which
+          matters in professional contexts like legal reviews or corporate
+          sharing. Evidence from document management practices supports this
+          approach. Consistency reduces errors and builds trust in shared
+          materials.
         </p>
 
         <h4>Quick Guide</h4>
@@ -603,9 +646,11 @@
         <details>
           <summary>Can I add different watermarks to different pages?</summary>
           <p>
-            Not currentlythis tool applies the same watermark to all pages. If
-            you need page-specific watermarks, you'd need to split the PDF,
-            watermark each section separately, then merge them back together.
+            This tool does not currently support different watermarks for each
+            page. It applies the same one across the entire document. For
+            page-specific watermarks, the process involves splitting the PDF
+            into sections first. Then each section gets its own watermark added
+            separately. Finally, all the parts come back together as one file.
           </p>
         </details>
 
