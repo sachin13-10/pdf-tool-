@@ -1,251 +1,701 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PDF to Images - EDITSMYPDF</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/pdf-to-images.html" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <style>
-    body { font-family:Inter,sans-serif; margin:0; background:#fff; color:#111; }
-    main { max-width:860px; margin:3rem auto; padding:1rem; text-align:center; }
-    h2 { font-size:2rem; margin:.5rem 0 1rem; }
-    p.sub { color:#555; }
-    .card { border:1px solid #eee; border-radius:16px; padding:2rem; box-shadow:0 2px 6px rgba(0,0,0,.05); text-align:left; }
-    .upload-box { border:2px dashed #ccc; border-radius:12px; padding:2rem; cursor:pointer; transition:.25s; text-align:center; }
-    .upload-box:hover { background:#f8faff; }
-    .upload-box.dragover { border-color:#e53935; }
-    label,input,select,button { display:block; margin:.75rem auto; font-size:1rem; }
-    select { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:240px; }
-    button { background:linear-gradient(90deg,#e53935,#c62828); color:#fff; border:none; border-radius:10px; padding:.85rem 1.6rem; font-weight:600; cursor:pointer; }
-    button:hover { opacity:.9; }
-    .thumbs { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:.75rem; margin-top:1rem; }
-    .thumbs img { width:100%; height:auto; border-radius:8px; border:1px solid #eee; background:#fafafa; }
-    .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
-    .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
-    /* Scoped blog styles: PDF to Images guide */
-    .pdf-images-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
-    .pdf-images-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
-    .pdf-images-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
-    .pdf-images-guide .sub{color:#60636c;margin:0 0 1rem}
-    .pdf-images-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
-    .pdf-images-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
-    .pdf-images-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
-    .pdf-images-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
-    .pdf-images-guide article{margin-top:2rem}
-    .pdf-images-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
-    .pdf-images-guide p{margin:0 0 1rem}
-    .pdf-images-guide .grid{display:grid;gap:1rem}
-    @media (min-width:800px){ .pdf-images-guide .grid{grid-template-columns:1fr 1fr} }
-    .pdf-images-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-    .pdf-images-guide figure{margin:0}
-    .pdf-images-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
-    .pdf-images-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
-    .pdf-images-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
-    .pdf-images-guide .faq details+details{margin-top:.75rem}
-    .pdf-images-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
-  </style>
-</head>
-<body>
-  <header data-include="navbar"></header>
-  <div id="ad-top" class="ad-slot"></div>
-  <main class="feature">
-    <h2>PDF to Images</h2>
-    <p class="sub">Render each PDF page to PNG or JPEG and download them, or zip them all.</p>
-    <div class="card">
-      <label class="upload-box" id="drop-zone">📄 Drop your PDF or click to upload
-        <input type="file" id="file-input" accept="application/pdf" style="display:none" />
-      </label>
-      <div class="controls">
-        <select id="img-format"><option value="png" selected>PNG</option><option value="jpeg">JPEG</option></select>
-        <select id="scale"><option value="1">Scale 1x</option><option value="1.5" selected>Scale 1.5x</option><option value="2">Scale 2x</option></select>
-      </div>
-      <div id="status" class="progress"></div>
-      <div class="thumbs" id="thumbs"></div>
-      <button id="zip-btn" style="display:none">Download All as ZIP</button>
-    </div>
-  <div id="ad-content" class="ad-slot"></div>
-    <!-- Inline feature blog: PDF to Images (replaced with detailed guide) -->
-    <section class="feature-blog pdf-images-guide" aria-labelledby="pdf-images-guide-title">
-      <span class="eyebrow">Behind the Scenes</span>
-      <h2 id="pdf-images-guide-title">Turn Each PDF Page into an Image — Fast, Clear, and Private</h2>
-      <p class="sub">Need PNGs for a gallery, JPEGs for smaller posts, or thumbnails for a slideshow? Here’s a human-friendly tour of how our PDF ➜ Images tool works and how to pick the right settings for crisp results.</p>
-      <p class="meta">Runs fully in your browser • No uploads • Exports PNG or JPEG per page, plus ZIP</p>
-
-      <div class="hero">
-        <div>
-          <p>
-            Our converter takes each page from your PDF and renders it as a normal image. Everything happens <strong>locally</strong> in your browser window. That means sensitive files never leave your device, and you see results as they’re generated. Choose <span class="kbd">PNG</span> for sharp graphics (charts, line art) or <span class="kbd">JPEG</span> for photographs where small file size matters.
-          </p>
-          <a class="cta" href="/features/pdf-to-images.html" aria-label="Open the PDF to Images tool">🖼️ Convert PDF ➜ Images</a>
-          <p style="margin:.6rem 0 0">Quick rule: <span class="kbd">PNG</span> for crisp lines and text, <span class="kbd">JPEG</span> for photos and slides.</p>
-        </div>
-
-        <figure class="viz" role="img" aria-label="PDF to images pipeline diagram">
-          <img alt="PDF to Images flow diagram"
-               src="data:image/svg+xml;utf8,
-               <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
-                 <defs><linearGradient id='g' x1='0' x2='1'>
-                   <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
-                 <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                 <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your PDF</text>
-                 <rect x='320' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
-                 <text x='460' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Render page ➜ canvas (scale)</text>
-                 <rect x='320' y='150' width='280' height='70' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
-                 <text x='460' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Encode as PNG or JPEG</text>
-                 <rect x='650' y='60' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                 <text x='780' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Images / ZIP</text>
-                 <rect x='690' y='120' width='80' height='80' rx='10' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                 <rect x='790' y='120' width='80' height='80' rx='10' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                 <path d='M260 160 L320 95' stroke='url(%23g)' stroke-width='6'/>
-                 <path d='M260 160 L320 185' stroke='url(%23g)' stroke-width='6'/>
-                 <path d='M600 95 L650 160' stroke='url(%23g)' stroke-width='6'/>
-                 <path d='M600 185 L650 160' stroke='url(%23g)' stroke-width='6'/>
-               </svg>"/>
-          <figcaption>We render each page to a canvas at your chosen scale, then export as PNG or JPEG — locally.</figcaption>
-        </figure>
-      </div>
-
-      <article>
-        <h3>What actually happens under the hood?</h3>
-        <p>
-          A PDF is like a recipe: “draw this text here, place that image there.” Our tool reads a page, paints it onto an invisible canvas at the scale you choose (think zoom level), and then saves that canvas as a standard image file. We repeat for every page. No servers, no queues, and your originals stay exactly the same.
-        </p>
-        <p>
-          Because we render directly from the PDF instructions, you get crisp edges, proper fonts, and true colors. Choose a higher scale for small print or detailed diagrams; stick to the default for slides and handouts.
-        </p>
-
-        <div class="grid">
-          <div class="card">
-            <h3 style="margin:.2rem 0 .4rem">When to pick PNG vs JPEG</h3>
-            <ul style="margin:.2rem 0 0 1rem">
-              <li><strong>PNG:</strong> best for charts, icons, UI mockups, line drawings, and text-heavy pages.</li>
-              <li><strong>JPEG:</strong> best for photographs, scanned slides, and when you need smaller file sizes.</li>
-            </ul>
-            <p class="tip"><strong>Tip:</strong> If you’re unsure, export PNGs for key pages and JPEGs for photos, then ZIP them together.</p>
-          </div>
-          <div class="card">
-            <figure>
-              <img alt="Before and after rendering illustration"
-                   src="data:image/svg+xml;utf8,
-                   <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
-                     <rect width='1200' height='620' fill='%23ffffff'/>
-                     <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>PDF Pages</text>
-                     <rect x='120' y='120' width='180' height='240' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
-                     <rect x='330' y='120' width='180' height='240' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
-                     <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Rendered Images</text>
-                     <rect x='780' y='120' width='180' height='140' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                     <rect x='980' y='120' width='180' height='140' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                     <rect x='830' y='280' width='280' height='14' rx='7' fill='%23111' opacity='.08'/>
-                   </svg>"/>
-              <figcaption>Left: two PDF pages. Right: their image equivalents, ready for galleries or posts.</figcaption>
-            </figure>
-          </div>
-        </div>
-
-        <h3>Step-by-step: from PDF to a folder of images</h3>
-        <ol>
-          <li><strong>Open the tool:</strong> go to <span class="kbd">/features/pdf-to-images.html</span>.</li>
-          <li><strong>Upload your PDF:</strong> drag &amp; drop or click to choose a file.</li>
-          <li><strong>Pick format:</strong> select <span class="kbd">PNG</span> or <span class="kbd">JPEG</span>.</li>
-          <li><strong>Choose scale:</strong> <span class="kbd">1.5×</span> is a good default; try <span class="kbd">2×</span> for tiny text.</li>
-          <li><strong>Download:</strong> save pages one-by-one or click <em>Download All as ZIP</em> for a tidy bundle.</li>
-        </ol>
-
-        <div class="tip">
-          <strong>Quality &amp; performance tips:</strong><br />
-          • For charts and code, use PNG with scale <span class="kbd">1.5×–2×</span> to keep edges razor-sharp.<br />
-          • For slide decks or photo-heavy PDFs, JPEG is smaller and still looks great.<br />
-          • Rendering hundreds of pages? Do it in chunks or close heavy tabs to free memory.
-        </div>
-
-        <h3>What this tool is (and isn’t)</h3>
-        <p>
-          You’re creating <em>pictures of pages</em>. That’s perfect for websites, LMS uploads, quick previews, and social posts. It isn’t meant for extracting editable text or graphics — for that, try our <strong>Extract Images</strong> or <strong>OCR</strong> tools. If you need to keep the PDF but reduce size, run the result through the <strong>Compressor</strong>.
-        </p>
-
-        <h3>Privacy by default</h3>
-        <p>
-          Everything happens on your device. We don’t upload, read, or store your documents. Close the tab and the working data is gone with it. This makes the tool safe for confidential notes, contracts, IDs, and classroom material.
-        </p>
-
-        <h3>FAQs</h3>
-        <div class="faq">
-          <details>
-            <summary>Will the images match what I see in the PDF viewer?</summary>
-            <p>Yes. We render from the same drawing instructions used by viewers, then save that result as PNG or JPEG at your chosen scale.</p>
-          </details>
-          <details>
-            <summary>What filename pattern do you use?</summary>
-            <p>Downloads are named like <span class="kbd">page-001.png</span>, <span class="kbd">page-002.png</span>… so they stay in order. The ZIP keeps this naming too.</p>
-          </details>
-          <details>
-            <summary>Can I pick only some pages?</summary>
-            <p>Export all, then keep the ones you need — or render in smaller batches by splitting the PDF first and converting those parts.</p>
-          </details>
-        </div>
-
-        <p class="sub" style="margin-top:1rem">Ready to go from document to gallery? Choose your format and scale, convert, and you’re done — clean images you can post, print, or reuse anywhere.</p>
-        <p><a class="cta" href="/features/pdf-to-images.html">Open PDF ➜ Images</a></p>
-      </article>
-    </section>
-  </main>
-  <div id="ad-footer" class="ad-slot"></div>
-  <div data-include="footer"></div>
-  <script>
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const thumbs = document.getElementById('thumbs');
-    const statusText = document.getElementById('status');
-    const zipBtn = document.getElementById('zip-btn');
-    const fmtSel = document.getElementById('img-format');
-    const scaleSel = document.getElementById('scale');
-
-    let images = [];
-
-    dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await loadPDF(f); });
-    fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await loadPDF(f); e.target.value=''; });
-
-    async function loadPDF(file){
-      statusText.textContent='Rendering pages...'; thumbs.innerHTML=''; images=[]; zipBtn.style.display='none';
-      const bytes = new Uint8Array(await file.arrayBuffer());
-      const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
-      for (let i=1; i<=pdf.numPages; i++){
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: parseFloat(scaleSel.value)||1.5 });
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = viewport.width; canvas.height = viewport.height;
-        await page.render({ canvasContext: ctx, viewport }).promise;
-        const format = fmtSel.value === 'jpeg' ? 'image/jpeg' : 'image/png';
-        const url = canvas.toDataURL(format, 0.92);
-        const img = document.createElement('img');
-        img.src = url; img.alt = 'Page ' + i;
-        thumbs.appendChild(img);
-        images.push({ url, name: `page-${String(i).padStart(3,'0')}.${fmtSel.value==='jpeg'?'jpg':'png'}` });
-        statusText.textContent = `Rendered ${i}/${pdf.numPages}`;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Convert PDF to images: export each page as PNG or JPEG. Free online converter  download as ZIP, browser-based, no uploads."
+    />
+    <title>PDF to Images - EDITSMYPDF</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <link
+      rel="canonical"
+      href="https://editmypdf.tech/features/pdf-to-images.html"
+    />
+    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
       }
-      zipBtn.style.display = images.length ? 'inline-block' : 'none';
-      statusText.textContent += ' — Done';
-    }
+      body {
+        font-family: Inter, sans-serif;
+        margin: 0;
+        background: #fff;
+        color: #111;
+      }
+      main {
+        max-width: 860px;
+        margin: 3rem auto;
+        padding: 1rem;
+        text-align: center;
+      }
+      h2 {
+        font-size: 2rem;
+        margin: 0.5rem 0 1rem;
+      }
+      p.sub {
+        color: #555;
+      }
+      .card {
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        text-align: left;
+      }
+      .upload-box {
+        border: 2px dashed #ccc;
+        border-radius: 12px;
+        padding: 2rem;
+        cursor: pointer;
+        transition: 0.25s;
+        text-align: center;
+      }
+      .upload-box:hover {
+        background: #f8faff;
+      }
+      .upload-box.dragover {
+        border-color: #e53935;
+      }
+      label,
+      input,
+      select,
+      button {
+        display: block;
+        margin: 0.75rem auto;
+        font-size: 1rem;
+      }
+      select {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.6rem 0.9rem;
+        width: 240px;
+      }
+      button {
+        background: linear-gradient(90deg, #e53935, #c62828);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 0.85rem 1.6rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:hover {
+        opacity: 0.9;
+      }
+      .thumbs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .thumbs img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        background: #fafafa;
+      }
+      .progress {
+        margin-top: 1rem;
+        min-height: 1.3rem;
+        color: #555;
+        text-align: center;
+      }
+      .ad-box {
+        margin-top: 3rem;
+        height: 90px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-weight: 500;
+      }
+      /* Scoped blog styles: PDF to Images guide */
+      .feature-blog {
+        max-width: 700px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.7;
+        color: #334155;
+      }
 
-    zipBtn.addEventListener('click', async ()=>{
-      if (!images.length) return;
-      statusText.textContent = 'Zipping images...';
-      const zip = new JSZip();
-      images.forEach(img => zip.file(img.name, img.url.split(',')[1], { base64: true }));
-      const blob = await zip.generateAsync({ type:'blob' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'pdf-images.zip'; a.click(); URL.revokeObjectURL(url);
-      statusText.textContent = 'ZIP downloaded.';
-    });
-  </script>
-  <script src="../assets/app.js"></script>
-</body>
+      .feature-blog h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1e40af;
+        margin: 0 0 1.5rem;
+        line-height: 1.3;
+      }
+
+      .feature-blog .hero-img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+        border: 1px solid #e0e7ff;
+      }
+
+      .feature-blog section {
+        margin: 2rem 0;
+      }
+
+      .feature-blog h4 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin: 1.5rem 0 0.75rem;
+      }
+
+      .feature-blog p {
+        margin: 0.75rem 0;
+        color: #475569;
+      }
+
+      .feature-blog strong {
+        color: #334155;
+        font-weight: 600;
+      }
+
+      .feature-blog ul {
+        margin: 0.75rem 0;
+        padding-left: 1.5rem;
+      }
+
+      .feature-blog li {
+        margin: 0.5rem 0;
+        color: #475569;
+      }
+
+      .feature-blog .note {
+        background: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+      }
+
+      .feature-blog .note p {
+        margin: 0;
+      }
+
+      .feature-blog .note a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .feature-blog .note a:hover {
+        text-decoration: underline;
+      }
+
+      .feature-blog .faq {
+        margin: 2rem 0 0;
+      }
+
+      .feature-blog .faq h4 {
+        font-size: 1.35rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-blog details {
+        background: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .feature-blog details:hover {
+        border-color: #c7d2fe;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      }
+
+      .feature-blog summary {
+        font-weight: 600;
+        color: #1e40af;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .feature-blog summary::before {
+        content: "▶";
+        font-size: 0.75rem;
+        transition: transform 0.2s ease;
+        color: #2563eb;
+      }
+
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+
+      .feature-blog details p {
+        margin-top: 0.75rem;
+        padding-left: 1.25rem;
+      }
+
+      @media (max-width: 640px) {
+        .feature-blog {
+          margin: 2rem 1rem;
+          padding: 1.5rem;
+        }
+
+        .feature-blog h3 {
+          font-size: 1.5rem;
+        }
+
+        .feature-blog h4 {
+          font-size: 1.15rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
+    <main class="feature">
+      <h2>PDF to Images</h2>
+      <p class="sub">
+        Render each PDF page to PNG or JPEG and download them, or zip them all.
+      </p>
+      <div class="card">
+        <label class="upload-box" id="drop-zone"
+          >📄 Drop your PDF or click to upload
+          <input
+            type="file"
+            id="file-input"
+            accept="application/pdf"
+            style="display: none"
+          />
+        </label>
+        <div class="controls">
+          <select id="img-format">
+            <option value="png" selected>PNG</option>
+            <option value="jpeg">JPEG</option>
+          </select>
+          <select id="scale">
+            <option value="1">Scale 1x</option>
+            <option value="1.5" selected>Scale 1.5x</option>
+            <option value="2">Scale 2x</option>
+          </select>
+        </div>
+        <div id="status" class="progress"></div>
+        <div class="thumbs" id="thumbs"></div>
+        <button id="zip-btn" style="display: none">Download All as ZIP</button>
+      </div>
+      <div id="ad-content" class="ad-slot"></div>
+      <!-- Feature Blog Section -->
+      <section class="feature-blog">
+        <div class="title-with-logo">
+          <img
+            src="../assets/images/sflogoPNG.PNG"
+            alt="PDF Tools Logo"
+            class="brand-logo"
+          />
+          <h3>PDF to Images Convert Each Page to PNG or JPEG</h3>
+        </div>
+
+        <img
+          src="../assets/images/pdf to image.JPG"
+          alt="Convert PDF to images"
+          class="hero-img"
+        />
+
+        <section>
+          <h4>How It Works</h4>
+          <p>
+            Our <strong>PDF to Images tool</strong> converts every page of your
+            PDF into individual image files (PNG or JPEG). Choose your preferred
+            format and quality, then download each page separately or bundle
+            everything into a single ZIP file all processed locally in your
+            browser.
+          </p>
+        </section>
+
+        <section>
+          <h4>Why Use This Tool?</h4>
+          <ul>
+            <li>
+              <strong>Format Choice:</strong> Export as PNG (lossless quality)
+              or JPEG (smaller file size)
+            </li>
+            <li>
+              <strong>Batch Download:</strong> Get all pages as a ZIP archive
+              with one click
+            </li>
+            <li>
+              <strong>Preview Thumbnails:</strong> See all converted pages
+              before downloading
+            </li>
+            <li>
+              <strong>100% Private:</strong> No uploads everything happens in
+              your browser
+            </li>
+            <li>
+              <strong>High Quality:</strong> Adjustable scale (1, 1.5, 2) for
+              higher resolution exports
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Complete Privacy</h4>
+          <p>
+            Your PDF <strong>never leaves your device</strong>. We use PDF.js to
+            render pages and JSZip to create archives entirely in your browser.
+            No server uploads, no data collection, no privacy concerns.
+          </p>
+        </section>
+
+        <section>
+          <h4>PNG vs JPEG: Which Should You Choose?</h4>
+          <p>
+            <strong>PNG:</strong> Lossless compression preserves perfect
+            quality. Best for text-heavy documents, diagrams, screenshots, and
+            images with transparency. Larger file sizes.
+          </p>
+          <p>
+            <strong>JPEG:</strong> Lossy compression reduces file size
+            significantly. Ideal for photos, presentations, and situations where
+            file size matters more than pixel-perfect quality.
+          </p>
+          <p>
+            <strong>Pro Tip:</strong> Use PNG for documents with sharp text or
+            fine details. Use JPEG for photo-heavy presentations where smaller
+            files speed up sharing.
+          </p>
+        </section>
+
+        <section>
+          <h4>Conversion Tips</h4>
+          <p>
+            Converting PDFs to images is straightforward, but making smart
+            choices up front will save you time and headaches. Here's what you
+            need to know:
+          </p>
+          <ul>
+            <li>
+              <strong>Scale Setting Matters:</strong> Choose 1× for standard web
+              use and sharing online—it's fast and produces reasonable file
+              sizes. If you need better clarity for presentations or detailed
+              documents, go with 1.5×. Use 2× only when you're printing or need
+              maximum resolution, but be aware that file sizes can balloon
+              quickly at this setting.
+            </li>
+            <li>
+              <strong>ZIP Downloads Save Time:</strong> If your PDF has 10+
+              pages, don't waste time clicking each thumbnail individually. Use
+              the "Download as ZIP" button to grab everything in one go. The ZIP
+              file is named after your PDF, so it's easy to identify later.
+            </li>
+            <li>
+              <strong>Quality vs Size Trade-off:</strong> PNG files preserve
+              every pixel perfectly but are typically 3-5× larger than JPEG
+              equivalents. If you're emailing images or uploading to a platform
+              with size limits, JPEG at 80-90% quality looks nearly identical to
+              PNG but shrinks the file size dramatically.
+            </li>
+            <li>
+              <strong>Transparency Only Works with PNG:</strong> If your PDF has
+              transparent backgrounds (like logos or design elements), you must
+              use PNG format. JPEG doesn't support transparency and will replace
+              it with a solid white or black background, which can ruin the look
+              of your images.
+            </li>
+            <li>
+              <strong>Processing Speed Depends on Size:</strong> Large PDFs (50+
+              pages) or high-scale settings (2×) can take 1-3 minutes to
+              convert. This is normal for browser-based rendering—each page
+              needs to be drawn, converted to an image, and encoded. Close other
+              tabs to speed things up if it's running slow.
+            </li>
+            <li>
+              <strong>Check Before Downloading:</strong> Use the thumbnail
+              previews to confirm everything converted correctly. If a page
+              looks blurry, distorted, or missing content, try adjusting the
+              scale setting or re-uploading the PDF. Sometimes a quick refresh
+              solves rendering glitches.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>🖼️ Common Use Cases for PDF-to-Image Conversion</h4>
+          <p>
+            Not sure when you'd need to convert a PDF to images? Here are some
+            scenarios where this tool is incredibly handy:
+          </p>
+          <p>
+            <strong>Social Media Sharing:</strong> Platforms like Instagram,
+            Twitter, and LinkedIn don't support PDF uploads. Convert your PDF
+            pages to JPEG or PNG, and you can share infographics, reports, or
+            announcements as image posts that people can view without
+            downloading anything.
+          </p>
+          <p>
+            <strong>Presentations and Slides:</strong> Need to insert a page
+            from a PDF into a PowerPoint or Google Slides deck? Convert that
+            page to an image and drop it right in. Way easier than trying to
+            embed the PDF itself, which often doesn't display correctly.
+          </p>
+          <p>
+            <strong>Website Content:</strong> If you want to display a PDF page
+            on your website without forcing visitors to download a file, convert
+            it to an image and embed it. This works great for certificates,
+            awards, or sample pages from longer documents.
+          </p>
+          <p>
+            <strong>Archiving and Thumbnails:</strong> Creating a visual archive
+            or catalog of documents? Convert each PDF's first page to a
+            thumbnail image so you can quickly browse through files without
+            opening each one individually.
+          </p>
+          <p>
+            <strong>Pro tip:</strong> If you only need a few specific pages from
+            a large PDF, use our <a href="./split.html">Split PDF tool</a> first
+            to extract just those pages. Then convert the smaller PDF to
+            images—it's way faster and won't create unnecessary image files you
+            don't need.
+          </p>
+        </section>
+
+        <section>
+          <h4>Quick Guide</h4>
+          <p>
+            <strong>1. Upload PDF:</strong> Drag and drop or click to select
+            your PDF file
+          </p>
+          <p>
+            <strong>2. Choose Format:</strong> Select PNG (quality) or JPEG
+            (smaller size) from the dropdown
+          </p>
+          <p>
+            <strong>3. Set Scale:</strong> Pick 1, 1.5, or 2 resolution based on
+            your needs
+          </p>
+          <p>
+            <strong>4. Convert:</strong> Click "Convert to Images" and wait
+            while pages are processed
+          </p>
+          <p>
+            <strong>5. Preview:</strong> View all converted pages as thumbnails
+          </p>
+          <p>
+            <strong>6. Download:</strong> Click individual thumbnails to
+            download, or use "Download as ZIP" for all pages at once
+          </p>
+        </section>
+
+        <div class="faq">
+          <h4>Frequently Asked Questions</h4>
+
+          <details>
+            <summary>
+              What'\''s the difference between PNG and JPEG output?
+            </summary>
+            <p>
+              <strong>PNG</strong> uses lossless compression, preserving every
+              pixel perfectly ideal for text, diagrams, and screenshots.
+              <strong>JPEG</strong> uses lossy compression, creating smaller
+              files by discarding some visual data best for photos and images
+              where slight quality loss is acceptable.
+            </p>
+          </details>
+
+          <details>
+            <summary>How do I download all pages at once?</summary>
+            <p>
+              After conversion, click the
+              <strong>"Download as ZIP"</strong> button that appears below the
+              thumbnails. This bundles all converted images into a single ZIP
+              archive named after your PDF file, saving you from clicking each
+              page individually.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              Will the images have the same quality as the original PDF?
+            </summary>
+            <p>
+              Quality depends on <strong>scale setting</strong> and
+              <strong>format choice</strong>. At 1 scale with PNG, you get the
+              same resolution as the PDF at standard screen density. Use 1.5 or
+              2 scale for higher resolution exports suitable for printing or
+              enlargement.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              Can I convert only specific pages instead of the entire PDF?
+            </summary>
+            <p>
+              This tool converts <strong>all pages</strong> automatically. If
+              you only need specific pages, use the
+              <strong>Split PDF</strong> tool first to extract those pages, then
+              convert the smaller PDF to images. Alternatively, just
+              ignore/delete unwanted images after conversion.
+            </p>
+          </details>
+
+          <details>
+            <summary>Why is the conversion taking so long?</summary>
+            <p>
+              Converting PDFs to images is resource-intensive because each page
+              must be rendered as a high-resolution bitmap. Large PDFs (50+
+              pages) or high-scale settings (2) require significant processing.
+              This is normal for browser-based conversion expect 1-3 seconds per
+              page.
+            </p>
+          </details>
+
+          <details>
+            <summary>Can I convert scanned PDFs or image-based PDFs?</summary>
+            <p>
+              Yes! This tool works with <strong>any PDF</strong>, including
+              scanned documents and image-based PDFs. It renders the visual
+              appearance of each page, so whether your PDF contains text,
+              images, or both, the output will be accurate image
+              representations.
+            </p>
+          </details>
+        </div>
+
+        <div class="note">
+          <p>
+            <strong>Ready to convert your PDF to images?</strong>
+            <a href="#file-input">Try it now </a>
+          </p>
+        </div>
+      </section>
+    </main>
+    <div id="ad-footer" class="ad-slot"></div>
+    <div data-include="footer"></div>
+    <script>
+      // "Try it now" link functionality
+      document.addEventListener("DOMContentLoaded", () => {
+        const tryNowLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryNowLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById("file-input");
+            if (fileInput) {
+              fileInput.click();
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);
+            }
+          });
+        });
+      });
+
+      const dropZone = document.getElementById("drop-zone");
+      const fileInput = document.getElementById("file-input");
+      const thumbs = document.getElementById("thumbs");
+      const statusText = document.getElementById("status");
+      const zipBtn = document.getElementById("zip-btn");
+      const fmtSel = document.getElementById("img-format");
+      const scaleSel = document.getElementById("scale");
+
+      let images = [];
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("dragover")
+      );
+      dropZone.addEventListener("drop", async (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        const f = e.dataTransfer.files[0];
+        if (f) await loadPDF(f);
+      });
+      fileInput.addEventListener("change", async (e) => {
+        const f = e.target.files[0];
+        if (f) await loadPDF(f);
+        e.target.value = "";
+      });
+
+      async function loadPDF(file) {
+        statusText.textContent = "Rendering pages...";
+        thumbs.innerHTML = "";
+        images = [];
+        zipBtn.style.display = "none";
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({
+            scale: parseFloat(scaleSel.value) || 1.5,
+          });
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          await page.render({ canvasContext: ctx, viewport }).promise;
+          const format = fmtSel.value === "jpeg" ? "image/jpeg" : "image/png";
+          const url = canvas.toDataURL(format, 0.92);
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = "Page " + i;
+          thumbs.appendChild(img);
+          images.push({
+            url,
+            name: `page-${String(i).padStart(3, "0")}.${
+              fmtSel.value === "jpeg" ? "jpg" : "png"
+            }`,
+          });
+          statusText.textContent = `Rendered ${i}/${pdf.numPages}`;
+        }
+        zipBtn.style.display = images.length ? "inline-block" : "none";
+        statusText.textContent += " — Done";
+      }
+
+      zipBtn.addEventListener("click", async () => {
+        if (!images.length) return;
+        statusText.textContent = "Zipping images...";
+        const zip = new JSZip();
+        images.forEach((img) =>
+          zip.file(img.name, img.url.split(",")[1], { base64: true })
+        );
+        const blob = await zip.generateAsync({ type: "blob" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pdf-images.zip";
+        a.click();
+        URL.revokeObjectURL(url);
+        statusText.textContent = "ZIP downloaded.";
+      });
+    </script>
+    <script src="../assets/app.js"></script>
+  </body>
 </html>

@@ -1,6 +1,6 @@
 // Optional site-wide AdSense config (loaded by assets/ads/ads.js)
-// To enable ads everywhere, uncomment and set your publisher ID:
-// window.ADSENSE_CLIENT = 'ca-pub-REPLACE_WITH_YOUR_PUBLISHER_ID';
+// To enable ads everywhere, set your publisher ID:
+window.ADSENSE_CLIENT = 'ca-pub-6553804345739521';
 
 // Optional: Map placements to your ad unit slot IDs so manual placements serve real ads
 // You can set per-id, per-class, or a 3-up blog grid array.

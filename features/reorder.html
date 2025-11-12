@@ -1,317 +1,800 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reorder Pages - EDITSMYPDF</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/reorder.html" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-  <style>
-    body { font-family:Inter,sans-serif; margin:0; background:#fff; color:#111; }
-    main { max-width:860px; margin:3rem auto; padding:1rem; text-align:center; }
-    h2 { font-size:2rem; margin:.5rem 0 1rem; }
-    p.sub { color:#555; }
-    .card { border:1px solid #eee; border-radius:16px; padding:2rem; box-shadow:0 2px 6px rgba(0,0,0,.05); text-align:left; }
-    .upload-box { border:2px dashed #ccc; border-radius:12px; padding:2rem; cursor:pointer; transition:.25s; text-align:center; }
-    .upload-box:hover { background:#f8faff; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:.75rem; margin-top:1rem; }
-  .thumb { position:relative; border:1px solid #ddd; border-radius:8px; padding:.5rem .5rem .75rem; background:#fff; cursor:move; user-select:none; box-shadow:0 2px 6px rgba(0,0,0,.05); display:flex; flex-direction:column; gap:.4rem; }
-  .thumb.dragging { opacity:.5; }
-  .thumb canvas { width:100%; height:auto; border:1px solid #eee; border-radius:6px; background:#fff; }
-  .thumb .pg-label { font-size:.7rem; font-weight:600; color:#555; text-align:center; letter-spacing:.5px; }
-  .thumb:hover { border-color:#e53935; }
-  .thumb.drag-over { outline:2px dashed #e53935; outline-offset:2px; }
-    .thumb.dragging { opacity:.5; }
-    label,input,button { display:block; margin:.75rem auto; font-size:1rem; }
-    input[type=text] { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:260px; }
-    button { background:linear-gradient(90deg,#e53935,#c62828); color:#fff; border:none; border-radius:10px; padding:.85rem 1.6rem; font-weight:600; cursor:pointer; }
-    button:hover { opacity:.9; }
-    .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
-    .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
-    /* Scoped blog styles: Reorder guide */
-    .reorder-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
-    .reorder-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
-    .reorder-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
-    .reorder-guide .sub{color:#60636c;margin:0 0 1rem}
-    .reorder-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
-    .reorder-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
-    .reorder-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
-    .reorder-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
-    .reorder-guide article{margin-top:2rem}
-    .reorder-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
-    .reorder-guide p{margin:0 0 1rem}
-    .reorder-guide .grid{display:grid;gap:1rem}
-    @media (min-width:800px){ .reorder-guide .grid{grid-template-columns:1fr 1fr} }
-    .reorder-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-    .reorder-guide figure{margin:0}
-    .reorder-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
-    .reorder-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
-    .reorder-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
-    .reorder-guide .faq details+details{margin-top:.75rem}
-    .reorder-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
-  </style>
-</head>
-<body>
-  <header data-include="navbar"></header>
-  <div id="ad-top" class="ad-slot"></div>
-  <main class="feature">
-    <h2>Reorder Pages</h2>
-    <p class="sub">Drag the thumbnails to change the order, then download a new PDF.</p>
-    <div class="card">
-      <label class="upload-box" id="drop-zone">📄 Drop your PDF or click to upload
-        <input type="file" id="file-input" accept="application/pdf" style="display:none" />
-      </label>
-      <div id="grid" class="grid"></div>
-      <label for="output-name">Output filename</label>
-      <input id="output-name" type="text" value="reordered" />
-      <button id="download-btn" style="display:none">Download PDF</button>
-      <div id="status" class="progress"></div>
-    </div>
-  <div id="ad-content" class="ad-slot"></div>
-    <!-- Inline feature blog: Reorder Pages (replaced with detailed guide) -->
-    <section class="feature-blog reorder-guide" aria-labelledby="reorder-guide-title">
-      <span class="eyebrow">Behind the Scenes</span>
-      <h2 id="reorder-guide-title">Reorder PDF Pages in Seconds — Drag, Drop, Done</h2>
-      <p class="sub">Slides out of order? Title page at the end? This guide shows how our Reorder Pages tool works in your browser, why it’s private by design, and a few tricks for clean, professional results.</p>
-      <p class="meta">Runs fully on your device • No uploads • Great for study packs, reports, and scanned sets</p>
-
-      <div class="hero">
-        <div>
-          <p>
-            The Reorder Pages tool lets you shuffle page thumbnails into the exact sequence you want and export a new PDF. Everything runs <strong>locally</strong> in your browser using efficient PDF libraries, so your document never leaves your device. It’s quick, safe, and ideal for sensitive course notes or paperwork.
-          </p>
-          <a class="cta" href="/features/reorder.html" aria-label="Open the Reorder Pages tool">🧩 Reorder Pages Now</a>
-          <p style="margin:.6rem 0 0">Tip: save as <span class="kbd">project-reordered.pdf</span> to keep the original untouched.</p>
-        </div>
-
-        <figure class="viz" role="img" aria-label="Reorder pages pipeline diagram">
-          <img alt="Reorder PDF flow diagram"
-               src="data:image/svg+xml;utf8,
-               <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 340'>
-                 <defs><linearGradient id='g' x1='0' x2='1'>
-                   <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
-                 <!-- Original stack -->
-                 <rect x='30' y='70' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                 <text x='145' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Original Order</text>
-                 <rect x='60' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
-                 <rect x='125' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
-                 <rect x='190' y='120' width='60' height='120' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
-
-                 <!-- Drag action -->
-                 <rect x='330' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
-                 <text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Drag &amp; drop thumbnails</text>
-
-                 <!-- New stack -->
-                 <rect x='650' y='70' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                 <text x='780' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>New Order</text>
-                 <rect x='680' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                 <rect x='745' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                 <rect x='810' y='120' width='60' height='120' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
-
-                 <path d='M260 170 L330 95' stroke='url(%23g)' stroke-width='6'/>
-                 <path d='M610 95 L650 170' stroke='url(%23g)' stroke-width='6'/>
-               </svg>"/>
-          <figcaption>We copy pages into a fresh PDF using your new order — locally, without uploads.</figcaption>
-        </figure>
-      </div>
-
-      <article>
-        <h3>How reordering actually works (in plain English)</h3>
-        <p>
-          A PDF is a stack of pages. When you load your file, we display small previews (thumbnails) to make dragging easy. As you move thumbnails, you’re changing a list of page indices — think “page 5 goes here, page 2 goes there.” When you click <strong>Download</strong>, we build a <em>new</em> PDF by copying the original pages in your chosen order. Your source file stays exactly the same.
-        </p>
-        <p>
-          Because we copy page objects directly (not screenshots), the final document preserves <strong>text, links, vector graphics, and image quality</strong>. Mixed page sizes and orientations are supported, so a landscape slide can sit next to portrait notes without stretching.
-        </p>
-
-        <div class="grid">
-          <div class="card">
-            <h3 style="margin:.2rem 0 .4rem">Great use cases</h3>
-            <ul style="margin:.2rem 0 0 1rem">
-              <li>Fix out-of-order scans after photographing pages</li>
-              <li>Move a title page or TOC to the front</li>
-              <li>Group lectures or chapters for one clean study pack</li>
-              <li>Prepare a report for printing or submission</li>
-            </ul>
-          </div>
-          <div class="card">
-            <figure>
-              <img alt="Before and after reorder illustration"
-                   src="data:image/svg+xml;utf8,
-                   <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
-                     <rect width='1200' height='620' fill='%23ffffff'/>
-                     <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Before</text>
-                     <rect x='120' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
-                     <rect x='160' y='155' width='300' height='14' rx='7' fill='%23111' opacity='.08'/>
-                     <rect x='160' y='180' width='260' height='14' rx='7' fill='%23111' opacity='.08'/>
-                     <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>After</text>
-                     <rect x='720' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
-                     <rect x='760' y='155' width='300' height='14' rx='7' fill='%23111' opacity='.08'/>
-                     <rect x='760' y='180' width='260' height='14' rx='7' fill='%23111' opacity='.08'/>
-                     <rect x='870' y='505' width='110' height='18' rx='9' fill='%23222' opacity='.06'/>
-                     <text x='925' y='518' text-anchor='middle' font-size='14' fill='%23666'>Page 1 / New Order</text>
-                   </svg>"/>
-              <figcaption>Drag thumbnails to rearrange, then export a clean, reorganized PDF.</figcaption>
-            </figure>
-          </div>
-        </div>
-
-        <h3>Step-by-step: from messy to perfect order</h3>
-        <ol>
-          <li><strong>Open:</strong> go to <span class="kbd">/features/reorder.html</span>.</li>
-          <li><strong>Add your PDF:</strong> drag &amp; drop or click to choose a file.</li>
-          <li><strong>Drag to rearrange:</strong> move thumbnails until the sequence matches your plan.</li>
-          <li><strong>Preview key pages:</strong> check the first and last pages once more.</li>
-          <li><strong>Download:</strong> save as <span class="kbd">reordered.pdf</span> (keep the original for safety).</li>
-        </ol>
-
-        <div class="tip">
-          <strong>Helpful tips:</strong><br />
-          • For huge PDFs, reorder in sections (e.g., chapters), export, then merge the sections.<br />
-          • Rename the output with a version tag like <span class="kbd">report-v2-reordered.pdf</span> to avoid confusion.<br />
-          • If a page is rotated, fix rotation first (or after) using your viewer; ordering won’t change orientation.
-        </div>
-
-        <h3>What it is (and isn’t)</h3>
-        <p>
-          This tool changes <em>order</em> only. It doesn’t edit content inside a page or delete pages. For those, use the <strong>Edit</strong> and <strong>Delete Pages</strong> tools. If you need to compress a very large result, run the final file through the <strong>Compressor</strong> to reduce size without changing order.
-        </p>
-
-        <h3>Privacy by default</h3>
-        <p>
-          Your file never uploads to a server. Thumbnails and page copying happen in the same tab you’re using right now. That’s ideal for contracts, IDs, classroom material, and any sensitive documents. Close the tab and the working data is gone.
-        </p>
-
-        <h3>FAQs</h3>
-        <div class="faq">
-          <details>
-            <summary>Will quality or links change after reordering?</summary>
-            <p>No. We copy the original page objects directly, so text, links, and graphics stay intact.</p>
-          </details>
-          <details>
-            <summary>Can I reorder 100+ pages?</summary>
-            <p>Yes, but rendering many thumbnails can take time. Reorder in parts if your device is low on memory.</p>
-          </details>
-          <details>
-            <summary>Does it support mixed page sizes?</summary>
-            <p>Yes. Each page keeps its original size and orientation inside the new PDF.</p>
-          </details>
-        </div>
-
-        <p class="sub" style="margin-top:1rem">Ready to fix the flow? Open the tool, drag pages where they belong, and download a perfectly ordered PDF.</p>
-        <p><a class="cta" href="/features/reorder.html">Open Reorder Pages</a></p>
-      </article>
-    </section>
-  </main>
-  <div id="ad-footer" class="ad-slot"></div>
-  <div data-include="footer"></div>
-  <script>
-  const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
-  if (pdfjsLib && pdfjsLib.GlobalWorkerOptions){ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js'; }
-
-  const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const grid = document.getElementById('grid');
-    const statusText = document.getElementById('status');
-    const downloadBtn = document.getElementById('download-btn');
-    let srcDoc = null; let order = [];
-
-    dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', async e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); const f=e.dataTransfer.files[0]; if(f) await loadFile(f); });
-    fileInput.addEventListener('change', async e=>{ const f=e.target.files[0]; if(f) await loadFile(f); e.target.value=''; });
-
-    async function loadFile(file){
-      statusText.textContent='Reading PDF...'; downloadBtn.style.display='none'; grid.innerHTML='';
-      try {
-        const bytes = new Uint8Array(await file.arrayBuffer());
-        // Keep original pdf-lib doc for final export copy
-        srcDoc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true });
-        // Use pdf.js for thumbnails (higher fidelity if complex content)
-        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
-        const n = pdf.numPages; order = Array.from({length:n}, (_,i)=>i);
-        await renderThumbs(pdf); statusText.textContent='Loaded '+n+' page(s). Drag thumbnails to reorder.';
-      } catch(e){ console.error(e); statusText.textContent='Failed to read PDF.'; }
-    }
-
-    async function renderThumbs(pdf){
-      grid.innerHTML='';
-      // Render sequentially to avoid heavy parallel CPU usage
-      for (let i=0;i<order.length;i++){
-        const pageIndex = order[i];
-        const div = document.createElement('div');
-        div.className='thumb';
-        div.draggable=true; div.dataset.index = String(i);
-        const label = document.createElement('div'); label.className='pg-label'; label.textContent = 'Page '+(pageIndex+1);
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        // Render page thumbnail
-        try {
-          const page = await pdf.getPage(pageIndex+1);
-          const vp1 = page.getViewport({ scale: 1 });
-          const targetW = 120;
-          const scale = Math.max(0.15, Math.min(1.2, targetW / vp1.width));
-          const vp = page.getViewport({ scale });
-          canvas.width = Math.floor(vp.width);
-          canvas.height = Math.floor(vp.height);
-          await page.render({ canvasContext: ctx, viewport: vp }).promise;
-        } catch(err){
-          ctx.fillStyle='#f5f5f5'; ctx.fillRect(0,0,120,160); ctx.fillStyle='#999'; ctx.font='12px sans-serif'; ctx.fillText('Render error',10,50);
-        }
-        div.appendChild(canvas);
-        div.appendChild(label);
-
-        div.addEventListener('dragstart', e=>{ div.classList.add('dragging'); e.dataTransfer.setData('text/plain', i); });
-        div.addEventListener('dragend', ()=> div.classList.remove('dragging'));
-        div.addEventListener('dragenter', e=>{ e.preventDefault(); div.classList.add('drag-over'); });
-        div.addEventListener('dragleave', ()=> div.classList.remove('drag-over'));
-        div.addEventListener('dragover', e=> e.preventDefault());
-        div.addEventListener('drop', e=>{ e.preventDefault(); div.classList.remove('drag-over'); const from = parseInt(e.dataTransfer.getData('text/plain'),10); const to = i; move(from,to); });
-        grid.appendChild(div);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Reorder PDF pages with drag-and-drop. Rearrange page sequence visually  free browser-based tool, no uploads required."
+    />
+    <title>Reorder Pages - EDITSMYPDF</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <link rel="canonical" href="https://editmypdf.tech/features/reorder.html" />
+    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
       }
-    }
+      body {
+        font-family: Inter, sans-serif;
+        margin: 0;
+        background: #fff;
+        color: #111;
+      }
+      main {
+        max-width: 860px;
+        margin: 3rem auto;
+        padding: 1rem;
+        text-align: center;
+      }
+      h2 {
+        font-size: 2rem;
+        margin: 0.5rem 0 1rem;
+      }
+      p.sub {
+        color: #555;
+      }
+      .card {
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        text-align: left;
+      }
+      .upload-box {
+        border: 2px dashed #ccc;
+        border-radius: 12px;
+        padding: 2rem;
+        cursor: pointer;
+        transition: 0.25s;
+        text-align: center;
+      }
+      .upload-box:hover {
+        background: #f8faff;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .thumb {
+        position: relative;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.5rem 0.5rem 0.75rem;
+        background: #fff;
+        cursor: move;
+        user-select: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .thumb.dragging {
+        opacity: 0.5;
+      }
+      .thumb canvas {
+        width: 100%;
+        height: auto;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+      }
+      .thumb .pg-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #555;
+        text-align: center;
+        letter-spacing: 0.5px;
+      }
+      .thumb:hover {
+        border-color: #e53935;
+      }
+      .thumb.drag-over {
+        outline: 2px dashed #e53935;
+        outline-offset: 2px;
+      }
+      .thumb.dragging {
+        opacity: 0.5;
+      }
+      label,
+      input,
+      button {
+        display: block;
+        margin: 0.75rem auto;
+        font-size: 1rem;
+      }
+      input[type="text"] {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.6rem 0.9rem;
+        width: 260px;
+      }
+      button {
+        background: linear-gradient(90deg, #e53935, #c62828);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 0.85rem 1.6rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:hover {
+        opacity: 0.9;
+      }
+      .progress {
+        margin-top: 1rem;
+        min-height: 1.3rem;
+        color: #555;
+        text-align: center;
+      }
+      .ad-box {
+        margin-top: 3rem;
+        height: 90px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-weight: 500;
+      }
+      /* Scoped blog styles: Reorder guide */
+      .feature-blog {
+        max-width: 700px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.7;
+        color: #334155;
+      }
 
-    async function move(from, to){
-      if (from===to) return;
-      const [item] = order.splice(from,1);
-      order.splice(to,0,item);
-      try {
-        // Re-render with new order using cached srcDoc bytes via pdf.js again
-        const pdfBytes = await srcDoc.save();
-        const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
-        await renderThumbs(pdf);
-      } catch(e){ console.error(e); }
-      downloadBtn.style.display='inline-block';
-      statusText.textContent='Order updated.';
-    }
+      .feature-blog h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1e40af;
+        margin: 0 0 1.5rem;
+        line-height: 1.3;
+      }
 
-    function getOutputName(def){ const el=document.getElementById('output-name'); let name=(el&&el.value?el.value:'').trim()||def||'output'; name=name.replace(/[\\/:*?"<>|]/g,'-'); if(!/\.pdf$/i.test(name)) name+='.pdf'; return name; }
+      .feature-blog .hero-img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+        border: 1px solid #e0e7ff;
+      }
 
-    async function buildPDF(){
-      if(!srcDoc) return; statusText.textContent='Rebuilding PDF...';
-      try {
-        const outDoc = await PDFLib.PDFDocument.create();
-        const pages = await outDoc.copyPages(srcDoc, order);
-        pages.forEach(p => outDoc.addPage(p));
-        const outBytes = await outDoc.save();
-        const blob = new Blob([outBytes], { type:'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download=getOutputName('reordered'); a.click(); URL.revokeObjectURL(url);
-        statusText.textContent='Downloaded.';
-      } catch(e){ console.error(e); statusText.textContent='Failed.'; }
-    }
+      .feature-blog section {
+        margin: 2rem 0;
+      }
 
-    downloadBtn.addEventListener('click', buildPDF);
-    grid.addEventListener('dragover', e=> e.preventDefault());
-    grid.addEventListener('drop', e=> e.preventDefault());
+      .feature-blog h4 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin: 1.5rem 0 0.75rem;
+      }
 
-    // Show download button when user reorders at least once
-  grid.addEventListener('drop', ()=>{ if(srcDoc) downloadBtn.style.display='inline-block'; });
-  </script>
-  <script src="../assets/app.js"></script>
-</body>
+      .feature-blog p {
+        margin: 0.75rem 0;
+        color: #475569;
+      }
+
+      .feature-blog strong {
+        color: #334155;
+        font-weight: 600;
+      }
+
+      .feature-blog ul {
+        margin: 0.75rem 0;
+        padding-left: 1.5rem;
+      }
+
+      .feature-blog li {
+        margin: 0.5rem 0;
+        color: #475569;
+      }
+
+      .feature-blog .note {
+        background: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+      }
+
+      .feature-blog .note p {
+        margin: 0;
+      }
+
+      .feature-blog .note a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .feature-blog .note a:hover {
+        text-decoration: underline;
+      }
+
+      .feature-blog .faq {
+        margin: 2rem 0 0;
+      }
+
+      .feature-blog .faq h4 {
+        font-size: 1.35rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-blog details {
+        background: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .feature-blog details:hover {
+        border-color: #c7d2fe;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      }
+
+      .feature-blog summary {
+        font-weight: 600;
+        color: #1e40af;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .feature-blog summary::before {
+        content: "▶";
+        font-size: 0.75rem;
+        transition: transform 0.2s ease;
+        color: #2563eb;
+      }
+
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+
+      .feature-blog details p {
+        margin-top: 0.75rem;
+        padding-left: 1.25rem;
+      }
+
+      @media (max-width: 640px) {
+        .feature-blog {
+          margin: 2rem 1rem;
+          padding: 1.5rem;
+        }
+
+        .feature-blog h3 {
+          font-size: 1.5rem;
+        }
+
+        .feature-blog h4 {
+          font-size: 1.15rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header data-include="navbar"></header>
+    <div id="ad-top" class="ad-slot"></div>
+    <main class="feature">
+      <h2>Reorder Pages</h2>
+      <p class="sub">
+        Drag the thumbnails to change the order, then download a new PDF.
+      </p>
+      <div class="card">
+        <label class="upload-box" id="drop-zone"
+          >📄 Drop your PDF or click to upload
+          <input
+            type="file"
+            id="file-input"
+            accept="application/pdf"
+            style="display: none"
+          />
+        </label>
+        <div id="grid" class="grid"></div>
+        <label for="output-name">Output filename</label>
+        <input id="output-name" type="text" value="reordered" />
+        <button id="download-btn" style="display: none">Download PDF</button>
+        <div id="status" class="progress"></div>
+      </div>
+      <div id="ad-content" class="ad-slot"></div>
+      <!-- Inline feature blog: Reorder Pages (replaced with detailed guide) -->
+      <section class="feature-blog">
+        <div class="title-with-logo">
+          <img
+            src="../assets/images/sflogoPNG.PNG"
+            alt="PDF Tools Logo"
+            class="brand-logo"
+          />
+          <h3>Reorder PDF Pages Rearrange with Drag and Drop</h3>
+        </div>
+
+        <img
+          src="../assets/images/reorder page.JPG"
+          alt="Reorder PDF pages"
+          class="hero-img"
+        />
+
+        <section>
+          <h4>How It Works</h4>
+          <p>
+            Our <strong>Reorder Pages tool</strong> lets you rearrange PDF pages
+            by simply dragging and dropping thumbnail previews. Upload your PDF,
+            see all pages displayed as thumbnails, drag them into your desired
+            order, and download the reorganized PDF all processed locally in
+            your browser.
+          </p>
+        </section>
+
+        <section>
+          <h4>Why Use This Tool?</h4>
+          <ul>
+            <li>
+              <strong>Drag and Drop:</strong> Intuitive visual interface for
+              rearranging pages
+            </li>
+            <li>
+              <strong>Thumbnail Preview:</strong> See all pages at a glance
+              before reordering
+            </li>
+            <li>
+              <strong>Instant Feedback:</strong> Pages update position in
+              real-time as you drag
+            </li>
+            <li>
+              <strong>100% Private:</strong> No uploads everything happens in
+              your browser
+            </li>
+            <li>
+              <strong>Unlimited Changes:</strong> Rearrange as many times as
+              needed before downloading
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Complete Privacy</h4>
+          <p>
+            Your PDF <strong>never leaves your device</strong>. We use PDF.js to
+            render thumbnails and pdf-lib to rebuild the PDF with your new page
+            order entirely in your browser. No server uploads, no data
+            collection, no privacy concerns.
+          </p>
+        </section>
+
+        <section>
+          <h4>Common Reordering Scenarios</h4>
+          <p>
+            <strong>Fix Scanning Mistakes:</strong> Pages scanned out of order
+            can be quickly rearranged to the correct sequence.
+          </p>
+          <p>
+            <strong>Reorganize Presentations:</strong> Move slides to improve
+            flow, swap sections, or put summary slides first.
+          </p>
+          <p>
+            <strong>Combine Documents:</strong> After merging PDFs, reorder
+            pages to create logical chapter flow.
+          </p>
+          <p>
+            <strong>Custom Reading Order:</strong> Arrange pages for printing in
+            booklet format or specific reading sequences.
+          </p>
+        </section>
+
+        <section>
+          <h4>Reordering Tips</h4>
+          <p>
+            Dragging pages around is intuitive, but a few tips will make complex
+            reordering way faster and less frustrating. Here's what you need to
+            know:
+          </p>
+          <ul>
+            <li>
+              <strong>Plan First for Big Changes:</strong> If you're reordering
+              a 50-page document and need to move lots of pages around, jot down
+              the desired sequence before you start dragging. Having a reference
+              list prevents confusion and saves you from dragging pages back and
+              forth trying to remember where they should go.
+            </li>
+            <li>
+              <strong>Use Page Labels as Your Guide:</strong> Each thumbnail
+              shows its current position number in the top corner. Use these
+              labels to track pages during large reorders, especially when pages
+              look similar (like multiple text-heavy pages or identical forms).
+              The numbers update in real-time as you drag.
+            </li>
+            <li>
+              <strong>Long-Distance Dragging Works:</strong> You don't have to
+              drag pages one spot at a time. If page 15 needs to be page 2, just
+              grab it and drag all the way across the grid to position 2. The
+              tool handles the rearrangement automatically, shifting other pages
+              to make room.
+            </li>
+            <li>
+              <strong>Large PDFs Need Patience:</strong> Files with 100+ pages
+              may take 10-30 seconds to render all thumbnails. Don't start
+              dragging until they're all visible—wait for the loading indicator
+              to finish. Trying to reorder while thumbnails are still rendering
+              can cause weird behavior.
+            </li>
+            <li>
+              <strong>No Undo? Just Reload:</strong> If you mess up the order
+              completely and want to start over, just refresh your browser page
+              and re-upload the PDF. Or, if you remember where pages came from,
+              drag them back to their original positions one by one. Changes
+              aren't saved until you download the reordered PDF.
+            </li>
+            <li>
+              <strong>Check Before Downloading:</strong> After you're done
+              reordering, scroll through all the thumbnails one more time to
+              make sure the sequence looks right. It's way easier to fix a
+              mistake now than to realize after downloading that page 12 should
+              actually be page 5.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>📚 When to Use Reorder vs. Other Tools</h4>
+          <p>
+            Sometimes reordering is exactly what you need, but other times a
+            different tool might be a better fit. Here's how to decide:
+          </p>
+          <p>
+            <strong>Use Reorder when:</strong> You need to visually rearrange
+            pages by dragging them around. This is perfect for fixing scanning
+            mistakes where pages got scanned out of order, reorganizing
+            presentation slides for better flow, or creating custom reading
+            sequences. The visual drag-and-drop interface makes it easy to see
+            what you're doing.
+          </p>
+          <p>
+            <strong>Use Split when:</strong> You only need certain pages from a
+            large document and want to extract them in a specific order. For
+            example, if you need pages 10, 5, and 15 from a 50-page PDF, typing
+            <code>10,5,15</code> in the Split tool is faster than reordering 50
+            thumbnails. Check out our
+            <a href="./split.html">Split PDF tool</a> for this.
+          </p>
+          <p>
+            <strong>Use Merge when:</strong> You're combining multiple separate
+            PDF files and want control over the order they appear in the final
+            document. Merge is designed for multi-file operations, while Reorder
+            works on pages within a single PDF.
+          </p>
+          <p>
+            <strong>Pro tip:</strong> For complex reorganization tasks, you can
+            chain tools together. Use Split to extract the pages you need, then
+            use Merge to combine them in the right order. Or use Reorder to fix
+            the sequence within sections, then Merge to assemble the final
+            document.
+          </p>
+        </section>
+
+        <section>
+          <h4>Quick Guide</h4>
+          <p>
+            <strong>1. Upload PDF:</strong> Drag and drop or click to select
+            your PDF file
+          </p>
+          <p>
+            <strong>2. View Thumbnails:</strong> Wait while all pages are
+            rendered as draggable thumbnails
+          </p>
+          <p>
+            <strong>3. Drag Pages:</strong> Click and hold any page thumbnail,
+            then drag it to the new position
+          </p>
+          <p>
+            <strong>4. Drop to Reorder:</strong> Release the mouse to drop the
+            page in its new location
+          </p>
+          <p>
+            <strong>5. Repeat:</strong> Continue dragging pages until you have
+            the desired order
+          </p>
+          <p>
+            <strong>6. Download:</strong> Click "Download Reordered PDF" to save
+            the reorganized file
+          </p>
+        </section>
+
+        <div class="faq">
+          <h4>Frequently Asked Questions</h4>
+
+          <details>
+            <summary>How do I move a page to a specific position?</summary>
+            <p>
+              Click and hold the page thumbnail you want to move, then drag it
+              to the desired position in the grid. As you drag, other pages will
+              shift to make room. Release the mouse button to drop the page in
+              its new position. The page numbers update automatically.
+            </p>
+          </details>
+
+          <details>
+            <summary>Can I move multiple pages at once?</summary>
+            <p>
+              Currently, you can only drag one page at a time. To move multiple
+              pages, drag them individually to their new positions. For bulk
+              reordering (e.g., reversing page order), you may need to use other
+              PDF tools or rearrange pages one by one.
+            </p>
+          </details>
+
+          <details>
+            <summary>What happens to page numbers after reordering?</summary>
+            <p>
+              The tool reorganizes the <strong>physical page order</strong> in
+              the PDF file. Any page numbers printed on the pages themselves
+              (like "Page 1 of 10") won'\''t change those are part of the page
+              content. Only the sequence in which pages appear in the PDF
+              changes.
+            </p>
+          </details>
+
+          <details>
+            <summary>Can I undo a drag if I make a mistake?</summary>
+            <p>
+              There'\''s no built-in undo button, but you can simply
+              <strong>drag the page back</strong> to its original position.
+              Alternatively, refresh the page to reload the original PDF and
+              start over. Changes aren'\''t saved until you click "Download
+              Reordered PDF."
+            </p>
+          </details>
+
+          <details>
+            <summary>Why are thumbnails taking so long to load?</summary>
+            <p>
+              Large PDFs (50+ pages) or high-resolution pages require more
+              processing time to render thumbnails. Each page must be converted
+              to an image for preview. This is normal for browser-based tools
+              expect 1-2 seconds per page for rendering.
+            </p>
+          </details>
+
+          <details>
+            <summary>Will reordering affect PDF quality or file size?</summary>
+            <p>
+              No. Reordering only changes the <strong>page sequence</strong> it
+              doesn'\''t re-compress or modify the actual page content. The
+              output PDF will have the same quality and approximately the same
+              file size as the original (minor differences due to PDF structure
+              overhead).
+            </p>
+          </details>
+        </div>
+
+        <div class="note">
+          <p>
+            <strong>Ready to rearrange your pages?</strong>
+            <a href="#file-input">Try it now </a>
+          </p>
+        </div>
+      </section>
+    </main>
+    <div id="ad-footer" class="ad-slot"></div>
+    <div data-include="footer"></div>
+    <script>
+      // "Try it now" link functionality
+      document.addEventListener("DOMContentLoaded", () => {
+        const tryNowLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryNowLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById("file-input");
+            if (fileInput) {
+              fileInput.click();
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);
+            }
+          });
+        });
+      });
+
+      const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
+      if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+      }
+
+      const dropZone = document.getElementById("drop-zone");
+      const fileInput = document.getElementById("file-input");
+      const grid = document.getElementById("grid");
+      const statusText = document.getElementById("status");
+      const downloadBtn = document.getElementById("download-btn");
+      let srcDoc = null;
+      let order = [];
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("dragover")
+      );
+      dropZone.addEventListener("drop", async (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        const f = e.dataTransfer.files[0];
+        if (f) await loadFile(f);
+      });
+      fileInput.addEventListener("change", async (e) => {
+        const f = e.target.files[0];
+        if (f) await loadFile(f);
+        e.target.value = "";
+      });
+
+      async function loadFile(file) {
+        statusText.textContent = "Reading PDF...";
+        downloadBtn.style.display = "none";
+        grid.innerHTML = "";
+        try {
+          const bytes = new Uint8Array(await file.arrayBuffer());
+          // Keep original pdf-lib doc for final export copy
+          srcDoc = await PDFLib.PDFDocument.load(bytes, {
+            ignoreEncryption: true,
+          });
+          // Use pdf.js for thumbnails (higher fidelity if complex content)
+          const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+          const n = pdf.numPages;
+          order = Array.from({ length: n }, (_, i) => i);
+          await renderThumbs(pdf);
+          statusText.textContent =
+            "Loaded " + n + " page(s). Drag thumbnails to reorder.";
+        } catch (e) {
+          console.error(e);
+          statusText.textContent = "Failed to read PDF.";
+        }
+      }
+
+      async function renderThumbs(pdf) {
+        grid.innerHTML = "";
+        // Render sequentially to avoid heavy parallel CPU usage
+        for (let i = 0; i < order.length; i++) {
+          const pageIndex = order[i];
+          const div = document.createElement("div");
+          div.className = "thumb";
+          div.draggable = true;
+          div.dataset.index = String(i);
+          const label = document.createElement("div");
+          label.className = "pg-label";
+          label.textContent = "Page " + (pageIndex + 1);
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          // Render page thumbnail
+          try {
+            const page = await pdf.getPage(pageIndex + 1);
+            const vp1 = page.getViewport({ scale: 1 });
+            const targetW = 120;
+            const scale = Math.max(0.15, Math.min(1.2, targetW / vp1.width));
+            const vp = page.getViewport({ scale });
+            canvas.width = Math.floor(vp.width);
+            canvas.height = Math.floor(vp.height);
+            await page.render({ canvasContext: ctx, viewport: vp }).promise;
+          } catch (err) {
+            ctx.fillStyle = "#f5f5f5";
+            ctx.fillRect(0, 0, 120, 160);
+            ctx.fillStyle = "#999";
+            ctx.font = "12px sans-serif";
+            ctx.fillText("Render error", 10, 50);
+          }
+          div.appendChild(canvas);
+          div.appendChild(label);
+
+          div.addEventListener("dragstart", (e) => {
+            div.classList.add("dragging");
+            e.dataTransfer.setData("text/plain", i);
+          });
+          div.addEventListener("dragend", () =>
+            div.classList.remove("dragging")
+          );
+          div.addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            div.classList.add("drag-over");
+          });
+          div.addEventListener("dragleave", () =>
+            div.classList.remove("drag-over")
+          );
+          div.addEventListener("dragover", (e) => e.preventDefault());
+          div.addEventListener("drop", (e) => {
+            e.preventDefault();
+            div.classList.remove("drag-over");
+            const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+            const to = i;
+            move(from, to);
+          });
+          grid.appendChild(div);
+        }
+      }
+
+      async function move(from, to) {
+        if (from === to) return;
+        const [item] = order.splice(from, 1);
+        order.splice(to, 0, item);
+        try {
+          // Re-render with new order using cached srcDoc bytes via pdf.js again
+          const pdfBytes = await srcDoc.save();
+          const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+          await renderThumbs(pdf);
+        } catch (e) {
+          console.error(e);
+        }
+        downloadBtn.style.display = "inline-block";
+        statusText.textContent = "Order updated.";
+      }
+
+      function getOutputName(def) {
+        const el = document.getElementById("output-name");
+        let name = (el && el.value ? el.value : "").trim() || def || "output";
+        name = name.replace(/[\\/:*?"<>|]/g, "-");
+        if (!/\.pdf$/i.test(name)) name += ".pdf";
+        return name;
+      }
+
+      async function buildPDF() {
+        if (!srcDoc) return;
+        statusText.textContent = "Rebuilding PDF...";
+        try {
+          const outDoc = await PDFLib.PDFDocument.create();
+          const pages = await outDoc.copyPages(srcDoc, order);
+          pages.forEach((p) => outDoc.addPage(p));
+          const outBytes = await outDoc.save();
+          const blob = new Blob([outBytes], { type: "application/pdf" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = getOutputName("reordered");
+          a.click();
+          URL.revokeObjectURL(url);
+          statusText.textContent = "Downloaded.";
+        } catch (e) {
+          console.error(e);
+          statusText.textContent = "Failed.";
+        }
+      }
+
+      downloadBtn.addEventListener("click", buildPDF);
+      grid.addEventListener("dragover", (e) => e.preventDefault());
+      grid.addEventListener("drop", (e) => e.preventDefault());
+
+      // Show download button when user reorders at least once
+      grid.addEventListener("drop", () => {
+        if (srcDoc) downloadBtn.style.display = "inline-block";
+      });
+    </script>
+    <script src="../assets/app.js"></script>
+  </body>
 </html>

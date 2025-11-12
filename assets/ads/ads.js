@@ -52,7 +52,12 @@
     var base = isFeature ? '..' : '.';
     var s = document.createElement('script');
     s.id = id; s.async = true; s.src = base + '/assets/adsense-config.js';
-    s.onload = function(){ try { initAds(); } catch(e){} };
+    s.onload = function(){
+      try {
+        var client = (window.ADSENSE_CLIENT || '').trim();
+        if (client) { autoPlaceAds(); initAds(); }
+      } catch(e){}
+    };
     document.head.appendChild(s);
   }
 
@@ -131,9 +136,10 @@
   }
 
   function bootstrap(){
+    // Load config and only place/init ads when a publisher ID is present
     tryLoadAdsenseConfig();
-    autoPlaceAds();
-    initAds();
+    var client = (window.ADSENSE_CLIENT || '').trim();
+    if (client) { autoPlaceAds(); initAds(); }
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') bootstrap();

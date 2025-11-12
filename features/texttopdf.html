@@ -3,17 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Text to PDF - EDITSMYPDF</title>
+    <meta name="description" content="Convert text to PDF: turn plain text into formatted PDF documents. Free online converter  customize font, size, margins, no uploads." />
+    <title>Text to PDF - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/texttopdf.html" />
+    <link
+      rel="canonical"
+      href="https://editmypdf.tech/features/texttopdf.html"
+    />`n    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "Inter", sans-serif;
         background: #fff;
@@ -130,35 +138,201 @@
         color: #999;
         font-weight: 500;
       }
+
+      /* Enhanced Feature Blog Section */
+      .feature-blog {
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-top: 3rem;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+      }
+
+      .feature-blog h3 {
+        font-size: 1.75rem;
+        color: #1e40af;
+        margin: 0 0 1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .feature-blog h4 {
+        color: #1e40af;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog p {
+        color: #475569;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 1rem;
+      }
+
+      .feature-blog ul,
+      .feature-blog ol {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-blog li {
+        color: #475569;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin: 0.75rem 0;
+      }
+
+      .feature-blog strong {
+        color: #1e40af;
+        font-weight: 700;
+      }
+
+      .feature-blog .hero-img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 2rem 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-blog .tip {
+        background: white;
+        border-left: 4px solid #2563eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+      }
+
+      .feature-blog .tip strong {
+        color: #2563eb;
+        font-size: 1.05rem;
+      }
+
+      .feature-blog .note {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-left: 4px solid #2563eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2.5rem;
+        text-align: center;
+        color: #1e40af;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+      }
+
+      .feature-blog .note a {
+        color: #1e40af;
+        text-decoration: underline;
+        font-weight: 700;
+      }
+
+      .feature-blog .note strong {
+        color: #1e3a8a;
+        font-weight: 700;
+      }
+
+      /* FAQ Accordion Styling */
+      .feature-blog details {
+        background: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-blog details:hover {
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+      }
+
+      .feature-blog details[open] {
+        background: #f8faff;
+        border-color: #2563eb;
+      }
+
+      .feature-blog summary {
+        font-weight: 700;
+        color: #1e40af;
+        font-size: 1.1rem;
+        list-style: none;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .feature-blog summary::before {
+        content: "▶";
+        font-size: 0.75rem;
+        color: #2563eb;
+        transition: transform 0.2s ease;
+      }
+
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+
+      .feature-blog details p {
+        margin-top: 0.75rem;
+        padding-left: 1.25rem;
+        color: #475569;
+      }
+
+      .feature-blog code {
+        background: #e0e7ff;
+        color: #1e40af;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+
+      @media (max-width: 640px) {
+        .feature-blog {
+          padding: 1.75rem 1.25rem;
+        }
+
+        .feature-blog h3 {
+          font-size: 1.5rem;
+        }
+
+        .feature-blog h4 {
+          font-size: 1.1rem;
+        }
+
+        .feature-blog ul,
+        .feature-blog ol {
+          padding: 1.25rem 1.25rem 1.25rem 2rem;
+        }
+      }
+
       /* Footer replaced by shared component */
-      /* Scoped Text to PDF guide styles */
-      .text-guide{max-width:900px;margin:2.6rem auto 0;padding:0 1rem;text-align:left}
-      .text-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
-      .text-guide h2{font-size:2.15rem;line-height:1.2;margin:.65rem 0 .45rem}
-      .text-guide .sub{color:#60636c;margin:0 0 1.2rem}
-      .text-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
-      .text-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
-      .text-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,#6366f1,#2563eb);color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
-      .text-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
-      .text-guide article{margin-top:2rem}
-      .text-guide h3{font-size:1.35rem;margin:1.6rem 0 .6rem}
-      .text-guide p{margin:0 0 1rem}
-      .text-guide .grid{display:grid;gap:1rem}
-      @media (min-width:800px){ .text-guide .grid{grid-template-columns:1fr 1fr} }
-      .text-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-      .text-guide figure{margin:0}
-      .text-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
-      .text-guide .tip{background:#f8faff;border-left:4px solid #2563eb;border-radius:10px;padding:1rem;margin:.9rem 0}
-      .text-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
-      .text-guide .faq details+details{margin-top:.75rem}
-      .text-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
     <div id="ad-top" class="ad-slot"></div>
 
-  <main class="feature">
+    <main class="feature">
       <h2>Text to PDF</h2>
       <p class="sub">
         Paste your text or upload a .txt file, choose options, then click
@@ -230,209 +404,258 @@
         <button id="download-btn" style="display: none">Download PDF</button>
       </div>
 
-    <div id="ad-content" class="ad-slot"></div>
-    <!-- Long-form Text to PDF guide -->
-    <section class="feature-blog text-guide" aria-labelledby="text-guide-title">
-      <span class="eyebrow">Behind the Scenes</span>
-      <h2 id="text-guide-title">Turn Plain Text into a Clean, Printable PDF — In Your Browser</h2>
-      <p class="sub">Have notes, a draft, or a .txt file you need to share or print? This guide explains how our Text ➜ PDF tool lays out your content on real pages, what the options mean, and a few tricks for a tidy result.</p>
-      <p class="meta">Runs fully on your device • No uploads • Pick page size, orientation, font, size, and margins</p>
+      <div id="ad-content" class="ad-slot"></div>
 
-      <div class="hero" role="group" aria-label="Text to PDF overview and diagram">
-        <div>
-          <p>
-            The Text ➜ PDF tool takes the words you paste (or a <span class="kbd">.txt</span> file you drop in) and converts them into a properly paginated PDF. You control <strong>paper size (A4/Letter)</strong>, <strong>orientation</strong>, <strong>font family</strong>, <strong>font size</strong>, and <strong>margins</strong>. Everything happens <strong>locally</strong> in your browser, so your content never leaves your device.
-          </p>
-          <a class="cta" href="/features/texttopdf.html" aria-label="Open the Text to PDF tool">📝 Create a PDF from Text</a>
-          <p style="margin:.6rem 0 0">Quick preset: <span class="kbd">A4 • Portrait • Helvetica • 12pt • 15mm</span> for clean readability.</p>
+      <!-- Enhanced Feature Blog Section -->
+      <!-- Enhanced Feature Blog Section -->
+      <section class="feature-blog">
+        <div class="title-with-logo">
+          <img src="../assets/images/sflogoPNG.PNG" alt="PDF Tools Logo" class="brand-logo" />
+          <h3> Text to PDF  Turn Plain Text into Professional PDFs</h3>
         </div>
 
-        <figure class="viz" role="img" aria-label="Text to PDF pipeline diagram">
-          <img alt="Text to PDF flow diagram" style="display:block;width:100%;height:auto"
-               src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 340'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs><rect x='30' y='70' width='260' height='200' rx='16' fill='%23fff' stroke='%23dbe1ff'/><text x='160' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your Text / .txt</text><rect x='60' y='130' width='200' height='100' rx='10' fill='%23eef2ff' stroke='%23dbe1ff'/><rect x='330' y='60' width='280' height='70' rx='12' fill='%23eaf9ff' stroke='%23cfeaff'/><text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Size • Orientation • Font • Margins</text><rect x='650' y='70' width='260' height='200' rx='16' fill='%23fff' stroke='%23dbe1ff'/><text x='780' y='105' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Paginated PDF</text><rect x='690' y='120' width='180' height='120' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/><path d='M290 170 L330 95' stroke='url(%23g)' stroke-width='6'/><path d='M610 95 L650 170' stroke='url(%23g)' stroke-width='6'/></svg>"/>
-          <figcaption>Paste or upload text → choose layout → download a clean, paginated PDF — all locally.</figcaption>
-        </figure>
-      </div>
+        <img src="../assets/images/text to pdf .JPG" alt="Text to PDF converter interface" class="hero-img" />
 
-      <article aria-labelledby="text-guide-title">
-        <h3>How it actually works (in plain English)</h3>
-        <p>
-          A PDF is a stack of pages. Our tool creates a new stack and pours your text onto each page like water into a set of containers. We measure the printable width (page width minus left/right margins) and use the selected font and size to calculate where lines should wrap. When we run out of vertical space (bottom margin), we add a new page and continue until your text is placed.
-        </p>
-        <p>
-          Under the hood, the browser uses a lightweight PDF library to draw text lines at precise coordinates. Nothing goes to a server; the generated file is assembled in memory and then offered as a download. Your original text stays on your device the whole time.
-        </p>
+        <section>
+          <h4> How It Works</h4>
+          <p>Our <strong>Text to PDF tool</strong> converts plain text into formatted PDF documents. Type or paste your content, customize font size and style, adjust page margins, and download a professional PDFall processed locally in your browser using jsPDF.</p>
+        </section>
 
-        <div class="grid">
-          <div class="card">
-            <h4 style="margin:.2rem 0 .4rem">What the options mean</h4>
-            <ul style="margin:.2rem 0 0 1rem">
-              <li><strong>Paper size:</strong> <em>A4</em> (210×297 mm) is common globally; <em>Letter</em> (8.5×11 in) is common in the US.</li>
-              <li><strong>Orientation:</strong> <em>Portrait</em> for prose/notes; <em>Landscape</em> for wide code blocks or tables.</li>
-              <li><strong>Font family:</strong> <em>Helvetica</em> (clean), <em>Times</em> (classic), <em>Courier</em> (monospace for code).</li>
-              <li><strong>Font size:</strong> 11–13pt is readable; use 10pt if you must fit more, 14pt for handouts.</li>
-              <li><strong>Margins:</strong> 12–20 mm gives breathing room and space for printing/binding.</li>
-            </ul>
-          </div>
-          <div class="card">
-            <figure>
-              <img alt="Before and after pagination illustration" style="display:block;width:100%;height:auto"
-                   src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'><rect width='1200' height='620' fill='%23ffffff'/><text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Raw Text</text><rect x='120' y='120' width='380' height='420' rx='12' fill='%23f7f8ff' stroke='%23e6e9ff'/><rect x='150' y='160' width='320' height='12' rx='6' fill='%23111' opacity='.08'/><rect x='150' y='182' width='300' height='12' rx='6' fill='%23111' opacity='.08'/><rect x='150' y='204' width='330' height='12' rx='6' fill='%23111' opacity='.08'/><text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Paginated PDF</text><rect x='720' y='120' width='200' height='300' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/><rect x='940' y='120' width='200' height='300' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/><rect x='745' y='160' width='150' height='12' rx='6' fill='%23111' opacity='.08'/><rect x='745' y='182' width='140' height='12' rx='6' fill='%23111' opacity='.08'/><rect x='745' y='204' width='160' height='12' rx='6' fill='%23111' opacity='.08'/></svg>"/>
-              <figcaption>Left: a wall of text. Right: neatly wrapped lines across real pages.</figcaption>
-            </figure>
-          </div>
-        </div>
+        <section>
+          <h4> Why Use This Tool?</h4>
+          <ul>
+            <li><strong>Type or Paste:</strong> Enter text directly or paste from clipboard</li>
+            <li><strong>Upload Text Files:</strong> Load content from .txt files instantly</li>
+            <li><strong>Customizable Formatting:</strong> Choose font, size, line spacing, and margins</li>
+            <li><strong>100% Private:</strong> No uploadstext converts in your browser</li>
+            <li><strong>Instant Download:</strong> Get your PDF in seconds</li>
+          </ul>
+        </section>
 
-        <h3>Step-by-step: from notes to a polished PDF</h3>
-        <ol>
-          <li><strong>Open the tool:</strong> go to <span class="kbd">/features/texttopdf.html</span>.</li>
-          <li><strong>Paste text or upload a .txt:</strong> we display a preview area for quick edits.</li>
-          <li><strong>Choose layout:</strong> pick paper size, orientation, font family/size, and margins.</li>
-          <li><strong>Create PDF:</strong> we wrap lines and flow content across pages automatically.</li>
-          <li><strong>Download:</strong> save it with a clear name like <span class="kbd">meeting-notes-2025-11-11.pdf</span>.</li>
-        </ol>
+        <section>
+          <h4> Complete Privacy</h4>
+          <p>Your text <strong>never leaves your device</strong>. We use jsPDF to convert text to PDF entirely in your browser. No server uploads, no data collection, no privacy concerns. Perfect for sensitive notes, drafts, or confidential documents.</p>
+        </section>
 
-        <div class="tip">
-          <strong>Formatting tips:</strong><br />
-          • Use blank lines to separate sections — they&rsquo;re preserved in the PDF.<br />
-          • For code snippets, switch to <span class="kbd">Courier</span> and bump size to <span class="kbd">12–13pt</span> for readability.<br />
-          • If text touches the edges when printing, increase margins to <span class="kbd">18–20 mm</span>.
-        </div>
+        <section>
+          <h4> Common Use Cases</h4>
+          <p><strong>Meeting Notes:</strong> Convert typed meeting notes or transcripts into shareable PDFs for distribution.</p>
+          <p><strong>Code Snippets:</strong> Save code blocks or configuration files as PDFs for documentation or sharing.</p>
+          <p><strong>Quotes & Estimates:</strong> Turn plain-text price quotes or project estimates into professional PDF documents.</p>
+          <p><strong>Quick Documentation:</strong> Convert README files, changelogs, or instructions into formatted PDFs.</p>
+        </section>
 
-        <h3>What this tool is (and isn&rsquo;t)</h3>
-        <p>
-          Text ➜ PDF is a quick way to get <em>clean pages</em> from plain text. It doesn&rsquo;t do rich text, images, headings, or bullet styling — everything is set in the single font you choose. If you need more design control (bold/italic, headings, links), consider converting from a formatted source (like HTML or DOCX) using other tools. For long documents that should stay small, run the result through our <strong>Compressor</strong> after export.
-        </p>
+        <section>
+          <h4>💡 Formatting Tips</h4>
+          <p>Getting your text to look just right in a PDF is all about knowing a few tricks. Here's what actually makes a difference when you're converting plain text:</p>
+          <ul>
+            <li><strong>Font Size Matters:</strong> Stick with 10-12pt for body text—it's what people expect, and it's easy on the eyes. If you're adding headings or section titles, bump it up to 14-16pt so they stand out. Going smaller than 10pt? That's a recipe for squinting, especially when someone prints it out.</li>
+            <li><strong>Line Spacing for Readability:</strong> 1.5x line height works wonders for longer documents—it gives your text room to breathe and makes it way easier to scan. But if you're working with tight lists or trying to fit more on a page, single spacing gets the job done without feeling cramped.</li>
+            <li><strong>Margins:</strong> The standard 1-inch margins you see in most docs work for 99% of cases. Need to squeeze more content onto each page? Dial the margins down a bit. Want a cleaner, more polished look? Increase them slightly—it adds white space and makes everything feel less cluttered.</li>
+            <li><strong>Monospace for Code:</strong> If you're including code snippets, logs, or data tables, always use the Courier font. It's monospace, meaning every character takes up the same width. That keeps your indentation and alignment intact, which is critical when someone's trying to read or copy code.</li>
+            <li><strong>Preview Before You Share:</strong> Always download and open the PDF before sending it off. What looks fine in the text box might not format perfectly in the final document—especially with line breaks or long paragraphs. A quick check saves you from embarrassing typos or layout issues.</li>
+            <li><strong>Watch Your Line Breaks:</strong> If you paste text from another source, you might get weird line breaks or extra spacing. Clean those up before hitting generate, or your PDF will end up with awkward gaps that make it look unprofessional.</li>
+          </ul>
+        </section>
 
-        <h3>About fonts &amp; Unicode</h3>
-        <p>
-          The default fonts are great for English and basic Latin characters. Complex scripts and emoji may not render as expected unless a matching font is embedded. If your text contains such characters, try a simpler alternative or split the content by language. We&rsquo;re exploring custom font embedding to improve coverage in the future.
-        </p>
+        <section>
+          <h4>💼 Best Practices for Professional Results</h4>
+          <p>Want your text-to-PDF conversions to look polished and professional? These best practices will help you create documents that look intentional, not rushed:</p>
+          <ul>
+            <li><strong>Use Consistent Formatting:</strong> If you're converting multiple documents, stick with the same font, size, and margin settings across all of them. Consistency makes you look organized and makes your docs easier to recognize at a glance.</li>
+            <li><strong>Break Up Long Blocks of Text:</strong> Nobody wants to read a wall of text. Add paragraph breaks every 3-5 sentences to make your content more digestible. If you're working with lists or bullet points, space them out—it makes scanning way easier.</li>
+            <li><strong>Keep File Names Descriptive:</strong> When you download your PDF, give it a meaningful name right away. "Meeting_Notes_Nov_12_2025.pdf" is way better than "text_output_1.pdf" when you're searching for it later.</li>
+            <li><strong>Test Print Settings:</strong> If someone's going to print your PDF, check how it looks in print preview mode. Some fonts or margin settings that look great on screen can cause issues when printed—especially if they're too close to the page edge.</li>
+          </ul>
+        </section>
 
-        <h3>Privacy by design</h3>
-        <p>
-          Your text never leaves your device. The conversion happens in the same tab you&rsquo;re using right now. That&rsquo;s ideal for class notes, internal minutes, drafts, and anything you don&rsquo;t want uploaded to a server. Close the tab and the working data is gone.
-        </p>
+        <section>
+          <h4>📖 Quick Guide</h4>
+          <p><strong>1. Enter Text:</strong> Type directly in the textarea or paste from clipboard</p>
+          <p><strong>2. Upload File (Optional):</strong> Click "Upload .txt file" to load text from a file</p>
+          <p><strong>3. Choose Font:</strong> Select font family (Helvetica, Times, Courier) and size</p>
+          <p><strong>4. Adjust Layout:</strong> Set line spacing and page margins</p>
+          <p><strong>5. Generate PDF:</strong> Click "Generate PDF" to create the document</p>
+          <p><strong>6. Download:</strong> PDF opens automaticallysave or print as needed</p>
+        </section>
 
-        <h3>FAQs</h3>
         <div class="faq">
+          <h4> Frequently Asked Questions</h4>
+
           <details>
-            <summary>Can I add page numbers or a title?</summary>
-            <p>Create your PDF first, then use our <strong>Page Numbers</strong> tool to stamp “Page X” or “Page X of Y”. For a title, open the PDF in the <strong>Edit</strong> tool and add a text box on the first page.</p>
+            <summary>Can I add bold, italic, or colored text?</summary>
+            <p>Currently, this tool converts plain text only. For rich text formatting (bold, italic, colors, headers), use our <a href="./edit.html">Edit PDF tool</a> to add styled text after creating a basic PDF, or use a word processor before converting.</p>
           </details>
+
           <details>
-            <summary>Why do lines wrap differently than my text editor?</summary>
-            <p>Editors use different fonts and widths. We wrap according to your chosen paper size, margins, and font metrics — what you see is optimized for printing and sharing.</p>
+            <summary>What happens if my text is too long for one page?</summary>
+            <p>The tool automatically splits your text across multiple pages. It calculates line breaks based on your chosen font size and margins. Very long documents may take a few seconds to process, but there'\''s no page limit.</p>
           </details>
+
           <details>
-            <summary>Can I keep code alignment?</summary>
-            <p>Yes — pick <strong>Courier</strong> (monospace) and avoid tabs; use spaces for consistent alignment across viewers.</p>
+            <summary>Can I upload .docx or .rtf files?</summary>
+            <p>Currently, only plain .txt files are supported for upload. If you have a .docx or .rtf file, open it in your word processor, copy the text, and paste it into the textarea. Formatting will be lost, but content will convert to PDF.</p>
+          </details>
+
+          <details>
+            <summary>Why does my code formatting look misaligned in the PDF?</summary>
+            <p>For code blocks, use the <strong>Courier</strong> font (monospace) instead of Helvetica or Times. Monospace fonts ensure each character takes the same width, preserving indentation and alignment critical for code readability.</p>
+          </details>
+
+          <details>
+            <summary>Can I save my settings for future conversions?</summary>
+            <p>Settings (font, size, margins) reset when you refresh the page. For repetitive tasks with the same formatting, note your preferred settings and re-enter them each time, or bookmark the page with default values you use most often.</p>
+          </details>
+
+          <details>
+            <summary>Is there a character or file size limit?</summary>
+            <p>There'\''s no hard character limit, but extremely large texts (100,000+ characters) may slow down older browsers. For massive documents, consider splitting into sections and generating multiple PDFs, then using our <a href="./merge.html">Merge PDF tool</a> to combine them.</p>
           </details>
         </div>
 
-        <p class="sub" style="margin-top:1rem">That&rsquo;s it — paste, choose your layout, and export a professional-looking PDF you can print or share anywhere.</p>
-        <p><a class="cta" href="/features/texttopdf.html">Open Text ➜ PDF</a></p>
-      </article>
-    </section>
+        <div class="note">
+          <p><strong>Ready to create your PDF from text?</strong> <a href="#file-input">Try it now </a></p>
+        </div>
+      </section>
     </main>
-    <div id="ad-footer" class="ad-slot"></div>
-  <div data-include="footer"></div>
+    </main>
 
     <script>
       const { jsPDF } = window.jspdf;
-      const textInput = document.getElementById('text-input');
-      const paperSize = document.getElementById('paper-size');
-      const orientation = document.getElementById('orientation');
-      const fontFamily = document.getElementById('font-family');
-      const fontSizeInput = document.getElementById('font-size');
-      const marginInput = document.getElementById('margin');
-      const txtInput = document.getElementById('txt-input');
-      const txtDrop = document.getElementById('txt-drop');
-      const createBtn = document.getElementById('create-btn');
-      const statusText = document.getElementById('status');
-      const downloadBtn = document.getElementById('download-btn');
-      const fileInfo = document.getElementById('file-info');
+      const textInput = document.getElementById("text-input");
+      const paperSize = document.getElementById("paper-size");
+      const orientation = document.getElementById("orientation");
+      const fontFamily = document.getElementById("font-family");
+      const fontSizeInput = document.getElementById("font-size");
+      const marginInput = document.getElementById("margin");
+      const txtInput = document.getElementById("txt-input");
+      const txtDrop = document.getElementById("txt-drop");
+      const createBtn = document.getElementById("create-btn");
+      const statusText = document.getElementById("status");
+      const downloadBtn = document.getElementById("download-btn");
+      const fileInfo = document.getElementById("file-info");
       let outBlob = null;
 
-      function refreshButtonState(){
-        createBtn.disabled = !(textInput.value || '').trim();
+      function refreshButtonState() {
+        createBtn.disabled = !(textInput.value || "").trim();
       }
-      textInput.addEventListener('input', refreshButtonState);
+      textInput.addEventListener("input", refreshButtonState);
 
       // Drag/drop + file select for .txt
-      txtDrop.addEventListener('dragover', e => { e.preventDefault(); txtDrop.classList.add('dragover'); });
-      txtDrop.addEventListener('dragleave', () => txtDrop.classList.remove('dragover'));
-      txtDrop.addEventListener('drop', async e => { e.preventDefault(); txtDrop.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f) await loadTxtFile(f); });
-      txtInput.addEventListener('change', async e => { const f = e.target.files[0]; if (f) await loadTxtFile(f); e.target.value=''; });
+      txtDrop.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        txtDrop.classList.add("dragover");
+      });
+      txtDrop.addEventListener("dragleave", () =>
+        txtDrop.classList.remove("dragover")
+      );
+      txtDrop.addEventListener("drop", async (e) => {
+        e.preventDefault();
+        txtDrop.classList.remove("dragover");
+        const f = e.dataTransfer.files[0];
+        if (f) await loadTxtFile(f);
+      });
+      txtInput.addEventListener("change", async (e) => {
+        const f = e.target.files[0];
+        if (f) await loadTxtFile(f);
+        e.target.value = "";
+      });
 
-      async function loadTxtFile(file){
-        if (file.type !== 'text/plain') return;
+      async function loadTxtFile(file) {
+        if (file.type !== "text/plain") return;
         const text = await file.text();
         textInput.value = text;
-        fileInfo.textContent = `📄 Loaded ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+        fileInfo.textContent = `📄 Loaded ${file.name} (${(
+          file.size / 1024
+        ).toFixed(1)} KB)`;
         refreshButtonState();
-        statusText.textContent = 'Text file loaded.';
+        statusText.textContent = "Text file loaded.";
       }
 
-      createBtn.addEventListener('click', async () => {
-        const raw = (textInput.value || '').trim();
+      createBtn.addEventListener("click", async () => {
+        const raw = (textInput.value || "").trim();
         if (!raw) return;
         createBtn.disabled = true;
-        statusText.textContent = 'Creating PDF...';
+        statusText.textContent = "Creating PDF...";
         try {
-          const size = paperSize.value === 'letter' ? 'letter' : 'a4';
-          const orient = orientation.value === 'l' ? 'l' : 'p';
-          const margin = Math.max(5, Math.min(40, parseInt(marginInput.value,10)||15));
+          const size = paperSize.value === "letter" ? "letter" : "a4";
+          const orient = orientation.value === "l" ? "l" : "p";
+          const margin = Math.max(
+            5,
+            Math.min(40, parseInt(marginInput.value, 10) || 15)
+          );
           const font = fontFamily.value;
-          const fontSize = Math.max(6, Math.min(36, parseInt(fontSizeInput.value,10)||12));
-          const doc = new jsPDF({ orientation: orient, unit: 'mm', format: size });
-          doc.setFont(font, 'normal');
+          const fontSize = Math.max(
+            6,
+            Math.min(36, parseInt(fontSizeInput.value, 10) || 12)
+          );
+          const doc = new jsPDF({
+            orientation: orient,
+            unit: "mm",
+            format: size,
+          });
+          doc.setFont(font, "normal");
           doc.setFontSize(fontSize);
           const pageWidth = doc.internal.pageSize.getWidth();
           const pageHeight = doc.internal.pageSize.getHeight();
-          const usableWidth = pageWidth - margin*2;
+          const usableWidth = pageWidth - margin * 2;
           const lineHeight = fontSize * 1.2;
           const lines = doc.splitTextToSize(raw, usableWidth);
           let y = margin;
-          lines.forEach(line => {
-            if (y + lineHeight > pageHeight - margin){
+          lines.forEach((line) => {
+            if (y + lineHeight > pageHeight - margin) {
               doc.addPage();
-              doc.setFont(font, 'normal');
+              doc.setFont(font, "normal");
               doc.setFontSize(fontSize);
               y = margin;
             }
             doc.text(line, margin, y);
             y += lineHeight;
           });
-          const blob = doc.output('blob');
+          const blob = doc.output("blob");
           outBlob = blob;
-          downloadBtn.style.display = 'inline-block';
-          statusText.textContent = 'PDF created successfully!';
-        } catch(e){
+          downloadBtn.style.display = "inline-block";
+          statusText.textContent = "PDF created successfully!";
+        } catch (e) {
           console.error(e);
-          statusText.textContent = 'Failed to create PDF.';
+          statusText.textContent = "Failed to create PDF.";
         } finally {
           createBtn.disabled = false;
         }
       });
 
-      function getOutputName(defaultBase){
-        const el = document.getElementById('output-name');
-        let name = (el && el.value ? el.value : '').trim() || defaultBase || 'output';
-        name = name.replace(/[\\/:*?"<>|]/g,'-');
-        if (!/\.pdf$/i.test(name)) name += '.pdf';
+      function getOutputName(defaultBase) {
+        const el = document.getElementById("output-name");
+        let name =
+          (el && el.value ? el.value : "").trim() || defaultBase || "output";
+        name = name.replace(/[\\/:*?"<>|]/g, "-");
+        if (!/\.pdf$/i.test(name)) name += ".pdf";
         return name;
       }
-      downloadBtn.addEventListener('click', () => {
+      downloadBtn.addEventListener("click", () => {
         if (!outBlob) return;
         const url = URL.createObjectURL(outBlob);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
-        a.download = getOutputName('text');
+        a.download = getOutputName("text");
         a.click();
         URL.revokeObjectURL(url);
       });
       refreshButtonState();
+
+      // "Try it now" link functionality
+      document.querySelectorAll('a[href="#file-input"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const textarea = document.getElementById('text-input');
+          if (textarea) {
+            textarea.focus();
+            setTimeout(() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
+          }
+        });
+      });
     </script>
     <script src="../assets/app.js"></script>
   </body>

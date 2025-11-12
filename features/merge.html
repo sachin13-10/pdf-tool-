@@ -3,17 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Merge PDFs - EDITSMYPDF</title>
+    <meta
+      name="description"
+      content="Merge PDFs online: combine multiple PDF files into one document. Free tool  drag to reorder, browser-based processing, no uploads required."
+    />
+    <title>Merge PDFs - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/merge.html" />
+    <link rel="canonical" href="https://editmypdf.tech/features/merge.html" />
+    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Merge PDF - EDITSMYPDF",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Combine multiple PDF files into one",
+          "Drag and drop to reorder PDFs",
+          "Preview file names before merging",
+          "Browser-based processing",
+          "No file uploads to servers",
+          "Unlimited PDF merging",
+          "Maintains original PDF quality"
+        ],
+        "description": "Free online tool to merge multiple PDF files into a single document. Drag to reorder, instant processing in your browser with complete privacy.",
+        "url": "https://editmypdf.tech/features/merge.html",
+        "screenshot": "https://editmypdf.tech/assets/images/Merge pdfs - Copy.JPG"
+      }
+    </script>
+
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "Inter", sans-serif;
         background: #fff;
@@ -108,34 +145,151 @@
       }
       /* Footer replaced by shared component */
 
-      /* Scoped styles for embedded Merge guide */
-      .merge-guide { text-align:left; max-width:900px; margin:2.6rem auto; padding:0 1rem; line-height:1.7; }
-      .merge-guide .eyebrow { display:inline-block; padding:.25rem .6rem; border-radius:999px; border:1px solid #e9ecf3; background:linear-gradient(90deg,#fff,#f7f8ff); font-size:.85rem; color:#333; }
-      .merge-guide h1 { font-size:2.15rem; line-height:1.2; margin:.65rem 0 .45rem; }
-      .merge-guide .sub { color:#60636c; margin:0 0 1.2rem; }
-      .merge-guide .meta { font-size:.92rem; color:#777; margin-bottom:1.2rem; }
-      .merge-guide .hero { display:grid; gap:1rem; grid-template-columns:1.1fr .9fr; align-items:center; border:1px solid #e9ecf3; border-radius:20px; padding:1.1rem; background:#fff; box-shadow:0 8px 24px rgba(0,0,0,.05); }
-      .merge-guide .cta { display:inline-flex; align-items:center; gap:.55rem; font-weight:700; background:linear-gradient(90deg,#6366f1,#2563eb); color:#fff; padding:.8rem 1.05rem; border-radius:12px; text-decoration:none; box-shadow:0 6px 16px rgba(37,99,235,.25); }
-      .merge-guide .viz { width:100%; height:auto; border:1px solid #e9ecf3; border-radius:16px; overflow:hidden; }
-      .merge-guide article { margin-top:2rem; }
-      .merge-guide h2 { font-size:1.35rem; margin:1.6rem 0 .6rem; }
-      .merge-guide p { margin:0 0 1rem; }
-      .merge-guide .grid { display:grid; gap:1rem; }
-      @media(min-width:800px){ .merge-guide .grid { grid-template-columns:1fr 1fr; } }
-      .merge-guide .card { border:1px solid #e9ecf3; border-radius:16px; padding:1rem; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.04); }
-      .merge-guide figure { margin:0; }
-      .merge-guide figcaption { font-size:.85rem; color:#666; margin-top:.5rem; }
-      .merge-guide .tip { background:#f8faff; border-left:4px solid #2563eb; border-radius:10px; padding:1rem; margin:.9rem 0; }
-      .merge-guide .faq details { border:1px solid #e9ecf3; border-radius:12px; padding:.75rem 1rem; background:#fff; }
-      .merge-guide .faq details+details { margin-top:.75rem; }
-      .merge-guide .kbd { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; background:#f5f7fb; border:1px solid #e7ebf3; padding:.15rem .35rem; border-radius:6px; font-size:.9rem; }
-      .merge-guide ul { padding-left:1.1rem; }
+      /* Enhanced Feature Blog Styles */
+      .feature-blog {
+        max-width: 700px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+        line-height: 1.7;
+      }
+      .feature-blog h3 {
+        font-size: 2rem;
+        color: #1e40af;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .feature-blog h4 {
+        font-size: 1.5rem;
+        color: #1e40af;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+      .feature-blog p {
+        color: #475569;
+        margin-bottom: 1rem;
+      }
+      .feature-blog strong {
+        color: #1e40af;
+        font-weight: 600;
+      }
+      .feature-blog code {
+        background: #e0e7ff;
+        color: #3730a3;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9em;
+      }
+      .feature-blog ul,
+      .feature-blog ol {
+        margin: 1rem 0 1.5rem 1.5rem;
+        color: #475569;
+      }
+      .feature-blog li {
+        margin-bottom: 0.75rem;
+      }
+      .feature-blog .hero-img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+        margin: 2rem 0;
+        display: block;
+      }
+      .feature-blog .tip {
+        background: white;
+        border-left: 4px solid #10b981;
+        padding: 1.25rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+      }
+      .feature-blog .tip strong {
+        color: #059669;
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+      }
+      .feature-blog .note {
+        background: white;
+        border-left: 4px solid #f59e0b;
+        padding: 1.25rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+        color: #78350f;
+      }
+      .feature-blog .note a {
+        color: #2563eb;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .feature-blog .note a:hover {
+        text-decoration: underline;
+      }
+      .feature-blog details {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      }
+      .feature-blog summary {
+        padding: 1.25rem;
+        cursor: pointer;
+        font-weight: 600;
+        color: #1e40af;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: background-color 0.2s;
+      }
+      .feature-blog summary:hover {
+        background-color: #f8faff;
+      }
+      .feature-blog summary::before {
+        content: "▶";
+        font-size: 0.8em;
+        transition: transform 0.3s;
+      }
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+      .feature-blog details p {
+        padding: 0 1.25rem 1.25rem 2.75rem;
+        margin: 0;
+        color: #64748b;
+      }
+      @media (max-width: 640px) {
+        .feature-blog {
+          padding: 1.5rem;
+          margin: 2rem 0.5rem;
+        }
+        .feature-blog h3 {
+          font-size: 1.75rem;
+        }
+        .feature-blog h4 {
+          font-size: 1.25rem;
+        }
+        .feature-blog ul,
+        .feature-blog ol {
+          margin-left: 1rem;
+        }
+      }
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
 
-  <main class="feature">
+    <main class="feature">
       <h2>Merge PDFs</h2>
       <p class="sub">
         Add two or more PDFs, then click “Merge PDFs”. You can add more files in
@@ -170,134 +324,339 @@
           Download Merged PDF
         </button>
       </div>
+      <div
+        id="ad-top"
+        class="ad-slot"
+        aria-label="Top advertisement placeholder"
+      ></div>
+      <div
+        id="ad-content"
+        class="ad-slot"
+        aria-label="Content advertisement placeholder"
+      ></div>
 
-    <div id="ad-top" class="ad-slot" aria-label="Top advertisement placeholder"></div>
-    <div id="ad-content" class="ad-slot" aria-label="Content advertisement placeholder"></div>
-      <!-- Inline feature blog: Merge PDFs (replaced with detailed guide) -->
-      <section class="feature-blog merge-guide" aria-labelledby="merge-guide-title">
-        <span class="eyebrow">Behind the Scenes</span>
-        <h1 id="merge-guide-title">Combine Multiple PDFs Into One — Fast, Clean &amp; Private</h1>
-        <p class="sub">Invoices for one client, chapters of a report, or class notes from different weeks — sometimes you just need a single tidy file. Here’s a human-friendly walkthrough of how our Merge PDFs tool works and how to get the best results.</p>
-        <p class="meta">Runs entirely in your browser • No uploads • Great for study packs and paperwork</p>
+      <!-- Enhanced Feature Blog Section -->
+      <section class="feature-blog" aria-labelledby="merge-guide-title">
+        <div class="title-with-logo">
+          <img
+            src="../assets/images/sflogoPNG.PNG"
+            alt="PDF Tools Logo"
+            class="brand-logo"
+          />
+          <h3 id="merge-guide-title">
+            Combine Multiple PDFs Into One Fast, Secure, and Private
+          </h3>
+        </div>
 
-        <!-- Hero -->
-        <section class="hero">
-          <div>
-            <p>
-              Our merge tool takes two or more PDFs and stitches them into a brand-new document in the exact order you choose. It uses a lightweight PDF engine in your browser, so your files <strong>never leave your device</strong>. That’s faster, safer, and perfect for sensitive content.
-            </p>
-            <a class="cta" href="/features/merge.html" aria-label="Open the Merge PDFs tool">📚 Merge PDFs Now</a>
-            <p style="margin:.6rem 0 0">Save with a clear name like <span class="kbd">project-proposal-merged.pdf</span> so versions don’t get mixed up.</p>
-          </div>
+        <p>
+          <strong
+            >Need to combine invoices, merge report chapters, or create a single
+            study pack?</strong
+          >
+          Our Merge tool lets you combine multiple PDF files into one unified
+          document. Select your files, arrange them in order, and create a
+          single PDFall without uploading anything to a server.
+        </p>
 
-          <!-- Inline, open-source safe SVG diagram -->
-          <figure class="viz" role="img" aria-label="PDF merge pipeline diagram">
-            <img alt="Merge PDF flow diagram"
-                 src="data:image/svg+xml;utf8,
-                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
-                   <defs><linearGradient id='g' x1='0' x2='1'>
-                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
-                   <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>PDF A</text>
-                   <rect x='60' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
-                   <rect x='110' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+        <img
+          src="../assets/images/Merge pdfs - Copy.JPG"
+          alt="Merge multiple PDFs into one"
+          class="hero-img"
+        />
 
-                   <rect x='300' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='415' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>PDF B</text>
-                   <rect x='330' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
-                   <rect x='380' y='120' width='70' height='140' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+        <h4>How It Works</h4>
+        <p>
+          The Merge tool reads each PDF you select, extracts all pages in order,
+          and combines them into a brand-new document. The process uses pdf-lib
+          running <strong>entirely in your browser</strong>no file uploads, no
+          server processing. Your original files remain untouched, and you get a
+          fresh merged PDF ready to download.
+        </p>
 
-                   <rect x='680' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='795' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Merged PDF</text>
-                   <rect x='710' y='120' width='160' height='140' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/>
+        <p>
+          Think of it like stacking physical documents together. You choose
+          which PDFs to combine and in what order, then we copy all pages into a
+          single new file. Page sizes, fonts, images, linkseverything stays
+          exactly as it was in the originals.
+        </p>
 
-                   <path d='M260 160 L300 160' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M530 160 L680 160' stroke='url(%23g)' stroke-width='6'/>
-                 </svg>"/>
-            <figcaption>We copy pages from each file and append them into a new, single PDF — locally.</figcaption>
-          </figure>
-        </section>
+        <h4>Why Use This Tool</h4>
+        <ul>
+          <li>
+            <strong>Combine invoices or receipts</strong> - Create a single file
+            for accounting or clients
+          </li>
+          <li>
+            <strong>Merge report chapters</strong> - Stitch together sections
+            written separately
+          </li>
+          <li>
+            <strong>Create study packs</strong> - Combine lecture notes, slides,
+            and materials
+          </li>
+          <li>
+            <strong>Bundle documents</strong> - Attach appendices, signatures,
+            or cover letters
+          </li>
+          <li>
+            <strong>Simplify sharing</strong> - Send one file instead of
+            multiple attachments
+          </li>
+        </ul>
 
-        <article>
-          <h2>How merging works (in simple words)</h2>
+        <h4>Complete Privacy</h4>
+        <p>
+          Your PDFs never leave your computer. All merging happens directly in
+          your browser using JavaScript. No files are uploaded to any server.
+          This is crucial when working with contracts, financial documents,
+          medical records, or any confidential content.
+        </p>
+
+        <div class="tip">
+          <strong> Your Privacy Matters:</strong><br />
+          100% client-side processing - everything stays on your device<br />
+          No server uploads - your documents never go online<br />
+          No data storage - nothing is saved or tracked<br />
+          Works offline - use it even without internet connection
+        </div>
+
+        <h4>Merging Tips</h4>
+        <p>
+          Merging PDFs is straightforward, but a few smart moves will save you
+          from having to redo the whole thing. Here's what you need to know:
+        </p>
+        <ul>
+          <li>
+            <strong>File Order Matters:</strong> PDFs are merged in the exact
+            order you select them. If you accidentally pick files out of
+            sequence, don't worrymost file browsers let you Ctrl+Click (or
+            Cmd+Click on Mac) to select multiple files in the order you want.
+            Just be intentional about it from the start.
+          </li>
+          <li>
+            <strong>Add More Files Anytime:</strong> You can keep selecting and
+            adding PDFs even after the first batch loads. This is super handy
+            when you're working with files scattered across different
+            folders—just grab a few at a time and build your merged document
+            piece by piece.
+          </li>
+          <li>
+            <strong>Mixed Sizes Are Totally Fine:</strong> Don't worry about
+            mixing landscape and portrait pages, or combining A4 with
+            Letter-sized PDFs. The tool preserves each page's original size and
+            orientation, so everything stays intact. The result might look a bit
+            inconsistent when flipping through, but it's perfectly valid.
+          </li>
+          <li>
+            <strong>Large Merges Need Memory:</strong> If you're combining
+            massive PDFs (100+ pages each), close other browser tabs and
+            applications to free up RAM. PDF processing is memory-intensive, and
+            running out of space mid-merge can crash the browser or make things
+            painfully slow.
+          </li>
+          <li>
+            <strong>Name It Clearly Right Away:</strong> When you download the
+            merged PDF, use a descriptive filename like
+            <code>Q1-2025-Reports-Merged.pdf</code> or
+            <code>Client_Proposal_Complete.pdf</code>. Future you will thank you
+            when searching for this document six months from now.
+          </li>
+          <li>
+            <strong>Check Before You Share:</strong> Always open the merged PDF
+            and flip through it before sending it off. Make sure pages are in
+            the right order, nothing got skipped, and the file size is
+            reasonable. A quick 30-second check prevents embarrassing mistakes
+            later.
+          </li>
+        </ul>
+
+        <h4>When to Merge vs. Split</h4>
+        <p>
+          Not sure if you should be merging or splitting? Here's a quick
+          decision guide:
+        </p>
+        <p>
+          <strong>Use Merge when:</strong> You have separate PDF files that
+          belong together—like invoice copies, contract sections, or report
+          chapters. Merging creates one convenient file that's easier to share,
+          store, and organize. It's perfect for bundling related documents into
+          a single package.
+        </p>
+        <p>
+          <strong>Use Split when:</strong> You have one large PDF but only need
+          certain pages or sections. For example, if you received a 50-page
+          contract but only want pages 10-15, use our
+          <a href="./split.html">Split PDF tool</a> to extract just what you
+          need. Splitting also helps when a file is too large to email—break it
+          into smaller chunks first.
+        </p>
+        <p>
+          <strong>Pro tip:</strong> If you're merging multiple large PDFs and
+          the result is too big to email (most email servers cap attachments at
+          25MB), consider using our
+          <a href="./compress.html">Compress PDF tool</a> afterward to shrink
+          the file size without losing much quality.
+        </p>
+
+        <h4>Quick Guide</h4>
+        <ol>
+          <li>
+            <strong>Select PDFs:</strong> Click or drag multiple PDF files into
+            the upload area
+          </li>
+          <li>
+            <strong>Add more files:</strong> You can keep adding files in
+            multiple selections
+          </li>
+          <li>
+            <strong>Check the list:</strong> Review the file list to confirm
+            order and count
+          </li>
+          <li>
+            <strong>Merge PDFs:</strong> Click the merge button to combine all
+            pages
+          </li>
+          <li>
+            <strong>Download:</strong> Save your new merged PDF with a
+            descriptive filename!
+          </li>
+        </ol>
+
+        <h4>Frequently Asked Questions</h4>
+        <details>
+          <summary>Do page sizes change when merging?</summary>
           <p>
-            A PDF is a stack of pages. When you choose files, our tool opens each one, reads how many pages it has, and then <em>copies</em> those pages into a fresh, empty document. No re-rendering or conversions — it’s like moving pages from separate folders into one binder. The original files stay exactly as they are.
+            No. Each page keeps its original size and orientation. You can merge
+            PDFs with different page sizes (A4, Letter, landscape, etc.) and
+            they'll all coexist in the merged file.
           </p>
+        </details>
+
+        <details>
+          <summary>Can I control the order of PDFs?</summary>
           <p>
-            Because the merge is a page-copy operation, your layouts, fonts, links, and vector graphics are preserved. Pages keep their original size and orientation, so a landscape slide deck can sit right next to a portrait invoice without any stretching.
+            Yes! PDFs are merged in the exact order you select them. If you need
+            a different order, select the files in the sequence you want them to
+            appear in the final document.
           </p>
+        </details>
 
-          <div class="grid">
-            <div class="card">
-              <h3 style="margin:.2rem 0 .4rem">Great use cases</h3>
-              <ul style="margin:.2rem 0 0 1rem">
-                <li>Combine lecture PDFs into one study pack</li>
-                <li>Bundle invoices/receipts for a single client</li>
-                <li>Attach appendices and signatures to a report</li>
-                <li>Create a single file for printing or sharing</li>
-              </ul>
-            </div>
-            <div class="card">
-              <figure>
-                <img alt="Before and after merge illustration"
-                     src="data:image/svg+xml;utf8,
-                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
-                       <rect width='1200' height='620' fill='%23ffffff'/>
-                       <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Separate Files</text>
-                       <rect x='120' y='120' width='190' height='260' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
-                       <rect x='330' y='120' width='190' height='260' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
-                       <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>One Merged PDF</text>
-                       <rect x='780' y='120' width='280' height='380' rx='14' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                     </svg>"/>
-                <figcaption>Left: multiple documents. Right: a single clean PDF for easy sharing.</figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <h2>Step-by-step: from many files to one</h2>
-          <ol>
-            <li><strong>Open the tool:</strong> go to <span class="kbd">/features/merge.html</span>.</li>
-            <li><strong>Add PDFs:</strong> drag &amp; drop or click to select two or more files. You can add more afterward.</li>
-            <li><strong>Check order:</strong> the merge follows your selection order. If needed, re-select in the right sequence.</li>
-            <li><strong>Merge:</strong> click <strong>Merge PDFs</strong> to build a new document.</li>
-            <li><strong>Download:</strong> save it with a clear name like <span class="kbd">jan-expenses-merged.pdf</span>.</li>
-          </ol>
-
-          <div class="tip">
-            <strong>Pro tips:</strong><br />
-            • If a file is password-protected and can’t be read, the tool will skip it — merge the rest, then handle that file separately.<br />
-            • Merging very large PDFs? Close heavy tabs first; memory frees up for faster processing.<br />
-            • Need a different order after merging? Use the Reorder tool or run another quick merge.
-          </div>
-
-          <h2>Why local merging is better for privacy</h2>
+        <details>
+          <summary>Will links and formatting be preserved?</summary>
           <p>
-            Your PDFs aren’t uploaded to any server. Everything happens in the same browser tab you’re using. That’s essential for contracts, ID documents, academic work, or anything you wouldn’t want to leave your device. Close the tab and the working data goes with it.
+            Absolutely! We copy pages as-is, preserving all embedded text,
+            images, links, fonts, and vector graphics. Nothing is re-rendered or
+            convertedit's a direct page copy operation.
           </p>
+        </details>
 
-          <h2>FAQs</h2>
-          <div class="faq">
-            <details>
-              <summary>Do page sizes change?</summary>
-              <p>No. Each page keeps its original size and orientation. Mixed sizes are allowed inside one merged PDF.</p>
-            </details>
-            <details>
-              <summary>Will links and text still work?</summary>
-              <p>Yes. We copy pages as pages, preserving embedded text, links, and vector graphics.</p>
-            </details>
-            <details>
-              <summary>Can I merge 100+ pages?</summary>
-              <p>Yes, but it depends on your device memory. If it feels slow, merge in batches and then combine the batches.</p>
-            </details>
-          </div>
+        <details>
+          <summary>What if one file is password-protected?</summary>
+          <p>
+            Password-protected PDFs will be skipped during the merge. You'll
+            need to unlock them first using our Unlock tool, or remove them from
+            your selection and merge the rest.
+          </p>
+        </details>
 
-          <p class="sub" style="margin-top:1rem">Ready to tidy your files? Add your PDFs, pick the order, and export one neat document in seconds.</p>
-          <p><a class="cta" href="/features/merge.html">Open Merge Tool</a></p>
-        </article>
+        <details>
+          <summary>Is there a limit on file size or page count?</summary>
+          <p>
+            The tool can handle PDFs of any size, but very large files (100+ MB
+            or 500+ pages) may take longer depending on your browser's memory.
+            For massive merges, try combining in smaller batches first.
+          </p>
+        </details>
+
+        <details>
+          <summary>Can I add files from different folders?</summary>
+          <p>
+            Yes! You can select files from any location on your computer. Make
+            multiple file selections from different folders, and they'll all be
+            added to the merge queue.
+          </p>
+        </details>
+
+        <div class="note">
+          Ready to combine your PDFs? Select your files, confirm the order, and
+          create a single unified document in seconds.
+          <a href="#file-input">Try it now ↑</a>
+        </div>
+
+        <h4>🔗 Related Tools</h4>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+          "
+        >
+          <a
+            href="./split.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+            >✂️ Split PDF</a
+          >
+          <a
+            href="./reorder.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+            >🔀 Reorder Pages</a
+          >
+          <a
+            href="./delete.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+            >🗑️ Delete Pages</a
+          >
+          <a
+            href="./compress.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+            >📉 Compress PDF</a
+          >
+        </div>
       </section>
     </main>
 
-  <div data-include="footer"></div>
+    <div data-include="footer"></div>
 
     <script>
       const dropZone = document.getElementById("drop-zone");
@@ -422,6 +781,20 @@
         a.download = getOutputName("merged");
         a.click();
         URL.revokeObjectURL(url);
+      });
+
+      // "Try it now" link functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const tryNowLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryNowLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            fileInput.click();
+            setTimeout(() => {
+              dropZone.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 100);
+          });
+        });
       });
     </script>
     <script src="../assets/app.js"></script>

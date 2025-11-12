@@ -3,4 +3,4 @@
 # Format: domain, publisher-id, relationship, certification-authority-id
 # Learn more: https://support.google.com/adsense/answer/7532444
 
-google.com, pub-REPLACE_WITH_YOUR_PUBLISHER_ID, DIRECT, f08c47fec0942fa0
+google.com, pub-6553804345739521, DIRECT, f08c47fec0942fa0

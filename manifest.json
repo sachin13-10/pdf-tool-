@@ -1,0 +1,15 @@
+{
+	"name": "EDITSMYPDF — Free PDF Tools",
+	"short_name": "EDITSMYPDF",
+	"start_url": "/index.html",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#e53935",
+	"icons": [
+		{
+			"src": "/assets/images/sflogoPNG.PNG",
+			"sizes": "192x192",
+			"type": "image/png"
+		}
+	]
+}

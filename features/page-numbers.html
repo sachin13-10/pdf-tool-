@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Add page numbers to PDF files. Customize position, format, font, and color. Free tool  browser-based processing, no uploads required." />
   <title>Add Page Numbers - EDITSMYPDF</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/page-numbers.html" />
+  <link rel="canonical" href="https://editmypdf.tech/features/page-numbers.html" />  <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <style>
+      * { box-sizing: border-box; }
       main.feature { max-width: 820px; }
       .pn-card { max-width:760px; margin:0 auto; padding:2.5rem; }
   .pn-card .upload-box { margin-top: .5rem; margin-bottom: 2rem; min-height:170px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; }
@@ -30,26 +32,156 @@
       .preview-desc { font-size:.8rem; color:#777; margin-top:.75rem; max-width:640px; }
       @media (max-width:640px){ .pn-actions{ flex-direction:column; align-items:stretch; } .pn-actions button{ width:100%; } .pos-row{ grid-template-columns:1fr; } }
   /* Scoped blog styles: Page Numbers guide */
-  .pn-guide{max-width:900px;margin:2rem auto 0;padding:0 0.5rem}
-  .pn-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
-  .pn-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
-  .pn-guide .sub{color:#60636c;margin:0 0 1rem}
-  .pn-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
-  .pn-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
-  .pn-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
-  .pn-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
-  .pn-guide article{margin-top:2rem}
-  .pn-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
-  .pn-guide p{margin:0 0 1rem}
-  .pn-guide .grid{display:grid;gap:1rem}
-  @media (min-width:800px){ .pn-guide .grid{grid-template-columns:1fr 1fr} }
-  .pn-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-  .pn-guide figure{margin:0}
-  .pn-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
-  .pn-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
-  .pn-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
-  .pn-guide .faq details+details{margin-top:.75rem}
-  .pn-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
+  .feature-blog {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+    border-left: 5px solid #2563eb;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    color: #334155;
+  }
+
+  .feature-blog h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e40af;
+    margin: 0 0 1.5rem;
+    line-height: 1.3;
+  }
+
+  .feature-blog .hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+    border: 1px solid #e0e7ff;
+  }
+
+  .feature-blog section {
+    margin: 2rem 0;
+  }
+
+  .feature-blog h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .feature-blog p {
+    margin: 0.75rem 0;
+    color: #475569;
+  }
+
+  .feature-blog strong {
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .feature-blog ul {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .feature-blog li {
+    margin: 0.5rem 0;
+    color: #475569;
+  }
+
+  .feature-blog .note {
+    background: white;
+    border: 1px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .feature-blog .note p {
+    margin: 0;
+  }
+
+  .feature-blog .note a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .feature-blog .note a:hover {
+    text-decoration: underline;
+  }
+
+  .feature-blog .faq {
+    margin: 2rem 0 0;
+  }
+
+  .feature-blog .faq h4 {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-blog details {
+    background: white;
+    border: 1px solid #e0e7ff;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .feature-blog details:hover {
+    border-color: #c7d2fe;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  }
+
+  .feature-blog summary {
+    font-weight: 600;
+    color: #1e40af;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .feature-blog summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .feature-blog summary::before {
+    content: '▶';
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+    color: #2563eb;
+  }
+
+  .feature-blog details[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .feature-blog details p {
+    margin-top: 0.75rem;
+    padding-left: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .feature-blog {
+      margin: 2rem 1rem;
+      padding: 1.5rem;
+    }
+
+    .feature-blog h3 {
+      font-size: 1.5rem;
+    }
+
+    .feature-blog h4 {
+      font-size: 1.15rem;
+    }
+  }
     </style>
   </head>
   <body>
@@ -108,136 +240,137 @@
         </div>
   <div class="preview-desc">Live preview shows an approximate placement on a blank page. Actual PDF font metrics may vary slightly.</div>
       </div>
-  <div id="ad-content" class="ad-slot"></div>
-      <!-- Inline feature blog: Add Page Numbers (replaced with detailed guide) -->
-      <section class="feature-blog pn-guide" aria-labelledby="page-numbers-guide-title">
-        <span class="eyebrow">Behind the Scenes</span>
-        <h2 id="page-numbers-guide-title">Add Page Numbers to Any PDF — Clean, Consistent, and Private</h2>
-        <p class="sub">Submitting a report, sharing a draft, or turning in an assignment? Page numbers make documents easier to reference and review. Here’s a human-friendly tour of how our Page Numbers tool works and how to get tidy, professional results.</p>
-        <p class="meta">Runs fully in your browser • No uploads • “Page X” or “Page X of Y” formats</p>
+    <div id="ad-content" class="ad-slot"></div>
 
-        <div class="hero">
-          <div>
-            <p>
-              The Page Numbers tool “stamps” a small line of text onto every page of your PDF—exactly where you want it. You choose the position (top/bottom, left/center/right), font size, color, and whether to include the total number of pages. Everything happens <strong>locally</strong> in your browser, so your file never leaves your device.
-            </p>
-            <a class="cta" href="/features/page-numbers.html" aria-label="Open the Page Numbers tool">🔢 Add Page Numbers</a>
-            <p style="margin:.6rem 0 0">Use a neutral gray and <span class="kbd">12–14 px</span> for clean, non-distracting numbers.</p>
-          </div>
+    <!-- Feature Blog Section -->
+    <section class="feature-blog">
+      <div class="title-with-logo">
+        <img src="../assets/images/sflogoPNG.PNG" alt="PDF Tools Logo" class="brand-logo" />
+        <h3> Add Page Numbers to PDF  Professional Pagination Made Easy</h3>
+      </div>
 
-          <figure class="viz" role="img" aria-label="Page number stamping pipeline">
-            <img alt="PDF page-number stamping flow"
-                 src="data:image/svg+xml;utf8,
-                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
-                   <defs><linearGradient id='g' x1='0' x2='1'>
-                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
-                   <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your PDF</text>
-                   <rect x='60' y='120' width='170' height='120' rx='10' fill='#eef2ff' stroke='%23dbe1ff'/>
-                   <rect x='330' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
-                   <text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Choose position • font • color</text>
-                   <rect x='330' y='150' width='280' height='70' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
-                   <text x='470' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Stamp “Page X” or “Page X of Y”</text>
-                   <rect x='650' y='60' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='780' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Numbered PDF</text>
-                   <rect x='690' y='120' width='180' height='120' rx='12' fill='#dcfce7' stroke='%23bbf7d0'/>
-                   <path d='M260 160 L330 95' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M260 160 L330 185' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M610 95 L650 160' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M610 185 L650 160' stroke='url(%23g)' stroke-width='6'/>
-                 </svg>"/>
-            <figcaption>Pick your style and position; we stamp the numbering onto a copy of each page—locally.</figcaption>
-          </figure>
-        </div>
+      <img src="../assets/images/page numbering.JPG" alt="Add page numbers to PDF" class="hero-img" />
 
-        <article>
-          <h3>How it works (in plain English)</h3>
-          <p>
-            Think of your PDF like a stack of printed pages. Our tool opens the file, looks at each page’s size, and calculates where your page number text should go—bottom center, top right, etc. Then it writes the text onto that page and moves on to the next. When it’s done, you download a fresh copy with the numbers baked in. Your original file is never changed.
-          </p>
-          <p>
-            Because we stamp text directly into the PDF page, numbering is consistent and portable. If you email the file or print it, the numbers are always in the same place with the same font and color.
-          </p>
-
-          <div class="grid">
-            <div class="card">
-              <h3 style="margin:.2rem 0 .4rem">Best placements &amp; styles</h3>
-              <ul style="margin:.2rem 0 0 1rem">
-                <li><strong>Bottom center:</strong> the classic for reports and assignments.</li>
-                <li><strong>Top right:</strong> works well for handouts and slide decks.</li>
-                <li><strong>“Page X of Y”:</strong> great for multi-part documents.</li>
-                <li><strong>Neutral gray (e.g., #444):</strong> readable without stealing attention.</li>
-              </ul>
-            </div>
-            <div class="card">
-              <figure>
-                <img alt="Before and after page-numbering illustration"
-                     src="data:image/svg+xml;utf8,
-                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
-                       <rect width='1200' height='620' fill='%23ffffff'/>
-                       <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Before</text>
-                       <rect x='120' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
-                       <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>After</text>
-                       <rect x='720' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
-                       <rect x='900' y='505' width='110' height='18' rx='9' fill='%23222' opacity='.06'/>
-                       <text x='900' y='518' text-anchor='middle' font-size='14' fill='%23666'>Page 1 of 12</text>
-                     </svg>"/>
-                <figcaption>Left: no numbering. Right: subtle “Page X of Y” at the bottom center.</figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <h3>Step-by-step: from upload to numbered PDF</h3>
-          <ol>
-            <li><strong>Open the tool:</strong> go to <span class="kbd">/features/page-numbers.html</span>.</li>
-            <li><strong>Add your PDF:</strong> drag &amp; drop or click to choose a file.</li>
-            <li><strong>Pick a position:</strong> bottom center is a safe default for print.</li>
-            <li><strong>Choose style:</strong> set font size, color, and whether to include totals.</li>
-            <li><strong>Adjust offset:</strong> nudge the number away from the page edge if there’s a footer.</li>
-            <li><strong>Download:</strong> save as <span class="kbd">numbered.pdf</span> (keep your original too).</li>
-          </ol>
-
-          <div class="tip">
-            <strong>Pro tips:</strong><br />
-            • If numbers overlap a footer, increase the vertical offset or move the position to top center.<br />
-            • Keep the same font size across all chapters for consistency in merged documents.<br />
-            • For scanned pages with dark edges, enable a shadow (if available) to boost legibility.
-          </div>
-
-          <h3>What it is (and isn’t)</h3>
-          <p>
-            This tool adds a new text layer to each page; it doesn’t analyze your document’s existing headers/footers or automatically avoid images. That’s why the offset option is handy—use it to fine-tune placement. If your PDF mixes portrait and landscape pages or page sizes, numbering still works: we compute the position per page.
-          </p>
-
-          <h3>Why local processing matters</h3>
-          <p>
-            Your document is never uploaded to a server. Numbering happens on the same device and browser tab you’re using. That’s ideal for contracts, academic submissions, finance papers, and any sensitive content. Close the tab, and the temporary working data is gone.
-          </p>
-
-          <h3>FAQs</h3>
-          <div class="faq">
-            <details>
-              <summary>Do links and text still work after numbering?</summary>
-              <p>Yes. We add a simple text stamp; existing content remains intact.</p>
-            </details>
-            <details>
-              <summary>Can I number only certain pages?</summary>
-              <p>Numbering applies to all pages in this tool. If you need selective numbering, export the subset first or split and re-merge after numbering.</p>
-            </details>
-            <details>
-              <summary>Will the numbers print correctly?</summary>
-              <p>Yes. Numbers are baked into the PDF pages, so they appear in any viewer and on paper.</p>
-            </details>
-          </div>
-
-          <p class="sub" style="margin-top:1rem">Ready to make your document easier to reference? Pick a position, choose your style, and stamp clean page numbers in seconds.</p>
-          <p><a class="cta" href="/features/page-numbers.html">Open Page Numbers Tool</a></p>
-        </article>
+      <section>
+        <h4>How It Works</h4>
+        <p>Our <strong>Page Numbers tool</strong> lets you add customizable page numbers to any PDF in seconds. Choose your format (Page 1, 1 of 10, etc.), position (top/bottom, left/center/right), font size, and color  all processed locally in your browser with no uploads required.</p>
       </section>
-    </main>
-    <div id="ad-footer" class="ad-slot"></div>
-    <div data-include="footer"></div>
+
+      <section>
+        <h4>Why Use This Tool?</h4>
+        <ul>
+          <li><strong>Full Customization:</strong> Control format, position, size, and color of page numbers</li>
+          <li><strong>Live Preview:</strong> See exactly how numbers will appear before downloading</li>
+          <li><strong>Professional Results:</strong> Perfect for reports, presentations, and documents</li>
+          <li><strong>100% Private:</strong> No server uploads  everything happens in your browser</li>
+          <li><strong>Flexible Formats:</strong> Choose from "Page X", "X", "X of Y", or custom text</li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>Complete Privacy</h4>
+        <p>Your PDF <strong>never leaves your device</strong>. We use pdf-lib to add page numbers directly in your browser. No uploads, no tracking, no third-party access  just fast, private pagination.</p>
+      </section>
+
+      <section>
+        <h4>Customization Options</h4>
+        <p><strong>Format:</strong> Display as "Page 1", "1", "1 of 10", or add custom prefix/suffix text.</p>
+        <p><strong>Position:</strong> Place numbers at top or bottom, aligned left, center, or right. Use the live preview to see placement.</p>
+        <p><strong>Font Size:</strong> Adjust from small (10pt) to large (18pt) for optimal readability.</p>
+        <p><strong>Color:</strong> Choose any color to match your document's theme or branding.</p>
+        <p><strong>Starting Page:</strong> Skip numbering on the first few pages (e.g., cover, table of contents).</p>
+      </section>
+
+      <section>
+        <h4>Page Numbering Tips</h4>
+        <p>Adding page numbers seems simple, but a few smart choices make the difference between professional-looking results and awkward, cluttered pages. Here's what you need to know:</p>
+        <ul>
+          <li><strong>Skip Cover Pages and Front Matter:</strong> Use the "Start from page" option to begin numbering on page 2, 3, or later. This lets you exclude cover pages, title pages, tables of contents, and other front matter that traditionally don't get numbered. Professional documents typically start page numbers on the first content page, not the cover—follow that convention.</li>
+          <li><strong>Format Consistency Matters:</strong> Choose your format based on document type and context. Use "Page X" for formal business reports and legal documents (it looks authoritative). Plain numbers (just "1", "2", "3") work great for minimalist designs like presentations or design portfolios. "X of Y" format (like "1 of 10") is perfect when readers need to know the total length upfront—great for proposals, contracts, or print jobs where page count matters.</li>
+          <li><strong>Positioning is Convention, Not Preference:</strong> Bottom-center is the most common placement for formal reports, academic papers, and business documents. Top-right works well for academic essays and manuscripts (especially in MLA or APA style). Corner placements (top-left, bottom-right) are less common but can work for creative projects. When in doubt, check similar documents in your field and follow the standard.</li>
+          <li><strong>Color Contrast Prevents Readability Issues:</strong> Always use dark text (black, navy, charcoal) on light-colored pages, and light text (white, light gray) on dark-colored pages. Never use light gray on white or dark gray on black—nobody will be able to read the numbers. Test by zooming out or squinting at your preview; if you can't see the numbers clearly, choose a higher contrast color.</li>
+          <li><strong>Font Size Balance:</strong> 10-12pt is standard for most documents—it's visible without being distracting. Use larger sizes (14-16pt) for presentations viewed on screens or projected, where small text gets lost. Use smaller sizes (9-10pt) only for dense documents where space is tight. Never go below 9pt or above 18pt unless you have a very specific reason.</li>
+          <li><strong>Preview Before Processing:</strong> Always check the live mini-preview to see exactly how your page numbers will look. Adjust position, size, or color if something looks off. It's way easier to tweak settings now than to reprocess the entire PDF because you didn't like the placement.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>📑 Numbering Strategies for Different Document Types</h4>
+        <p>Different documents call for different numbering approaches. Here's how to make smart choices based on what you're creating:</p>
+        <p><strong>Formal Reports and Business Documents:</strong> Use "Page X" format, bottom-center placement, 10-12pt dark text. Start numbering on the first content page (usually page 2 or 3 after the cover and table of contents). This is the industry standard and looks professional without calling attention to itself.</p>
+        <p><strong>Academic Papers and Essays:</strong> Use plain numbers (just "1", "2", "3") in the top-right corner, 11-12pt. Follow your citation style guide (MLA, APA, Chicago) for specific placement rules. Most academic styles prefer top-right, but check your professor's requirements or style manual.</p>
+        <p><strong>Proposals and Contracts:</strong> Use "X of Y" format (like "1 of 15") bottom-center or bottom-right, 10-11pt. The total page count helps reviewers gauge document length at a glance, which is important for time-sensitive decisions or when comparing multiple proposals.</p>
+        <p><strong>Presentations and Slide Decks:</strong> Use plain numbers top-right or bottom-right, 12-14pt, in a color that matches your theme. Skip numbering on title slides and section dividers by setting "Start from page" appropriately. Bigger font sizes work better since presentations are viewed on screens or projected.</p>
+        <p><strong>Pro tip:</strong> If your PDF has different sections that need different numbering schemes (like Roman numerals for front matter and Arabic numerals for content), you'll need to split the PDF, number each section separately, then merge them back together using our <a href="./split.html">Split</a> and <a href="./merge.html">Merge</a> tools.</p>
+      </section>
+
+      <section>
+        <h4>Quick Guide</h4>
+        <p><strong>1. Upload PDF:</strong> Click or drag your PDF file to the upload area</p>
+        <p><strong>2. Choose Format:</strong> Select page number format from the dropdown (Page X, X, X of Y, etc.)</p>
+        <p><strong>3. Set Position:</strong> Pick top/bottom and left/center/right alignment  watch the preview update</p>
+        <p><strong>4. Customize Style:</strong> Adjust font size (10-18pt) and color to match your document</p>
+        <p><strong>5. Optional Settings:</strong> Set starting page number if you want to skip cover pages</p>
+        <p><strong>6. Add Numbers:</strong> Click the button to process and download your numbered PDF</p>
+      </section>
+
+      <div class="faq">
+        <h4>Frequently Asked Questions</h4>
+
+        <details>
+          <summary>Can I skip page numbers on the first few pages?</summary>
+          <p>Yes! Use the <strong>"Start from page"</strong> option to begin numbering on page 2, 3, or any page. This is perfect for skipping cover pages, title pages, or tables of contents while still numbering the main document.</p>
+        </details>
+
+        <details>
+          <summary>What's the difference between "Page 1" and "1 of 10"?</summary>
+          <p><strong>"Page 1"</strong> shows only the current page number with a "Page" prefix. <strong>"1 of 10"</strong> shows current page and total page count, which is helpful when readers need to know document length. Choose based on your document type and audience needs.</p>
+        </details>
+
+        <details>
+          <summary>Will page numbers overlap with existing content?</summary>
+          <p>Page numbers are added <strong>on top of</strong> the PDF content at the position you choose. If your PDF already has text or images in that area, numbers may overlap. Use the live preview to check placement and adjust position or margins if needed.</p>
+        </details>
+
+        <details>
+          <summary>Can I change the font or add custom text?</summary>
+          <p>You can choose <strong>font size</strong> (10-18pt) and <strong>color</strong>, but the font family is standardized (Helvetica) for compatibility. For custom text, select "Custom" format and type your prefix/suffix (e.g., "Draft - Page 1", "Confidential | 1").</p>
+        </details>
+
+        <details>
+          <summary>What if my PDF already has page numbers?</summary>
+          <p>This tool will <strong>add new page numbers on top</strong> of existing content  it won't remove or replace existing numbers. If your PDF already has numbers, you might see duplicates. Consider using the Delete or Edit tool to remove old numbers first, or adjust position to avoid overlap.</p>
+        </details>
+
+        <details>
+          <summary>Can I number pages in a specific range (e.g., only pages 5-10)?</summary>
+          <p>Currently, the tool numbers all pages starting from the page you specify (e.g., start from page 3). To number only a specific range, you would need to split your PDF first, add numbers to the section, then merge it back  or use the "Start from page" option creatively.</p>
+        </details>
+      </div>
+
+      <div class="note">
+        <p><strong>Ready to add professional page numbers?</strong> <a href="#file-input">Try it now </a></p>
+      </div>
+    </section>
+
     <script>
+      // "Try it now" link functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const tryNowLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryNowLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('file-input');
+            if (fileInput) {
+              fileInput.click();
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }, 100);
+            }
+          });
+        });
+      });
+
   const fileInput = document.getElementById('file-input');
       const dropZone = document.getElementById('drop-zone');
       const statusText = document.getElementById('status');

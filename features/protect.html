@@ -3,58 +3,226 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Password Protect - EDITSMYPDF</title>
+    <meta
+      name="description"
+      content="Password protect PDF files for free. Add user and owner passwords with encryption  browser-based security tool, no uploads required."
+    />
+    <title>Password Protect - EDITSMYPDF</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/protect.html" />
+    <link rel="canonical" href="https://editmypdf.tech/features/protect.html" />
+    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       /* Align fields like Compress page: stacked, centered, minimal spacing */
-  .protect-card { max-width: 760px; margin: 0 auto; padding: 2.5rem; }
-  .protect-card .upload-box { margin-top: .6rem; margin-bottom: 1.4rem; min-height:160px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; }
-      .field { max-width: 520px; margin: 1.1rem auto 0; text-align: left; }
-      .field label { display:block; margin:.25rem 0 .45rem; color:#444; font-weight:600; }
-      .field input { width: 100%; }
-      .actions { display:flex; justify-content:center; gap:.9rem; flex-wrap:wrap; margin-top:1.25rem; }
-      .progress { margin-top: 1rem; }
-  .file-info { margin-top: .5rem; color:#333; font-weight:500; font-size:.95rem; min-height:1.1rem; }
-      /* Scoped blog styles: Protect guide */
-      .protect-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
-      .protect-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
-      .protect-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
-      .protect-guide .sub{color:#60636c;margin:0 0 1rem}
-      .protect-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
-      .protect-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
-      .protect-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
-      .protect-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
-      .protect-guide article{margin-top:2rem}
-      .protect-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
-      .protect-guide p{margin:0 0 1rem}
-      .protect-guide .grid{display:grid;gap:1rem}
-      @media (min-width:800px){ .protect-guide .grid{grid-template-columns:1fr 1fr} }
-      .protect-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-      .protect-guide figure{margin:0}
-      .protect-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
-      .protect-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
-      .protect-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
-      .protect-guide .faq details+details{margin-top:.75rem}
-      .protect-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
+      .protect-card {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 2.5rem;
+      }
+      .protect-card .upload-box {
+        margin-top: 0.6rem;
+        margin-bottom: 1.4rem;
+        min-height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+      }
+      .field {
+        max-width: 520px;
+        margin: 1.1rem auto 0;
+        text-align: left;
+      }
+      .field label {
+        display: block;
+        margin: 0.25rem 0 0.45rem;
+        color: #444;
+        font-weight: 600;
+      }
+      .field input {
+        width: 100%;
+      }
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 0.9rem;
+        flex-wrap: wrap;
+        margin-top: 1.25rem;
+      }
+      .progress {
+        margin-top: 1rem;
+      }
+      .file-info {
+        margin-top: 0.5rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 0.95rem;
+        min-height: 1.1rem;
+      }
+
+      /* Enhanced Feature Blog Styles */
+      .feature-blog {
+        max-width: 700px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+        line-height: 1.7;
+      }
+      .feature-blog h3 {
+        font-size: 2rem;
+        color: #1e40af;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .feature-blog h4 {
+        font-size: 1.5rem;
+        color: #1e40af;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+      .feature-blog p {
+        color: #475569;
+        margin-bottom: 1rem;
+      }
+      .feature-blog strong {
+        color: #1e40af;
+        font-weight: 600;
+      }
+      .feature-blog code {
+        background: #e0e7ff;
+        color: #3730a3;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9em;
+      }
+      .feature-blog ul,
+      .feature-blog ol {
+        margin: 1rem 0 1.5rem 1.5rem;
+        color: #475569;
+      }
+      .feature-blog li {
+        margin-bottom: 0.75rem;
+      }
+      .feature-blog .hero-img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+        margin: 2rem 0;
+        display: block;
+      }
+      .feature-blog .tip {
+        background: white;
+        border-left: 4px solid #10b981;
+        padding: 1.25rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+      }
+      .feature-blog .tip strong {
+        color: #059669;
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+      }
+      .feature-blog .note {
+        background: white;
+        border-left: 4px solid #f59e0b;
+        padding: 1.25rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+        color: #78350f;
+      }
+      .feature-blog .note a {
+        color: #2563eb;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .feature-blog .note a:hover {
+        text-decoration: underline;
+      }
+      .feature-blog details {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      }
+      .feature-blog summary {
+        padding: 1.25rem;
+        cursor: pointer;
+        font-weight: 600;
+        color: #1e40af;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: background-color 0.2s;
+      }
+      .feature-blog summary:hover {
+        background-color: #f8faff;
+      }
+      .feature-blog summary::before {
+        content: "▶";
+        font-size: 0.8em;
+        transition: transform 0.3s;
+      }
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+      .feature-blog details p {
+        padding: 0 1.25rem 1.25rem 2.75rem;
+        margin: 0;
+        color: #64748b;
+      }
+      @media (max-width: 640px) {
+        .feature-blog {
+          padding: 1.5rem;
+          margin: 2rem 0.5rem;
+        }
+        .feature-blog h3 {
+          font-size: 1.75rem;
+        }
+        .feature-blog h4 {
+          font-size: 1.25rem;
+        }
+        .feature-blog ul,
+        .feature-blog ol {
+          margin-left: 1rem;
+        }
+      }
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
     <div id="ad-top" class="ad-slot"></div>
 
-  <main class="feature">
+    <main class="feature">
       <h2>Password Protect</h2>
       <p class="sub">
         Secure your PDF with a password (processing happens entirely in your
         browser). Do not use this tool for illegal or infringing content.
       </p>
 
-  <div class="card feature-enter protect-card">
+      <div class="card feature-enter protect-card">
         <label class="upload-box" id="drop-zone">
           📄 Drop your PDF here or click to upload
           <input
@@ -89,135 +257,346 @@
         </div>
         <div id="status" class="progress"></div>
         <div class="actions">
-          <button id="download-btn" class="primary" style="display: none">Download Protected PDF</button>
+          <button id="download-btn" class="primary" style="display: none">
+            Download Protected PDF
+          </button>
         </div>
       </div>
+      <div id="ad-content" class="ad-slot"></div>
 
-  <div id="ad-content" class="ad-slot"></div>
-      <!-- Inline feature blog: Password Protect (replaced with detailed guide) -->
-      <section class="feature-blog protect-guide" aria-labelledby="protect-guide-title">
-        <span class="eyebrow">Behind the Scenes</span>
-        <h2 id="protect-guide-title">Lock Your PDF with a Password — Simple, Fast &amp; Private</h2>
-        <p class="sub">Sharing a proposal, marksheet, ID scan, or invoice? Add a password so only the right people can open it. This guide explains how our Password Protect tool works in your browser and how to choose a strong passphrase.</p>
-        <p class="meta">Runs fully on your device • No uploads • Good for sensitive docs and quick sharing</p>
-
-        <div class="hero">
-          <div>
-            <p>
-              Our Password Protect tool creates a new, locked copy of your PDF. You pick a password, we encrypt the file locally, and you download the protected version. Your original remains unchanged, and nothing leaves your computer. It’s a quick privacy boost for everyday documents.
-            </p>
-            <a class="cta" href="/features/protect.html" aria-label="Open the Password Protect tool">🔒 Protect a PDF</a>
-            <p style="margin:.6rem 0 0">Use a passphrase like <span class="kbd">river-sky-7!caps</span> — long, memorable, and hard to guess.</p>
-          </div>
-
-          <figure class="viz" role="img" aria-label="Password protection pipeline diagram">
-            <img alt="PDF password protection flow"
-                 src="data:image/svg+xml;utf8,
-                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
-                   <defs><linearGradient id='g' x1='0' x2='1'>
-                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
-                   <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your PDF</text>
-                   <rect x='60' y='120' width='170' height='120' rx='10' fill='#eef2ff' stroke='%23dbe1ff'/>
-                   <rect x='330' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
-                   <text x='470' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Choose password &amp; options</text>
-                   <rect x='330' y='150' width='280' height='70' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
-                   <text x='470' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Encrypt &amp; rebuild locally</text>
-                   <rect x='650' y='60' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='780' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Locked PDF</text>
-                   <rect x='690' y='120' width='180' height='120' rx='12' fill='#dcfce7' stroke='%23bbf7d0'/>
-                   <path d='M260 160 L330 95' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M260 160 L330 185' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M610 95 L650 160' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M610 185 L650 160' stroke='url(%23g)' stroke-width='6'/>
-                 </svg>"/>
-            <figcaption>Pick a password → we encrypt a new copy on your device → you download the locked PDF.</figcaption>
-          </figure>
+      <!-- Enhanced Feature Blog Section -->
+      <section class="feature-blog" aria-labelledby="protect-guide-title">
+        <div class="title-with-logo">
+          <img
+            src="../assets/images/sflogoPNG.PNG"
+            alt="PDF Tools Logo"
+            class="brand-logo"
+          />
+          <h3 id="protect-guide-title">
+            Password Protect Your PDFs Secure, Private, and Simple
+          </h3>
         </div>
 
-        <article>
-          <h3>How it works (in plain English)</h3>
+        <p>
+          <strong>Need to protect sensitive documents before sharing?</strong>
+          Our Password Protect tool adds encryption to your PDF, requiring a
+          password to open it. Perfect for invoices, contracts, ID scans, or any
+          document you want to keep privateall processed locally in your
+          browser.
+        </p>
+
+        <img
+          src="../assets/images/protect pdf.JPG"
+          alt="Password protect PDF documents"
+          class="hero-img"
+        />
+
+        <h4>How It Works</h4>
+        <p>
+          The Password Protect tool takes your PDF and creates an encrypted copy
+          using the password you provide. The encryption happens
+          <strong>entirely in your browser</strong> using standard PDF security
+          features. No file uploads, no server processing. Your original file
+          stays untouched, and you download a new password-protected version.
+        </p>
+
+        <p>
+          Think of it like putting your document in a locked box. You set the
+          combination (password), and only people with that combination can open
+          the box. The PDF itself is encrypted, so without the correct password,
+          the content cannot be viewed or accessed.
+        </p>
+
+        <h4>Why Use This Tool</h4>
+        <ul>
+          <li>
+            <strong>Protect confidential documents</strong> - Secure contracts,
+            invoices, and financial records
+          </li>
+          <li>
+            <strong>Share sensitive information</strong> - Send ID scans,
+            medical records, or personal files safely
+          </li>
+          <li>
+            <strong>Control document access</strong> - Ensure only intended
+            recipients can open your PDFs
+          </li>
+          <li>
+            <strong>Email security</strong> - Add an extra layer of protection
+            when sending via email
+          </li>
+          <li>
+            <strong>Compliance requirements</strong> - Meet data protection and
+            privacy regulations
+          </li>
+        </ul>
+
+        <h4>Complete Privacy</h4>
+        <p>
+          Your PDF never leaves your computer. All password protection and
+          encryption happen directly in your browser using JavaScript. No files
+          are uploaded to any server. This is essential when working with
+          sensitive documents like contracts, medical records, financial
+          statements, or personal identification.
+        </p>
+
+        <div class="tip">
+          <strong> Your Privacy Matters:</strong><br />
+          100% client-side processing - everything stays on your device<br />
+          No server uploads - your document never goes online<br />
+          No password storage - we never see or save your password<br />
+          Works offline - protect files even without internet connection
+        </div>
+
+        <h4>Password Security Tips</h4>
+        <p>
+          Setting a password is only half the battle—choosing a
+          <em>strong</em> password makes all the difference between real
+          security and a false sense of protection. Here's how to do it right:
+        </p>
+        <ul>
+          <li>
+            <strong>Length Beats Complexity:</strong> A 12+ character password
+            is way harder to crack than an 8-character password with special
+            symbols. Aim for at least 12 characters, and 16+ if you're
+            protecting highly sensitive documents like contracts, tax records,
+            or medical files.
+          </li>
+          <li>
+            <strong>Create Memorable Passphrases:</strong> Combine random words
+            with numbers and symbols for passwords that are both secure and
+            easier to remember. Something like
+            <code>violet-train-lake-47!</code> or
+            <code>BlueCoffee$Morning92</code> is way better than
+            <code>p@ssw0rd</code>. The randomness makes it hard to guess, but
+            the words make it easier for you to recall.
+          </li>
+          <li>
+            <strong>Avoid Common Patterns:</strong> Don't use birthdays (1990,
+            0512), names (JohnSmith, CompanyName), keyboard patterns (qwerty,
+            asdf), or the word "password" itself. These are the first things
+            hackers try, and they crack embarrassingly fast.
+          </li>
+          <li>
+            <strong>Share Securely:</strong> Never send the PDF and its password
+            in the same email. If someone intercepts that email, they have
+            everything. Instead, send the PDF via email and the password through
+            a different channel like a text message, phone call, or secure
+            messaging app. This two-channel approach keeps things way more
+            secure.
+          </li>
+          <li>
+            <strong>Keep a Record:</strong> Store passwords in a password
+            manager (like 1Password, Bitwarden, or LastPass) or write them in a
+            secure physical location. If you forget the password to your
+            protected PDF, there's no "reset password" option—it's locked
+            forever. Seriously.
+          </li>
+          <li>
+            <strong>Don't Reuse Passwords:</strong> Use a unique password for
+            each sensitive document. If one password gets compromised, you don't
+            want it unlocking every protected PDF you've ever created. Treat
+            each document like its own vault.
+          </li>
+        </ul>
+
+        <h4>🔐 When to Use Password Protection</h4>
+        <p>
+          Not every PDF needs a password, but certain situations absolutely
+          demand it. Here's when you should lock down your documents:
+        </p>
+        <p>
+          <strong>Contracts and Agreements:</strong> If you're sending a
+          contract that contains sensitive terms, pricing, or confidential
+          clauses, password-protect it before emailing. This ensures only the
+          intended recipient (who has the password) can open and review the
+          document.
+        </p>
+        <p>
+          <strong>Financial Documents:</strong> Tax returns, bank statements,
+          invoices with account numbers, or anything containing payment
+          information should always be password-protected. Financial data is a
+          prime target for identity theft and fraud.
+        </p>
+        <p>
+          <strong>Personal Records:</strong> Medical records, legal documents,
+          social security numbers, passport scans—anything that could be used
+          for identity theft or that you wouldn't want leaked publicly should be
+          encrypted with a strong password.
+        </p>
+        <p>
+          <strong>Pro tip:</strong> If you're sharing a password-protected PDF
+          with multiple people, consider using a shared password manager or a
+          secure note-sharing service to distribute the password safely. Avoid
+          posting passwords in public Slack channels, group emails, or anywhere
+          they might get indexed or archived insecurely.
+        </p>
+
+        <h4>Quick Guide</h4>
+        <ol>
+          <li>
+            <strong>Upload your PDF:</strong> Click or drag your file into the
+            upload area
+          </li>
+          <li>
+            <strong>Enter password:</strong> Type a strong password (minimum 8
+            characters recommended)
+          </li>
+          <li>
+            <strong>Confirm password:</strong> Re-enter the same password to
+            verify
+          </li>
+          <li>
+            <strong>Set output name:</strong> Choose a descriptive filename for
+            your protected PDF
+          </li>
+          <li>
+            <strong>Protect PDF:</strong> Click the button to encrypt your
+            document
+          </li>
+          <li>
+            <strong>Download:</strong> Save your password-protected PDF and
+            share securely!
+          </li>
+        </ol>
+
+        <h4>Frequently Asked Questions</h4>
+        <details>
+          <summary>Does this change my original file?</summary>
           <p>
-            A PDF is like a sealed folder of pages. When you protect it, we make a new copy of that folder and attach an <em>unlock rule</em>: “ask for this password before opening.” The encryption scrambles the file’s contents so a viewer app can’t read it until the right password is supplied. Once you enter it, the viewer decrypts the pages in memory and shows them normally.
+            No. We create a completely new, encrypted copy of your PDF. Your
+            original file remains exactly as it was on your device, untouched
+            and unencrypted.
           </p>
+        </details>
+
+        <details>
+          <summary>What happens if I forget the password?</summary>
           <p>
-            Everything happens inside your browser tab. There’s no upload, processing queue, or server storage. Close the tab, and the temporary working data goes away with it.
+            Unfortunately, if you forget the password, the PDF cannot be opened.
+            The encryption is genuine and cannot be bypassed. Always keep a
+            secure record of your passwords or maintain an unprotected backup
+            copy.
           </p>
+        </details>
 
-          <div class="grid">
-            <div class="card">
-              <h3 style="margin:.2rem 0 .4rem">Great use cases</h3>
-              <ul style="margin:.2rem 0 0 1rem">
-                <li>Sending invoices, marksheets, or offer letters by email</li>
-                <li>Sharing report drafts with a limited group</li>
-                <li>Storing ID scans or medical slips in personal archives</li>
-                <li>Handing in coursework that requires privacy</li>
-              </ul>
-            </div>
-            <div class="card">
-              <figure>
-                <img alt="Before and after protection illustration"
-                     src="data:image/svg+xml;utf8,
-                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
-                       <rect width='1200' height='620' fill='%23ffffff'/>
-                       <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Unprotected</text>
-                       <rect x='120' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
-                       <rect x='160' y='470' width='300' height='16' rx='8' fill='%23111' opacity='.08'/>
-                       <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Protected</text>
-                       <rect x='720' y='120' width='380' height='420' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
-                       <rect x='840' y='300' width='120' height='120' rx='20' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                       <circle cx='900' cy='330' r='36' fill='none' stroke='%23065f46' stroke-width='10'/>
-                       <rect x='885' y='343' width='30' height='25' rx='4' fill='%23065f46'/>
-                     </svg>"/>
-                <figcaption>Left: a normal PDF. Right: a locked copy that prompts for a password before opening.</figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <h3>Step-by-step: from open file to locked PDF</h3>
-          <ol>
-            <li><strong>Open the tool:</strong> go to <span class="kbd">/features/protect.html</span>.</li>
-            <li><strong>Add your PDF:</strong> drag &amp; drop or click to choose a file.</li>
-            <li><strong>Set a password:</strong> use at least 10 characters, with words + numbers + a symbol.</li>
-            <li><strong>Protect:</strong> click <em>Protect PDF</em> to build the encrypted copy locally.</li>
-            <li><strong>Download &amp; test:</strong> save it (e.g., <span class="kbd">offer-letter-protected.pdf</span>) and reopen to confirm the prompt.</li>
-          </ol>
-
-          <div class="tip">
-            <strong>Strong password recipe:</strong> pick <em>three random words</em> + <em>a number</em> + <em>a symbol</em> (e.g., <span class="kbd">violet-train-lake-47!</span>). Avoid names, birthdays, or common words like “password123”.
-          </div>
-
-          <h3>What password protection is (and isn’t)</h3>
+        <details>
+          <summary>Can I remove the password later?</summary>
           <p>
-            Password protection is a smart first layer: it prevents casual access and keeps shared files private. But it isn’t a silver bullet. If the password is weak or reused, determined attackers could guess it. Also, some viewers ignore “no copy/print” flags — those are advisory, not strict DRM. Your best defense is a <strong>strong, unique password</strong> and sharing it <strong>securely</strong>.
+            Yes! If you have the password, you can open the protected PDF in any
+            PDF reader and save/export it as an unprotected copy. Or use our
+            Unlock tool to remove the password.
           </p>
+        </details>
 
-          <h3>Safe sharing basics</h3>
-          <ul>
-            <li>Send the PDF and the password via <em>different channels</em> (email + message).</li>
-            <li>Rotate the password if the file is reused across terms or clients.</li>
-            <li>Keep an unprotected original in a private archive for future edits.</li>
-          </ul>
+        <details>
+          <summary>Will all PDF readers ask for the password?</summary>
+          <p>
+            Yes. Any standard-compliant PDF viewer (Adobe Reader, browsers,
+            Preview, etc.) will prompt for the password before opening the
+            protected file. This is a universal PDF security feature.
+          </p>
+        </details>
 
-          <h3>FAQs</h3>
-          <div class="faq">
-            <details>
-              <summary>Does this change my original file?</summary>
-              <p>No. We create a new locked copy. Your original remains untouched.</p>
-            </details>
-            <details>
-              <summary>Will everyone be asked for the password?</summary>
-              <p>Yes. Any standard PDF reader will prompt for the password before opening.</p>
-            </details>
-            <details>
-              <summary>Can I remove the password later?</summary>
-              <p>Yes. Open with the password, export an unlocked copy, or use our tools to rebuild without protection.</p>
-            </details>
-          </div>
+        <details>
+          <summary>Can I also restrict printing or copying?</summary>
+          <p>
+            Currently, this tool focuses on password protection for opening the
+            document. However, note that PDF permission restrictions (like
+            no-copy or no-print flags) are advisory and can be bypassed. Strong
+            password protection is your best security.
+          </p>
+        </details>
 
-          <p class="sub" style="margin-top:1rem">Ready to lock it down? Pick a strong passphrase, protect your file locally, and share with confidence.</p>
-          <p><a class="cta" href="/features/protect.html">Open Password Protect</a></p>
-        </article>
+        <details>
+          <summary>How secure is the encryption?</summary>
+          <p>
+            We use standard PDF encryption methods supported by pdf-lib. The
+            security strength depends primarily on your password choice. A
+            strong, unique password (12+ characters with mixed types) provides
+            good protection for most use cases.
+          </p>
+        </details>
+
+        <div class="note">
+          Ready to secure your PDF? Upload your file, set a strong password, and
+          download your protected document in seconds.
+          <a href="#file-input">Try it now </a>
+        </div>
+        <h4>Related Tools</h4>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+          "
+        >
+          <a
+            href="./unlock.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+          >
+            Unlock PDF</a
+          >
+          <a
+            href="./watermark.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+          >
+            Add Watermark</a
+          >
+          <a
+            href="./edit.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+          >
+            Edit PDF</a
+          >
+          <a
+            href="./compress.html"
+            style="
+              display: block;
+              padding: 0.75rem 1rem;
+              background: white;
+              border: 1px solid #e0e7ff;
+              border-radius: 8px;
+              text-decoration: none;
+              color: #1e40af;
+              font-weight: 500;
+              transition: all 0.2s;
+            "
+          >
+            Compress PDF</a
+          >
+        </div>
       </section>
     </main>
     <div id="ad-footer" class="ad-slot"></div>
@@ -477,6 +856,23 @@
         a.download = getOutputName("protected");
         a.click();
         URL.revokeObjectURL(url);
+      });
+
+      // "Try it now" link functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const tryLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const fileInput = document.getElementById("file-input");
+            if (fileInput) {
+              fileInput.click();
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);
+            }
+          });
+        });
       });
     </script>
     <script src="../assets/app.js"></script>

@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="OCR PDF (Beta): extract text from scanned documents using Tesseract.js. Free online OCR tool  supports 100+ languages, browser-based, no uploads." />
   <title>OCR (Beta) - EDITSMYPDF</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/ocr.html" />
+  <link rel="canonical" href="https://editmypdf.tech/features/ocr.html" />    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
+      * { box-sizing: border-box; }
       main.feature { max-width:820px; }
       .ocr-card { max-width:760px; margin:0 auto; padding:2.5rem; }
       .ocr-card .upload-box { margin-top:.5rem; margin-bottom:1.75rem; min-height:170px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; }
@@ -28,26 +30,156 @@
       .hint { font-size:.75rem; color:#777; margin-top:.5rem; }
       @media (max-width:640px){ .actions-row button{ width:100%; } }
   /* Scoped blog styles: OCR guide */
-  .ocr-guide{max-width:900px;margin:2rem auto 0;padding:0 0.5rem}
-  .ocr-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
-  .ocr-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
-  .ocr-guide .sub{color:#60636c;margin:0 0 1rem}
-  .ocr-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
-  .ocr-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
-  .ocr-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
-  .ocr-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
-  .ocr-guide article{margin-top:2rem}
-  .ocr-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
-  .ocr-guide p{margin:0 0 1rem}
-  .ocr-guide .grid{display:grid;gap:1rem}
-  @media (min-width:800px){ .ocr-guide .grid{grid-template-columns:1fr 1fr} }
-  .ocr-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-  .ocr-guide figure{margin:0}
-  .ocr-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
-  .ocr-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
-  .ocr-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
-  .ocr-guide .faq details+details{margin-top:.75rem}
-  .ocr-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
+  .feature-blog {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+    border-left: 5px solid #2563eb;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    color: #334155;
+  }
+
+  .feature-blog h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e40af;
+    margin: 0 0 1.5rem;
+    line-height: 1.3;
+  }
+
+  .feature-blog .hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+    border: 1px solid #e0e7ff;
+  }
+
+  .feature-blog section {
+    margin: 2rem 0;
+  }
+
+  .feature-blog h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .feature-blog p {
+    margin: 0.75rem 0;
+    color: #475569;
+  }
+
+  .feature-blog strong {
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .feature-blog ul {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .feature-blog li {
+    margin: 0.5rem 0;
+    color: #475569;
+  }
+
+  .feature-blog .note {
+    background: white;
+    border: 1px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .feature-blog .note p {
+    margin: 0;
+  }
+
+  .feature-blog .note a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .feature-blog .note a:hover {
+    text-decoration: underline;
+  }
+
+  .feature-blog .faq {
+    margin: 2rem 0 0;
+  }
+
+  .feature-blog .faq h4 {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-blog details {
+    background: white;
+    border: 1px solid #e0e7ff;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .feature-blog details:hover {
+    border-color: #c7d2fe;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  }
+
+  .feature-blog summary {
+    font-weight: 600;
+    color: #1e40af;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .feature-blog summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .feature-blog summary::before {
+    content: '▶';
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+    color: #2563eb;
+  }
+
+  .feature-blog details[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .feature-blog details p {
+    margin-top: 0.75rem;
+    padding-left: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .feature-blog {
+      margin: 2rem 1rem;
+      padding: 1.5rem;
+    }
+
+    .feature-blog h3 {
+      font-size: 1.5rem;
+    }
+
+    .feature-blog h4 {
+      font-size: 1.15rem;
+    }
+  }
     </style>
   </head>
   <body>
@@ -88,137 +220,135 @@
         <div class="hint">Tip: For best results choose an appropriate language and higher scale for small text.</div>
         <div id="pages" class="pages-wrap"></div>
       </div>
-  <div id="ad-content" class="ad-slot"></div>
-      <!-- Inline feature blog: OCR (Beta) - Replaced with detailed guide -->
-      <section class="feature-blog ocr-guide" aria-labelledby="ocr-guide-title">
-        <span class="eyebrow">Behind the Scenes</span>
-        <h2 id="ocr-guide-title">Turn Scanned PDFs Into Selectable Text — Right in Your Browser</h2>
-        <p class="sub">Got a scan where you can see the words but can’t select or search them? This guide explains how our OCR tool recognizes text on your device, what affects accuracy, and how to get clean results.</p>
-        <p class="meta">Private by design • Works locally • Great for notes, forms, receipts, and handouts</p>
+    <div id="ad-content" class="ad-slot"></div>
 
-        <div class="hero">
-          <div>
-            <p>
-              Our OCR (Optical Character Recognition) feature reads the pixels from each scanned page and converts them into real, copyable text. It runs entirely in your browser using modern web tech — no uploads, no accounts, and no watermarks. Point it at a scan, pick a language, press start, and export a tidy <span class="kbd">.txt</span> file or paste results wherever you need.
-            </p>
-            <a class="cta" href="/features/ocr.html" aria-label="Open the OCR tool">🔍 Try OCR (Beta)</a>
-            <p style="margin:.6rem 0 0">Tip: choose a higher render scale for tiny print; use default for normal documents.</p>
-          </div>
+    <!-- Feature Blog Section -->
+    <section class="feature-blog">
+      <div class="title-with-logo">
+        <img src="../assets/images/sflogoPNG.PNG" alt="PDF Tools Logo" class="brand-logo" />
+        <h3> OCR PDF (Beta)  Extract Text from Scanned Documents</h3>
+      </div>
 
-          <figure class="viz" role="img" aria-label="OCR pipeline diagram">
-            <img alt="OCR flow diagram"
-                 src="data:image/svg+xml;utf8,
-                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
-                   <defs><linearGradient id='g' x1='0' x2='1'>
-                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
-                   <rect x='30' y='60' width='230' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='145' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Scanned PDF</text>
-                   <rect x='60' y='120' width='170' height='120' rx='10' fill='#eef2ff' stroke='%23dbe1ff'/>
-                   <rect x='320' y='60' width='280' height='70' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
-                   <text x='460' y='100' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Render page → pixel image</text>
-                   <rect x='320' y='150' width='280' height='70' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
-                   <text x='460' y='190' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>OCR engine finds characters</text>
-                   <rect x='650' y='60' width='260' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='780' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Recognized Text</text>
-                   <rect x='690' y='120' width='180' height='120' rx='12' fill='#dcfce7' stroke='%23bbf7d0'/>
-                   <path d='M260 160 L320 95' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M260 160 L320 185' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M600 95 L650 160' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M600 185 L650 160' stroke='url(%23g)' stroke-width='6'/>
-                 </svg>"/>
-            <figcaption>The browser renders a page to pixels, the OCR engine recognizes characters, and you export the text.</figcaption>
-          </figure>
-        </div>
+      <img src="../assets/images/OCR.JPG" alt="OCR PDF text extraction" class="hero-img" />
 
-        <article>
-          <h3>How OCR works (in plain English)</h3>
-          <p>
-            A scanned PDF is just a stack of pictures — no live text inside. Our tool first paints each page to an invisible canvas at the scale you choose. Then the OCR engine analyzes those pixels, looking for letter shapes, words, and lines. The recognized text is assembled into paragraphs you can copy, search, or export.
-          </p>
-          <p>
-            Because we process the original pixels on your device, there’s no waiting for uploads or server queues. Close the tab and the working data disappears with it.
-          </p>
-
-          <div class="grid">
-            <div class="card">
-              <h3 style="margin:.2rem 0 .4rem">Best use cases</h3>
-              <ul style="margin:.2rem 0 0 1rem">
-                <li>Lecture notes or book scans where you want searchable text</li>
-                <li>Receipts and forms you need to copy into spreadsheets</li>
-                <li>Reports or letters you want to quote or summarize</li>
-              </ul>
-            </div>
-            <div class="card">
-              <figure>
-                <img alt="Before and after OCR illustration"
-                     src="data:image/svg+xml;utf8,
-                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='620'>
-                       <rect width='1200' height='620' fill='%23ffffff'/>
-                       <text x='300' y='90' text-anchor='middle' font-size='22' fill='%23333'>Scan (Image Only)</text>
-                       <rect x='120' y='120' width='380' height='280' rx='10' fill='%23eef2ff' stroke='%23dde5ff'/>
-                       <text x='900' y='90' text-anchor='middle' font-size='22' fill='%23333'>Selectable Text</text>
-                       <rect x='720' y='120' width='380' height='280' rx='10' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                       <rect x='740' y='160' width='340' height='14' rx='7' fill='%23111' opacity='.12'/>
-                       <rect x='740' y='185' width='320' height='14' rx='7' fill='%23111' opacity='.12'/>
-                       <rect x='740' y='210' width='300' height='14' rx='7' fill='%23111' opacity='.12'/>
-                     </svg>"/>
-                <figcaption>Left: a flat scan. Right: real text you can copy and search.</figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <h3>Step-by-step: from scan to text</h3>
-          <ol>
-            <li><strong>Open:</strong> go to <span class="kbd">/features/ocr.html</span>.</li>
-            <li><strong>Add your PDF:</strong> drag &amp; drop the scanned file or click to choose.</li>
-            <li><strong>Pick a language:</strong> start with English; switch if the document is in another language.</li>
-            <li><strong>Choose render scale:</strong> <span class="kbd">1x</span> for speed, <span class="kbd">1.5x</span> balanced, <span class="kbd">2x</span> for small text.</li>
-            <li><strong>Run OCR:</strong> watch progress per page; review the recognized text panels.</li>
-            <li><strong>Export:</strong> download as <span class="kbd">ocr.txt</span> or copy sections you need.</li>
-          </ol>
-
-          <div class="tip">
-            <strong>Accuracy boosters:</strong><br />
-            • Aim for clear scans at ≈ <span class="kbd">300 DPI</span> with good contrast.<br />
-            • Keep pages straight — skewed or rotated pages hurt accuracy.<br />
-            • For multilingual docs, run once per language and combine results.<br />
-            • Very small fonts? Try scale <span class="kbd">2x</span>, but avoid over-blurry upscales.
-          </div>
-
-          <h3>Limits to keep in mind</h3>
-          <p>
-            OCR isn’t magic. Handwriting, decorative fonts, low-resolution photos, and heavy compression will reduce accuracy. Large books with hundreds of pages can also be slow in a browser — it’s fine to process in smaller chunks and merge the text afterward.
-          </p>
-
-          <h3>Privacy by default</h3>
-          <p>
-            Your PDF never leaves your device. The recognition happens on the same machine you’re using right now. That’s essential for IDs, medical papers, contracts, and exam notes — edit and export without exposing your data to external servers.
-          </p>
-
-          <h3>FAQs</h3>
-          <div class="faq">
-            <details>
-              <summary>Does OCR change my PDF?</summary>
-              <p>No. We read the pages to extract text, but your original file stays exactly the same.</p>
-            </details>
-            <details>
-              <summary>Can I make a searchable PDF?</summary>
-              <p>This tool exports recognized text. For a fully “searchable PDF” layer, first run OCR to get the text, then use our Edit tool to attach notes, or keep the text separately for search and quoting.</p>
-            </details>
-            <details>
-              <summary>Which languages work best?</summary>
-              <p>Printed English, Spanish, French, and German work well. Try multiple runs if your document mixes languages.</p>
-            </details>
-          </div>
-
-          <p class="sub" style="margin-top:1rem">Ready to unlock your scans? Open the OCR tool, pick a language, and turn pictures of pages into real text you can use.</p>
-          <p><a class="cta" href="/features/ocr.html">Open OCR (Beta)</a></p>
-        </article>
+      <section>
+        <h4>How It Works</h4>
+        <p>Our <strong>OCR tool (Beta)</strong> uses Tesseract.js to extract text from scanned PDFs and image-based documents. Upload your PDF, select the language, and the tool will analyze each page to recognize and extract readable text  all processed locally in your browser.</p>
       </section>
-    </main>
-    <div id="ad-footer" class="ad-slot"></div>
-    <div data-include="footer"></div>
+
+      <section>
+        <h4>Why Use This Tool?</h4>
+        <ul>
+          <li><strong>Scanned Document Support:</strong> Extract text from PDFs that contain images of text instead of selectable text</li>
+          <li><strong>Multi-Language:</strong> Supports English, Spanish, French, German, Chinese, Japanese, and 100+ languages</li>
+          <li><strong>Copy & Search:</strong> Make scanned documents searchable and text copyable</li>
+          <li><strong>100% Private:</strong> No server uploads  OCR runs entirely in your browser</li>
+          <li><strong>Page-by-Page:</strong> See extraction progress and results for each page individually</li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>Complete Privacy</h4>
+        <p>Your PDF <strong>never leaves your device</strong>. We use Tesseract.js (a JavaScript port of Google'\''s Tesseract OCR engine) to process pages entirely in your browser. No uploads, no tracking, no server-side processing  just local, private OCR.</p>
+      </section>
+
+      <section>
+        <h4>When to Use OCR</h4>
+        <p><strong>Scanned Documents:</strong> PDFs created from scanned paper documents or photos (invoices, contracts, receipts)</p>
+        <p><strong>Image-Based PDFs:</strong> Documents saved as images instead of text (screenshots, exported presentations)</p>
+        <p><strong>Non-Selectable Text:</strong> If you can'\''t select or copy text from your PDF, OCR can help extract it</p>
+        <p><strong>Note:</strong> If your PDF already has selectable text, you don'\''t need OCR  just use copy/paste or a standard PDF text extractor.</p>
+      </section>
+
+      <section>
+        <h4>OCR Accuracy Tips</h4>
+        <p>OCR is powerful, but getting good results requires understanding how it works and what affects accuracy. Here's what actually makes a difference:</p>
+        <ul>
+          <li><strong>Image Quality is Everything:</strong> Higher resolution scans produce dramatically better OCR results. If you scanned at 150 DPI (dots per inch), expect mediocre accuracy. Scan at 300 DPI or higher for best results. Blurry, low-resolution images may produce gibberish or miss text entirely. The clearer the original scan, the better the output—there's no way around that.</li>
+          <li><strong>Language Selection is Critical:</strong> Always choose the correct language from the dropdown. If your document is in Spanish but you select English, accuracy will tank because the OCR engine is looking for the wrong character patterns and word structures. For mixed-language documents (like English with Spanish quotes), you may need to run OCR multiple times with different language settings and combine the results manually.</li>
+          <li><strong>Clean, Printed Text Works Best:</strong> OCR engines are optimized for clear, printed text—like typewriter output, laser-printed documents, or professionally published books. Handwriting, stylized fonts, decorative scripts, or poor contrast (light gray text on white backgrounds) reduce accuracy significantly. If you can barely read it yourself, OCR won't do much better.</li>
+          <li><strong>Processing Time Varies Wildly:</strong> OCR is computationally intensive. A single page can take 10-30 seconds depending on your device's speed, image resolution, and text complexity. A 10-page document might take 3-5 minutes total. This is normal for browser-based OCR—close other tabs and applications to speed things up, but don't expect instant results like other PDF tools.</li>
+          <li><strong>Beta Feature Means Occasional Hiccups:</strong> This tool is in beta, which means it's powerful but not perfect. Expect occasional inaccuracies, especially with complex layouts (multi-column text, tables, footnotes), decorative fonts, or documents with poor scanning quality. Always proofread the extracted text before using it for anything important—don't assume 100% accuracy.</li>
+          <li><strong>Background and Contrast Matter:</strong> Documents with clean white backgrounds and dark black text produce the best results. Yellowed paper, colored backgrounds, faded ink, or watermarks confuse the OCR engine. If your scanned document has a noisy background, consider cleaning it up in an image editor before running OCR.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>📄 OCR vs. Regular Text Extraction: When to Use Each</h4>
+        <p>Confused about whether you need OCR or just regular text extraction? Here's the difference and when to use each:</p>
+        <p><strong>Use OCR when:</strong> Your PDF is a scanned image of a physical document (like a scanned invoice, receipt, or contract). If you can't select or copy text in the PDF, it's image-based and needs OCR. PDFs created from photos, screenshots, or scanner output always require OCR to extract text.</p>
+        <p><strong>Use Regular Text Extraction when:</strong> Your PDF already has selectable text—meaning you can click and drag to highlight words. If copy/paste works, you don't need OCR. Just use your PDF reader's built-in copy function or a standard text extraction tool. OCR is overkill and slower for PDFs with existing text layers.</p>
+        <p><strong>Quick Test:</strong> Open your PDF and try to select some text with your mouse. If you can highlight and copy it, skip OCR. If clicking just selects the whole page as an image, you need OCR.</p>
+        <p><strong>Pro tip:</strong> Some PDFs look like they have text but are actually scanned images with invisible text layers added by previous OCR. If the text looks weird when you copy it (wrong characters, garbled words), try running our OCR tool again with the correct language setting—it might produce cleaner results than the embedded OCR layer.</p>
+      </section>
+
+      <section>
+        <h4>Quick Guide</h4>
+        <p><strong>1. Upload PDF:</strong> Drag and drop or click to select your scanned PDF</p>
+        <p><strong>2. Select Language:</strong> Choose the primary language of your document (English, Spanish, etc.)</p>
+        <p><strong>3. Start OCR:</strong> Click "Extract Text" and wait while each page is processed</p>
+        <p><strong>4. View Results:</strong> See extracted text for each page with progress indicators</p>
+        <p><strong>5. Copy Text:</strong> Select and copy the extracted text for use in other applications</p>
+        <p><strong>6. Download:</strong> Optionally download all extracted text as a plain text file</p>
+      </section>
+
+      <div class="faq">
+        <h4>Frequently Asked Questions</h4>
+
+        <details>
+          <summary>What'\''s the difference between OCR and regular text extraction?</summary>
+          <p><strong>OCR (Optical Character Recognition)</strong> analyzes images to recognize and extract text from scanned documents or image-based PDFs. <strong>Regular text extraction</strong> works on PDFs that already have selectable text layers. If you can copy/paste text from your PDF, you don'\''t need OCR.</p>
+        </details>
+
+        <details>
+          <summary>Why is OCR so slow compared to other PDF tools?</summary>
+          <p>OCR is computationally intensive because it must analyze every pixel in an image to recognize characters and words. Processing a single page can take 10-30 seconds depending on image size, quality, and your device'\''s performance. This is normal for browser-based OCR.</p>
+        </details>
+
+        <details>
+          <summary>How accurate is the OCR text extraction?</summary>
+          <p>Accuracy depends on <strong>image quality</strong>, <strong>text clarity</strong>, and <strong>language selection</strong>. High-quality scans with clear, printed text typically achieve 95%+ accuracy. Low-resolution images, handwriting, unusual fonts, or poor contrast will reduce accuracy significantly.</p>
+        </details>
+
+        <details>
+          <summary>Can this tool recognize handwriting?</summary>
+          <p>OCR engines like Tesseract are optimized for <strong>printed text</strong>, not handwriting. You may get partial results with very clear, legible handwriting, but accuracy will be poor. For best results, use OCR on typed or printed documents only.</p>
+        </details>
+
+        <details>
+          <summary>What languages are supported?</summary>
+          <p>This tool supports <strong>100+ languages</strong> including English, Spanish, French, German, Italian, Portuguese, Chinese (Simplified/Traditional), Japanese, Korean, Arabic, Russian, and many more. Select the correct language from the dropdown for best results.</p>
+        </details>
+
+        <details>
+          <summary>Why does the tool say "No text found" after processing?</summary>
+          <p>This can happen if: (1) Your PDF already has selectable text (no OCR needed), (2) The page contains only images/graphics with no readable text, (3) Text quality is too poor for recognition, or (4) You selected the wrong language. Try adjusting the language setting or checking image quality.</p>
+        </details>
+      </div>
+
+      <div class="note">
+        <p><strong>Ready to extract text from scanned PDFs?</strong> <a href="#file-input">Try it now </a></p>
+      </div>
+    </section>
+
     <script>
+      // "Try it now" link functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const tryNowLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryNowLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('file-input');
+            if (fileInput) {
+              fileInput.click();
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }, 100);
+            }
+          });
+        });
+      });
+
       const dropZone = document.getElementById('drop-zone');
       const fileInput = document.getElementById('file-input');
       const pagesWrap = document.getElementById('pages');

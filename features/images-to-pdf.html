@@ -3,17 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Images to PDF - EDITSMYPDF</title>
+    <meta name="description" content="Convert images to PDF: combine JPG, PNG, WEBP into one PDF. Free online converter  drag to reorder, choose page size, no uploads." />
+    <title>Images to PDF - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/images-to-pdf.html" />
+    <link
+      rel="canonical"
+      href="https://editmypdf.tech/features/images-to-pdf.html"
+    />`n    <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "Inter", sans-serif;
         background: #fff;
@@ -21,8 +29,12 @@
         margin: 0;
         padding: 0;
       }
-      /* Header replaced by shared component */
-      main { max-width: 900px; margin: 3rem auto; padding: 1rem; text-align: center; }
+      main {
+        max-width: 700px;
+        margin: 3rem auto;
+        padding: 1rem;
+        text-align: center;
+      }
       h2 {
         font-size: 2rem;
         margin-bottom: 0.5rem;
@@ -31,12 +43,27 @@
         color: #555;
         margin-bottom: 2rem;
       }
-      .card { border: 1px solid #eee; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-      /* Footer replaced by shared component */
+      .card {
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
       input {
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 0.6rem 0.9rem;
+      }
+      button {
+        background: linear-gradient(90deg, #6366f1, #2563eb);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 0.9rem 1.8rem;
+        font-weight: 600;
+        margin-top: 1rem;
+        cursor: pointer;
+        transition: opacity 0.3s;
       }
       button:hover {
         opacity: 0.9;
@@ -48,6 +75,9 @@
         margin-top: 1.5rem;
         transition: all 0.2s ease;
         cursor: pointer;
+        width: 100%;
+        display: block;
+        text-align: center;
       }
       .upload-box:hover {
         background: #f8faff;
@@ -56,61 +86,264 @@
         border-color: #2563eb;
         background: #f8faff;
       }
-  .file-info { margin-top: 1rem; color: #333; font-weight: 500; font-size: 0.95rem; }
-      .thumbs { display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-top: 1rem; }
-      .thumb { position:relative; border:1px solid #eee; border-radius: 10px; overflow: hidden; background:#fafafa; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-      .thumb img { width: 100%; height: 120px; object-fit: cover; display: block; }
-      .thumb .name { position:absolute; left:6px; right:6px; bottom:6px; background: rgba(255,255,255,0.85); border-radius:6px; padding:2px 6px; font-size:.72rem; color:#333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .field { max-width: 420px; margin: 1rem auto 0; text-align: left; }
-  .field label { display: block; margin: .25rem 0 .35rem; color: #444; font-weight: 600; }
-  .field input[type="text"] { width: 100%; }
+      .file-info {
+        margin-top: 1rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+      .thumbs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
+        margin-top: 1rem;
+      }
+      .thumb {
+        position: relative;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fafafa;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+      .thumb img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        display: block;
+      }
+      .thumb .name {
+        position: absolute;
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 6px;
+        padding: 2px 6px;
+        font-size: 0.72rem;
+        color: #333;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .field {
+        max-width: 420px;
+        margin: 1rem auto 0;
+        text-align: left;
+      }
+      .field label {
+        display: block;
+        margin: 0.25rem 0 0.35rem;
+        color: #444;
+        font-weight: 600;
+      }
+      .field input[type="text"] {
+        width: 100%;
+      }
       .progress {
         margin-top: 1rem;
         color: #555;
       }
-      .ad-box {
-        margin-top: 3rem;
-        height: 90px;
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-        border-radius: 8px;
+
+      .controls.inline-actions {
         display: flex;
+        gap: 0.75rem;
         justify-content: center;
         align-items: center;
-        color: #999;
-        font-weight: 500;
-      }
-      footer {
-        text-align: center;
-        padding: 2rem;
-        color: #777;
-        font-size: 0.9rem;
-        border-top: 1px solid #eee;
-        margin-top: 3rem;
+        flex-wrap: wrap;
       }
 
-      /* Scoped styles for embedded Images->PDF guide */
-      .images-guide { text-align:left; max-width:900px; margin:2.5rem auto; padding:0 1rem; line-height:1.7; }
-      .images-guide .eyebrow { display:inline-block; padding:.25rem .6rem; border-radius:999px; border:1px solid #e9ecf3; background:linear-gradient(90deg,#fff,#f7f8ff); font-size:.85rem; color:#333; }
-      .images-guide h1 { font-size:2.2rem; line-height:1.2; margin:.7rem 0 .5rem; }
-      .images-guide .sub { color:#60636c; margin:0 0 1.25rem; }
-      .images-guide .meta { font-size:.92rem; color:#777; margin-bottom:1.25rem; }
-      .images-guide .hero { display:grid; gap:1rem; grid-template-columns:1.2fr .8fr; align-items:center; border:1px solid #e9ecf3; border-radius:20px; padding:1.15rem; background:#fff; box-shadow:0 8px 24px rgba(0,0,0,.05); }
-      .images-guide .cta { display:inline-flex; align-items:center; gap:.55rem; font-weight:700; background:linear-gradient(90deg,#6366f1,#2563eb); color:#fff; padding:.8rem 1.05rem; border-radius:12px; text-decoration:none; box-shadow:0 6px 16px rgba(37,99,235,.25); }
-      .images-guide .viz { width:100%; height:auto; border:1px solid #e9ecf3; border-radius:16px; overflow:hidden; }
-      .images-guide article { margin-top:2rem; }
-      .images-guide h2 { font-size:1.35rem; margin:1.6rem 0 .6rem; }
-      .images-guide p { margin:0 0 1rem; }
-      .images-guide .grid { display:grid; gap:1rem; }
-      @media(min-width:800px){ .images-guide .grid { grid-template-columns:1fr 1fr; } }
-      .images-guide .card { border:1px solid #e9ecf3; border-radius:16px; padding:1rem; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.04); }
-      .images-guide figure { margin:0; }
-      .images-guide figcaption { font-size:.85rem; color:#666; margin-top:.5rem; }
-      .images-guide .tip { background:#f8faff; border-left:4px solid #2563eb; border-radius:10px; padding:1rem; margin:.9rem 0; }
-      .images-guide .faq details { border:1px solid #e9ecf3; border-radius:12px; padding:.75rem 1rem; background:#fff; }
-      .images-guide .faq details+details { margin-top:.75rem; }
-      .images-guide .kbd { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; background:#f5f7fb; border:1px solid #e7ebf3; padding:.15rem .35rem; border-radius:6px; font-size:.9rem; }
-      .images-guide ul { padding-left:1.1rem; }
+      .controls.inline-actions button {
+        min-width: 140px;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+      }
+
+      /* Enhanced Feature Blog Section */
+      .feature-blog {
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-top: 3rem;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+      }
+
+      .feature-blog h3 {
+        font-size: 1.75rem;
+        color: #1e40af;
+        margin: 0 0 1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .feature-blog h4 {
+        color: #1e40af;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog p {
+        color: #475569;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 1rem;
+      }
+
+      .feature-blog ul,
+      .feature-blog ol {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-blog li {
+        color: #475569;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin: 0.75rem 0;
+      }
+
+      .feature-blog strong {
+        color: #1e40af;
+        font-weight: 700;
+      }
+
+      .feature-blog .hero-img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 2rem 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-blog .tip {
+        background: white;
+        border-left: 4px solid #2563eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+      }
+
+      .feature-blog .tip strong {
+        color: #2563eb;
+        font-size: 1.05rem;
+      }
+
+      .feature-blog .note {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-left: 4px solid #2563eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2.5rem;
+        text-align: center;
+        color: #1e40af;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+      }
+
+      .feature-blog .note a {
+        color: #1e40af;
+        text-decoration: underline;
+        font-weight: 700;
+      }
+
+      .feature-blog .note strong {
+        color: #1e3a8a;
+        font-weight: 700;
+      }
+
+      /* FAQ Accordion Styling */
+      .feature-blog details {
+        background: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-blog details:hover {
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+      }
+
+      .feature-blog details[open] {
+        background: #f8faff;
+        border-color: #2563eb;
+      }
+
+      .feature-blog summary {
+        font-weight: 700;
+        color: #1e40af;
+        font-size: 1.1rem;
+        list-style: none;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .feature-blog summary::before {
+        content: "▶";
+        font-size: 0.75rem;
+        color: #2563eb;
+        transition: transform 0.2s ease;
+      }
+
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+
+      .feature-blog details p {
+        margin-top: 0.75rem;
+        padding-left: 1.25rem;
+        color: #475569;
+      }
+
+      .feature-blog code {
+        background: #e0e7ff;
+        color: #1e40af;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+
+      @media (max-width: 640px) {
+        .feature-blog {
+          padding: 1.75rem 1.25rem;
+        }
+
+        .feature-blog h3 {
+          font-size: 1.5rem;
+        }
+
+        .feature-blog h4 {
+          font-size: 1.1rem;
+        }
+
+        .feature-blog ul,
+        .feature-blog ol {
+          padding: 1.25rem 1.25rem 1.25rem 2rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -118,7 +351,7 @@
     <div id="ad-top" class="ad-slot"></div>
     <main class="feature">
       <h2>Images to PDF</h2>
-      <p class="sub">Upload multiple images and click “Create PDF”.</p>
+      <p class="sub">Upload multiple images and click "Create PDF".</p>
 
       <div class="card">
         <label class="upload-box" id="drop-zone">
@@ -132,10 +365,7 @@
           />
         </label>
 
-        <!-- File info text -->
         <div id="file-info" class="file-info"></div>
-
-        <!-- Thumbnails grid -->
         <div id="thumbs" class="thumbs" aria-live="polite"></div>
 
         <div class="field">
@@ -148,144 +378,130 @@
           />
         </div>
 
-        <div class="controls inline-actions" style="margin-top: .75rem">
+        <div class="controls inline-actions" style="margin-top: 0.75rem">
           <button id="start-btn" class="primary" disabled>Create PDF</button>
-          <button id="download-btn" class="primary" style="display: none">Download PDF</button>
+          <button id="download-btn" class="primary" style="display: none">
+            Download PDF
+          </button>
         </div>
         <div class="progress" id="status"></div>
-    </div>
+      </div>
 
-    <div id="ad-content" class="ad-slot"></div>
-      <!-- Inline feature blog: Images to PDF (replaced with detailed guide) -->
-      <section class="feature-blog images-guide" aria-labelledby="images-guide-title">
-        <span class="eyebrow">Behind the Scenes</span>
-        <h1 id="images-guide-title">Turn Images into a Single PDF — Fast, Clean, and Private</h1>
-        <p class="sub">Got a bunch of photos—receipts, homework pages, whiteboard shots—and need them in one tidy PDF? Here’s a human-friendly tour of how our Images → PDF tool works, plus tips for sharp, lightweight results.</p>
-        <p class="meta">Works locally in your browser • No uploads • Ideal for scans, notes, or photo sets</p>
+      <div id="ad-content" class="ad-slot"></div>
 
-        <!-- Hero -->
-        <section class="hero">
-          <div>
-            <p>
-              The Images to PDF tool takes your selected pictures and lays each one onto its own PDF page at the right size and orientation. Everything runs <strong>on your device</strong> using modern browser tech, so your files remain private. You’ll preview thumbnails, adjust the order (by selection sequence), and export a clean multi-page PDF in seconds.
-            </p>
-            <a class="cta" href="/features/images-to-pdf.html" aria-label="Open the Images to PDF tool">🖼️ Create a PDF</a>
-            <p style="margin:.6rem 0 0">Name it clearly (e.g., <span class="kbd">lab-notes-week3.pdf</span>) so you don’t overwrite older versions.</p>
-          </div>
+      <!-- Enhanced Feature Blog Section -->
+      <!-- Enhanced Feature Blog Section -->
+      <section class="feature-blog">
+        <div class="title-with-logo">
+          <img src="../assets/images/sflogoPNG.PNG" alt="PDF Tools Logo" class="brand-logo" />
+          <h3> Images to PDF  Convert Pictures into a Single PDF</h3>
+        </div>
 
-          <!-- Inline, open-source safe SVG diagram -->
-          <figure class="viz" role="img" aria-label="Images to PDF pipeline diagram">
-            <img alt="Images-to-PDF flow diagram"
-                 src="data:image/svg+xml;utf8,
-                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 320'>
-                   <defs><linearGradient id='g' x1='0' x2='1'>
-                     <stop offset='0%' stop-color='%236366f1'/><stop offset='100%' stop-color='%232563eb'/></linearGradient></defs>
-                   <rect x='30' y='60' width='220' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='140' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Your Images</text>
-                   <rect x='60' y='110' width='70' height='70' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
-                   <rect x='140' y='110' width='70' height='70' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
-                   <rect x='100' y='190' width='70' height='50' rx='8' fill='%23eef2ff' stroke='%23dbe1ff'/>
+        <img src="../assets/images/image to pdf .JPG" alt="Images to PDF converter interface" class="hero-img" />
 
-                   <rect x='350' y='60' width='240' height='60' rx='12' fill='#eaf9ff' stroke='%23cfeaff'/>
-                   <text x='470' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Scale to A4/Letter (fit-to-page)</text>
-                   <rect x='350' y='140' width='240' height='60' rx='12' fill='#eef2ff' stroke='%23dbe1ff'/>
-                   <text x='470' y='175' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Keep aspect ratio centered</text>
-                   <rect x='350' y='220' width='240' height='60' rx='12' fill='#f7f8ff' stroke='%23e6e9ff'/>
-                   <text x='470' y='255' text-anchor='middle' font-family='Inter,Arial' font-size='14' fill='%23333'>Add new page per image</text>
-
-                   <rect x='690' y='60' width='220' height='200' rx='16' fill='#fff' stroke='%23dbe1ff'/>
-                   <text x='800' y='95' text-anchor='middle' font-family='Inter,Arial' font-size='15' fill='%23333'>Final PDF</text>
-                   <rect x='720' y='120' width='160' height='100' rx='12' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                   <path d='M250 160 L350 90' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M250 160 L350 170' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M590 90 L690 160' stroke='url(%23g)' stroke-width='6'/>
-                   <path d='M590 270 L690 160' stroke='url(%23g)' stroke-width='6'/>
-                 </svg>"/>
-            <figcaption>We center each image on a page, fit it to A4/Letter, and bundle everything into one PDF—locally.</figcaption>
-          </figure>
+        <section>
+          <h4> How It Works</h4>
+          <p>Our <strong>Images to PDF tool</strong> combines multiple images (JPG, PNG, WEBP, etc.) into one PDF document. Upload your photos, preview thumbnails, optionally reorder them by dragging, choose page size and orientation, then download a single PDF with all imagesprocessed locally in your browser.</p>
         </section>
 
-        <article>
-          <h2>How it actually works (in plain English)</h2>
-          <p>
-            A PDF is a stack of pages. Our tool creates a new stack and places each selected image on its own page. We measure the page (A4 or Letter), compare it with the image’s width/height, and <em>fit-to-page</em> while preserving aspect ratio—no stretching, no weird squashing. Portrait photos fill the page vertically; wide whiteboards fill it horizontally. The image is centered so it looks tidy, then we add the next page and repeat until all images are placed.
-          </p>
-          <p>
-            Under the hood we use a fast, lightweight PDF library to draw the image data onto the page canvas. When you click <strong>Create PDF</strong>, we package those pages into a single file and hand it back to you as a download. Your originals stay untouched; the PDF is a fresh copy built from them.
-          </p>
+        <section>
+          <h4> Why Use This Tool?</h4>
+          <ul>
+            <li><strong>Multiple Formats:</strong> Supports JPG, PNG, WEBP, GIF, BMP, and more</li>
+            <li><strong>Drag to Reorder:</strong> Arrange images in any sequence before conversion</li>
+            <li><strong>Page Size Options:</strong> Choose A4, Letter, or auto-fit to image dimensions</li>
+            <li><strong>Portrait/Landscape:</strong> Control page orientation for each image</li>
+            <li><strong>100% Private:</strong> No uploadsimages convert in your browser</li>
+          </ul>
+        </section>
 
-          <div class="grid">
-            <div class="card">
-              <h3 style="margin:.2rem 0 .4rem">Great for</h3>
-              <ul style="margin:.2rem 0 0 1rem">
-                <li>Homework scans or assignment pages</li>
-                <li>Receipts and expense proofs</li>
-                <li>Whiteboard snapshots from class</li>
-                <li>Photo sets you want to share as one document</li>
-              </ul>
-            </div>
-            <div class="card">
-              <figure>
-                <img alt="Before and after layout illustration"
-                     src="data:image/svg+xml;utf8,
-                     <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='600'>
-                       <rect width='1200' height='600' fill='%23ffffff'/>
-                       <text x='300' y='80' text-anchor='middle' font-size='22' fill='%23333'>Your Images</text>
-                       <rect x='120' y='110' width='160' height='110' rx='8' fill='%23eef2ff' stroke='%23dde5ff'/>
-                       <rect x='310' y='110' width='160' height='110' rx='8' fill='%23eef2ff' stroke='%23dde5ff'/>
-                       <rect x='215' y='240' width='160' height='110' rx='8' fill='%23eef2ff' stroke='%23dde5ff'/>
-                       <text x='900' y='80' text-anchor='middle' font-size='22' fill='%23333'>Single PDF</text>
-                       <rect x='780' y='110' width='240' height='340' rx='12' fill='%23fff' stroke='%23e1e5ff'/>
-                       <rect x='810' y='170' width='180' height='220' rx='8' fill='%23dcfce7' stroke='%23bbf7d0'/>
-                     </svg>"/>
-                <figcaption>Left: scattered images. Right: one sleek, printable PDF.</figcaption>
-              </figure>
-            </div>
-          </div>
+        <section>
+          <h4> Complete Privacy</h4>
+          <p>Your images <strong>never leave your device</strong>. We use jsPDF to create the PDF entirely in your browser. No server uploads, no data collection, no privacy concerns. Perfect for personal photos, scanned documents, or sensitive materials.</p>
+        </section>
 
-          <h2>Step-by-step: from photos to a polished PDF</h2>
-          <ol>
-            <li><strong>Open the tool:</strong> go to <span class="kbd">/features/images-to-pdf.html</span>.</li>
-            <li><strong>Select images:</strong> choose multiple files or drag &amp; drop them in. The order follows how you select them.</li>
-            <li><strong>Preview:</strong> check thumbnails; remove any duplicates before exporting.</li>
-            <li><strong>Create PDF:</strong> we fit each image to page size and center it automatically.</li>
-            <li><strong>Download:</strong> save with a clear name like <span class="kbd">receipts-jan2026.pdf</span>.</li>
-          </ol>
+        <section>
+          <h4> Common Conversion Scenarios</h4>
+          <p><strong>Photo Albums:</strong> Combine vacation photos, family pictures, or event snapshots into a single shareable PDF.</p>
+          <p><strong>Scanned Documents:</strong> Merge scanned pages from receipts, contracts, or forms into one organized PDF.</p>
+          <p><strong>Design Portfolios:</strong> Create a professional PDF portfolio from your artwork, mockups, or design screenshots.</p>
+          <p><strong>Product Catalogs:</strong> Turn product photos into a browsable PDF catalog for customers or vendors.</p>
+        </section>
 
-          <div class="tip">
-            <strong>Quality tips:</strong><br />
-            • Use good lighting when photographing documents—shadows become hard-to-read gray patches.<br />
-            • If an image looks sideways, rotate it in your gallery before combining.<br />
-            • For lots of high-MP photos, consider compressing the final PDF afterward to keep the file small.
-          </div>
+        <section>
+          <h4>💡 Conversion Tips</h4>
+          <p>Converting images to PDF seems straightforward, but a few smart choices up front will save you headaches later. Here's what actually matters:</p>
+          <ul>
+            <li><strong>Image Order Matters:</strong> Upload images in the sequence you want them to appear, or drag thumbnails to reorder before conversion. Once the PDF is generated, changing page order means editing the PDF again—so get it right the first time.</li>
+            <li><strong>Consistent Sizing Looks Professional:</strong> For the best-looking results, use images with similar dimensions and aspect ratios. Mixing portrait and landscape photos works fine, but wildly different sizes (like a phone screenshot next to a wide panorama) can make your PDF look inconsistent.</li>
+            <li><strong>Page Orientation Strategy:</strong> Use portrait for tall images (documents, standing people, vertical screenshots), and landscape for wide images (panoramas, charts, horizontal designs). The tool won't rotate images for you—it fits them to the page orientation you choose.</li>
+            <li><strong>File Size Adds Up Fast:</strong> Large images (10+ MB each) create massive PDFs. If you're emailing or uploading the result, compress your images first using any image editor, or use our <a href="./compress.html">Compress PDF tool</a> after conversion to shrink the final file.</li>
+            <li><strong>Quality Preservation with PNG:</strong> JPG images may lose minimal quality during PDF conversion due to re-encoding. If you need pixel-perfect preservation—like for design portfolios or technical diagrams—use PNG format. It's lossless, so what you upload is exactly what ends up in the PDF.</li>
+            <li><strong>Auto-Fit vs. Standard Sizes:</strong> "Auto-fit" creates PDF pages that match each image's exact dimensions—great for preserving original quality but can result in inconsistent page sizes. A4 or Letter keeps everything uniform, which looks cleaner when people flip through the PDF, but images get scaled to fit.</li>
+          </ul>
+        </section>
 
-          <h2>Common questions</h2>
-          <div class="faq">
-            <details>
-              <summary>Will my images lose quality?</summary>
-              <p>We don’t upscale images (to avoid blur). Large photos are downscaled to fit page size while keeping aspect ratio. The result is crisp and ready to print or share.</p>
-            </details>
-            <details>
-              <summary>Which page size do you use?</summary>
-              <p>We default to a standard page (A4/Letter). The tool fits the image to whichever page size is active so content isn’t cropped or stretched.</p>
-            </details>
-            <details>
-              <summary>Can I control the order?</summary>
-              <p>Yes. The order matches your selection sequence. If you added something out of order, deselect and re-add, then recreate the PDF.</p>
-            </details>
-            <details>
-              <summary>Is anything uploaded?</summary>
-              <p>No. Everything runs locally in your browser. Close the tab and the working data is gone.</p>
-            </details>
-          </div>
+        <section>
+          <h4>📐 Choosing the Right Page Size</h4>
+          <p>One of the most common questions we get is: "Should I use A4, Letter, or Auto-fit?" Here's how to decide:</p>
+          <p><strong>Use A4 or Letter when:</strong> You want a professional, consistent look across all pages. This is perfect for business documents, presentations, or anything that might be printed. Images get scaled to fit the page while keeping their original proportions, so nothing looks stretched or squished.</p>
+          <p><strong>Use Auto-fit when:</strong> You're working with images that have different sizes and you want to preserve each one's exact dimensions. This is ideal for design portfolios, artwork collections, or technical diagrams where every pixel counts. Just be aware that page sizes will vary, which can feel inconsistent when flipping through the PDF.</p>
+          <p><strong>Pro tip:</strong> If you're mixing photos and documents (like receipts or scanned forms), use A4 or Letter and portrait orientation. Most documents are already portrait, so they'll fit naturally without looking awkward.</p>
+        </section>
 
-          <p class="sub" style="margin-top:1rem">That’s it—pick your images, click create, and share one clean, portable PDF. Perfect for school submissions, finance paperwork, and tidy record-keeping.</p>
-          <p><a class="cta" href="/features/images-to-pdf.html">Open Images → PDF</a></p>
-        </article>
+        <section>
+          <h4>📖 Quick Guide</h4>
+          <p><strong>1. Upload Images:</strong> Drag and drop or click to select multiple image files</p>
+          <p><strong>2. Preview Thumbnails:</strong> See all uploaded images displayed in order</p>
+          <p><strong>3. Reorder (Optional):</strong> Drag thumbnails to rearrange page sequence</p>
+          <p><strong>4. Choose Page Size:</strong> Select A4, Letter, or auto-fit to image dimensions</p>
+          <p><strong>5. Set Orientation:</strong> Pick portrait or landscape layout</p>
+          <p><strong>6. Generate PDF:</strong> Click "Generate PDF" to create the document</p>
+          <p><strong>7. Download:</strong> PDF downloads automatically with all images combined</p>
+        </section>
+
+        <div class="faq">
+          <h4> Frequently Asked Questions</h4>
+
+          <details>
+            <summary>What image formats are supported?</summary>
+            <p>We support all common formats: JPG/JPEG, PNG, WEBP, GIF, BMP, and SVG. Most modern browsers can convert these to PDF. If an image fails to load, try converting it to JPG or PNG first using an image editor.</p>
+          </details>
+
+          <details>
+            <summary>Can I mix different image sizes in one PDF?</summary>
+            <p>Yes! Each image can have different dimensions. If you choose "Auto-fit" page size, each PDF page will match its image dimensions. If you choose A4 or Letter, images will be scaled to fit the page while maintaining aspect ratio.</p>
+          </details>
+
+          <details>
+            <summary>How do I remove an image after uploading?</summary>
+            <p>Currently, there'\''s no delete button for individual images. To remove an image, refresh the page and re-upload only the images you want. Alternatively, you can generate the PDF with all images, then use our <a href="./delete.html">Delete Pages tool</a> to remove unwanted pages.</p>
+          </details>
+
+          <details>
+            <summary>Why is my PDF file size larger than the total image sizes?</summary>
+            <p>PDFs include metadata, page structure, and sometimes embed images uncompressed for quality. If file size is an issue, use our <a href="./compress.html">Compress PDF tool</a> after conversion to reduce size, or compress your images before uploading.</p>
+          </details>
+
+          <details>
+            <summary>Can I add text or captions to images in the PDF?</summary>
+            <p>This tool converts images to PDF pages without adding text. To add captions or annotations, generate the PDF first, then use our <a href="./edit.html">Edit PDF tool</a> to add text boxes, labels, or descriptions on each page.</p>
+          </details>
+
+          <details>
+            <summary>Is there a limit on the number of images I can convert?</summary>
+            <p>There'\''s no hard limit, but uploading 50+ images may slow down your browser due to memory usage. For very large batches, consider splitting into groups of 20-30 images, converting separately, then using our <a href="./merge.html">Merge PDF tool</a> to combine the results.</p>
+          </details>
+        </div>
+
+        <div class="note">
+          <p><strong>Ready to convert your images to PDF?</strong> <a href="#file-input">Try it now </a></p>
+        </div>
       </section>
     </main>
+    </main>
     <div id="ad-footer" class="ad-slot"></div>
-  <div data-include="footer"></div>
+    <div data-include="footer"></div>
 
     <script>
       const { jsPDF } = window.jspdf;
@@ -295,15 +511,11 @@
       const statusText = document.getElementById("status");
       const downloadBtn = document.getElementById("download-btn");
       const fileInfo = document.getElementById("file-info");
-  const thumbs = document.getElementById("thumbs");
+      const thumbs = document.getElementById("thumbs");
 
       let imageFiles = [];
       let pdfBlob = null;
-  const thumbURLs = new Map(); // key -> objectURL
-
-      // Clicking the label will naturally trigger the hidden file input
-      // (input is nested inside the label). Avoid manual .click() to
-      // prevent duplicate dialogs.
+      const thumbURLs = new Map();
 
       // Drag & drop
       dropZone.addEventListener("dragover", (e) => {
@@ -326,8 +538,7 @@
       fileInput.addEventListener("click", (e) => e.stopPropagation());
       fileInput.addEventListener("change", async (e) => {
         const files = Array.from(e.target.files || []);
-        if (files.length) await loadFiles(files, /* append */ true);
-        // allow re-selecting same files by resetting value
+        if (files.length) await loadFiles(files, true);
         e.target.value = "";
       });
 
@@ -359,28 +570,37 @@
         renderThumbs();
       }
 
-      function fileKey(f){ return `${f.name}|${f.size}|${f.lastModified}`; }
+      function fileKey(f) {
+        return `${f.name}|${f.size}|${f.lastModified}`;
+      }
 
-      function renderThumbs(){
+      function renderThumbs() {
         if (!thumbs) return;
-        // Revoke URLs for files no longer present
         const keys = new Set(imageFiles.map(fileKey));
-        for (const [k, url] of Array.from(thumbURLs.entries())){
-          if (!keys.has(k)) { URL.revokeObjectURL(url); thumbURLs.delete(k); }
+        for (const [k, url] of Array.from(thumbURLs.entries())) {
+          if (!keys.has(k)) {
+            URL.revokeObjectURL(url);
+            thumbURLs.delete(k);
+          }
         }
-        // Build grid
-        thumbs.innerHTML = '';
+        thumbs.innerHTML = "";
         imageFiles.forEach((f) => {
           const key = fileKey(f);
           let url = thumbURLs.get(key);
-          if (!url){ url = URL.createObjectURL(f); thumbURLs.set(key, url); }
-          const item = document.createElement('div');
-          item.className = 'thumb';
-          const img = document.createElement('img');
-          img.src = url; img.alt = f.name;
-          const name = document.createElement('div');
-          name.className = 'name'; name.textContent = f.name;
-          item.appendChild(img); item.appendChild(name);
+          if (!url) {
+            url = URL.createObjectURL(f);
+            thumbURLs.set(key, url);
+          }
+          const item = document.createElement("div");
+          item.className = "thumb";
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = f.name;
+          const name = document.createElement("div");
+          name.className = "name";
+          name.textContent = f.name;
+          item.appendChild(img);
+          item.appendChild(name);
           thumbs.appendChild(item);
         });
       }
@@ -427,11 +647,9 @@
 
           let renderWidth, renderHeight;
           if (imgRatio > pageRatio) {
-            // Fit to width
             renderWidth = pageWidth;
             renderHeight = pageWidth / imgRatio;
           } else {
-            // Fit to height
             renderHeight = pageHeight;
             renderWidth = pageHeight * imgRatio;
           }
@@ -470,10 +688,36 @@
         }
       });
 
-      // Cleanup object URLs on page unload
-      window.addEventListener('beforeunload', () => {
+      window.addEventListener("beforeunload", () => {
         for (const url of thumbURLs.values()) URL.revokeObjectURL(url);
         thumbURLs.clear();
+      });
+
+      // Handle "Try it now" link click
+      document.addEventListener("DOMContentLoaded", () => {
+        const tryNowLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryNowLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            fileInput.click();
+            // Scroll to the upload section
+            dropZone.scrollIntoView({ behavior: "smooth", block: "center" });
+          });
+        });
+      });
+
+      // "Try it now" link functionality from blog section
+      document.querySelectorAll('a[href="#file-input"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const fileInput = document.getElementById('file-input');
+          if (fileInput) {
+            fileInput.click();
+            setTimeout(() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
+          }
+        });
       });
     </script>
     <script src="../assets/app.js"></script>

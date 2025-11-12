@@ -3,310 +3,886 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rotate PDF - EDITSMYPDF</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <meta name="description" content="Rotate PDF pages: fix orientation 90, 180, or 270. Free online tool  rotate all or select pages, browser-based, no uploads." />
+    <title>Rotate PDF - EDITSMYPDF</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/rotate.html" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <link rel="canonical" href="https://editmypdf.tech/features/rotate.html" />  <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <style>
-      body { font-family: 'Inter', sans-serif; margin:0; background:#fff; color:#111; }
-      main { max-width:760px; margin:3rem auto; padding:1rem; text-align:center; }
-      h2 { font-size:2rem; margin:.5rem 0 1rem; }
-      p.sub { color:#555; margin-top:0; }
-      .card { border:1px solid #eee; border-radius:16px; padding:2rem; box-shadow:0 2px 6px rgba(0,0,0,.05); text-align:left; }
-      .upload-box { border:2px dashed #ccc; border-radius:12px; padding:2rem; cursor:pointer; transition:.25s; text-align:center; }
-      .upload-box:hover { background:#f8faff; }
-      .upload-box.dragover { border-color:#e53935; background:#fff; }
-      label,input,select,button { display:block; margin:.75rem auto; font-size:1rem; }
-      input[type=text] { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:240px; }
-      select { border:1px solid #ddd; border-radius:8px; padding:.6rem .9rem; width:240px; }
-      button { background:linear-gradient(90deg,#e53935,#c62828); color:#fff; border:none; border-radius:10px; padding:.85rem 1.6rem; font-weight:600; cursor:pointer; transition:.3s; }
-      button:hover { opacity:.9; }
-      .file-info { margin-top:.5rem; color:#333; font-weight:500; font-size:.95rem; }
-      .pages-preview { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
-  .page-thumb { position:relative; width:110px; height:140px; background:#fafafa; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.9rem; font-weight:600; color:#555; cursor:pointer; transition:.25s; overflow:hidden; }
-  .page-thumb:hover { background:#ffe5e5; border-color:#e53935; }
-      .page-thumb.active { outline:2px solid #e53935; outline-offset:2px; background:#fff; }
-  .page-thumb canvas { max-width:100%; max-height:100%; transition: transform .2s ease; }
-  .thumb-tools { position:absolute; left:4px; right:4px; bottom:4px; display:flex; gap:4px; justify-content:center; }
-  .thumb-tools button { background:rgba(17,17,17,.8); color:#fff; border:1px solid rgba(255,255,255,.25); padding:4px 6px; border-radius:8px; font-size:.8rem; }
-  .thumb-tools button:hover { background:rgba(17,17,17,.95); }
-      .actions-row { display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; margin-top:1rem; }
-      .actions-row button { flex:1 1 140px; }
-      .progress { margin-top:1rem; min-height:1.3rem; color:#555; text-align:center; }
-      .ad-box { margin-top:3rem; height:90px; background:#f5f5f5; border:1px solid #ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999; font-weight:500; }
-        /* Scoped blog styles: Rotate guide */
-        .rotate-guide{max-width:900px;margin:2rem auto 0;padding:0 .5rem}
-        .rotate-guide .eyebrow{display:inline-block;padding:.25rem .6rem;border-radius:999px;border:1px solid #e9ecf3;background:linear-gradient(90deg,#fff,#f7f8ff);font-size:.85rem;color:#333}
-        .rotate-guide h2{font-size:1.75rem;line-height:1.25;margin:.65rem 0 .45rem}
-        .rotate-guide .sub{color:#60636c;margin:0 0 1rem}
-        .rotate-guide .meta{font-size:.92rem;color:#777;margin-bottom:1.2rem}
-        .rotate-guide .hero{display:grid;gap:1rem;grid-template-columns:1.15fr .85fr;align-items:center;border:1px solid #e9ecf3;border-radius:20px;padding:1.1rem;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.05)}
-        .rotate-guide .cta{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;padding:.8rem 1.05rem;border-radius:12px;text-decoration:none;box-shadow:0 6px 16px rgba(37,99,235,.25)}
-        .rotate-guide .viz{width:100%;height:auto;border:1px solid #e9ecf3;border-radius:16px;overflow:hidden}
-        .rotate-guide article{margin-top:2rem}
-        .rotate-guide h3{font-size:1.25rem;margin:1.4rem 0 .5rem}
-        .rotate-guide p{margin:0 0 1rem}
-        .rotate-guide .grid{display:grid;gap:1rem}
-        @media (min-width:800px){ .rotate-guide .grid{grid-template-columns:1fr 1fr} }
-        .rotate-guide .card{border:1px solid #e9ecf3;border-radius:16px;padding:1rem;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-        .rotate-guide figure{margin:0}
-        .rotate-guide figcaption{font-size:.85rem;color:#666;margin-top:.5rem}
-        .rotate-guide .tip{background:#f8faff;border-left:4px solid var(--accent);border-radius:10px;padding:1rem;margin:.9rem 0}
-        .rotate-guide .faq details{border:1px solid #e9ecf3;border-radius:12px;padding:.75rem 1rem;background:#fff}
-        .rotate-guide .faq details+details{margin-top:.75rem}
-        .rotate-guide .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f7fb;border:1px solid #e7ebf3;padding:.15rem .35rem;border-radius:6px;font-size:.9rem}
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        background: #fff;
+        color: #111;
+      }
+      main {
+        max-width: 760px;
+        margin: 3rem auto;
+        padding: 1rem;
+        text-align: center;
+      }
+      h2 {
+        font-size: 2rem;
+        margin: 0.5rem 0 1rem;
+      }
+      p.sub {
+        color: #555;
+        margin-top: 0;
+      }
+      .card {
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        text-align: left;
+      }
+      .upload-box {
+        border: 2px dashed #ccc;
+        border-radius: 12px;
+        padding: 2rem;
+        cursor: pointer;
+        transition: 0.25s;
+        text-align: center;
+      }
+      .upload-box:hover {
+        background: #f8faff;
+      }
+      .upload-box.dragover {
+        border-color: #e53935;
+        background: #fff;
+      }
+      label,
+      input,
+      select,
+      button {
+        display: block;
+        margin: 0.75rem auto;
+        font-size: 1rem;
+      }
+      input[type="text"] {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.6rem 0.9rem;
+        width: 240px;
+      }
+      select {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.6rem 0.9rem;
+        width: 240px;
+      }
+      button {
+        background: linear-gradient(90deg, #e53935, #c62828);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 0.85rem 1.6rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      button:hover {
+        opacity: 0.9;
+      }
+      .file-info {
+        margin-top: 0.5rem;
+        color: #333;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+      .pages-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .page-thumb {
+        position: relative;
+        width: 110px;
+        height: 140px;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #555;
+        cursor: pointer;
+        transition: 0.25s;
+        overflow: hidden;
+      }
+      .page-thumb:hover {
+        background: #ffe5e5;
+        border-color: #e53935;
+      }
+      .page-thumb.active {
+        outline: 2px solid #e53935;
+        outline-offset: 2px;
+        background: #fff;
+      }
+      .page-thumb canvas {
+        max-width: 100%;
+        max-height: 100%;
+        transition: transform 0.2s ease;
+      }
+      .thumb-tools {
+        position: absolute;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        display: flex;
+        gap: 4px;
+        justify-content: center;
+      }
+      .thumb-tools button {
+        background: rgba(17, 17, 17, 0.8);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 4px 6px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+      }
+      .thumb-tools button:hover {
+        background: rgba(17, 17, 17, 0.95);
+      }
+      .actions-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        margin-top: 1rem;
+      }
+      .actions-row button {
+        flex: 1 1 140px;
+      }
+      .progress {
+        margin-top: 1rem;
+        min-height: 1.3rem;
+        color: #555;
+        text-align: center;
+      }
+      .ad-box {
+        margin-top: 3rem;
+        height: 90px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-weight: 500;
+      }
+
+      /* Enhanced Feature Blog Styles */
+      .feature-blog {
+        max-width: 700px;
+        margin: 3rem auto 0;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.7;
+        color: #475569;
+      }
+      .feature-blog h3 {
+        font-size: 1.85rem;
+        font-weight: 700;
+        color: #1e40af;
+        margin: 0 0 1rem;
+        line-height: 1.3;
+      }
+      .feature-blog h4 {
+        font-size: 1.35rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin: 2rem 0 0.75rem;
+        line-height: 1.4;
+      }
+      .feature-blog p {
+        margin: 0 0 1.25rem;
+        font-size: 1.05rem;
+      }
+      .feature-blog strong {
+        color: #334155;
+        font-weight: 600;
+      }
+      .feature-blog ul,
+      .feature-blog ol {
+        margin: 0 0 1.5rem;
+        padding-left: 1.5rem;
+      }
+      .feature-blog li {
+        margin-bottom: 0.75rem;
+        font-size: 1.02rem;
+      }
+      .feature-blog code {
+        background: #e0e7ff;
+        color: #4338ca;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-family: "Consolas", "Monaco", monospace;
+        font-size: 0.92rem;
+      }
+      .feature-blog .hero-img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+        border: 1px solid #e0e7ff;
+      }
+      .feature-blog .tip {
+        background: #eff6ff;
+        border-left: 4px solid #3b82f6;
+        border-radius: 10px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+        font-size: 1rem;
+      }
+      .feature-blog .tip strong {
+        color: #1e40af;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      .feature-blog .note {
+        background: #fefce8;
+        border-left: 4px solid #eab308;
+        border-radius: 10px;
+        padding: 1.25rem;
+        margin: 2rem 0 0;
+        font-size: 1.05rem;
+        color: #713f12;
+      }
+      .feature-blog .note a {
+        color: #2563eb;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+        transition: border-color 0.2s;
+      }
+      .feature-blog .note a:hover {
+        border-bottom-color: #2563eb;
+      }
+      .feature-blog details {
+        background: #ffffff;
+        border: 1px solid #e0e7ff;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
+        transition: all 0.3s ease;
+      }
+      .feature-blog details:hover {
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+      }
+      .feature-blog details[open] {
+        background: #f8faff;
+        border-color: #3b82f6;
+      }
+      .feature-blog summary {
+        font-weight: 600;
+        color: #1e40af;
+        cursor: pointer;
+        font-size: 1.08rem;
+        padding: 0.5rem 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .feature-blog summary::-webkit-details-marker {
+        display: none;
+      }
+      .feature-blog summary::before {
+        content: "▶";
+        color: #3b82f6;
+        font-size: 0.85rem;
+        transition: transform 0.3s;
+        flex-shrink: 0;
+      }
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+      .feature-blog details p {
+        margin-top: 0.75rem;
+        padding-left: 1.5rem;
+        color: #64748b;
+        font-size: 1rem;
+      }
+      @media (max-width: 640px) {
+        .feature-blog {
+          padding: 1.5rem;
+          margin: 2rem 0.5rem 0;
+        }
+        .feature-blog h3 {
+          font-size: 1.5rem;
+        }
+        .feature-blog h4 {
+          font-size: 1.15rem;
+        }
+        .feature-blog p,
+        .feature-blog li {
+          font-size: 0.98rem;
+        }
+      }
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
     <div id="ad-top" class="ad-slot"></div>
-  <main class="feature">
+    <main class="feature">
       <h2>Rotate PDF</h2>
-      <p class="sub">Upload a PDF, select pages, then rotate clockwise or counter‑clockwise. All done privately in your browser.</p>
+      <p class="sub">
+        Upload a PDF, select pages, then rotate clockwise or counter‑clockwise.
+        All done privately in your browser.
+      </p>
       <div class="card">
-        <label class="upload-box" id="drop-zone">📄 Drop your PDF here or click to upload
-          <input type="file" id="file-input" accept="application/pdf" style="display:none" />
+        <label class="upload-box" id="drop-zone"
+          >📄 Drop your PDF here or click to upload
+          <input
+            type="file"
+            id="file-input"
+            accept="application/pdf"
+            style="display: none"
+          />
         </label>
         <div id="file-info" class="file-info"></div>
         <div class="pages-preview" id="pages"></div>
         <div class="actions-row">
-          <button id="rotate-left" disabled title="Rotate selected pages 90° counter-clockwise">⟲ 90° Left</button>
-          <button id="rotate-right" disabled title="Rotate selected pages 90° clockwise">⟳ 90° Right</button>
-          <button id="rotate-180" disabled title="Rotate selected pages 180°">⇵ 180°</button>
+          <button
+            id="rotate-left"
+            disabled
+            title="Rotate selected pages 90° counter-clockwise"
+          >
+            ⟲ 90° Left
+          </button>
+          <button
+            id="rotate-right"
+            disabled
+            title="Rotate selected pages 90° clockwise"
+          >
+            ⟳ 90° Right
+          </button>
+          <button id="rotate-180" disabled title="Rotate selected pages 180°">
+            ⇵ 180°
+          </button>
         </div>
         <label for="output-name">Output filename</label>
-        <input type="text" id="output-name" value="rotated" placeholder="e.g., rotated" />
-        <button id="download-btn" style="display:none">Download Rotated PDF</button>
+        <input
+          type="text"
+          id="output-name"
+          value="rotated"
+          placeholder="e.g., rotated"
+        />
+        <button id="download-btn" style="display: none">
+          Download Rotated PDF
+        </button>
         <div id="status" class="progress"></div>
       </div>
-  <div id="ad-content" class="ad-slot"></div>
-      <!-- Long-form Rotate PDF guide -->
-      <section class="feature-blog rotate-guide" aria-labelledby="rotate-guide-title">
-        <span class="eyebrow">Guide</span>
-        <h2 id="rotate-guide-title">Rotate PDF Pages (Fix Sideways Documents Fast)</h2>
-        <p class="sub">Turn any sideways, upside-down or mixed-orientation PDF into a clean, consistently oriented document. All rotation happens locally in your browser for privacy.</p>
-        <p class="meta">Time to read: 4 min • Works offline after load • Powered by <strong>PDF.js</strong> + <strong>PDF-Lib</strong></p>
-        <div class="hero" role="group" aria-label="Before and after rotation illustration">
-          <div>
-            <p><strong>Why rotate?</strong> Scanners, mobile capture apps and multi-function copiers frequently output pages with inconsistent rotation flags (some 90° left, some 270°, a few 0°). This makes reading awkward and printing error prone.</p>
-            <a class="cta" href="/features/rotate.html" aria-label="Open Rotate PDF tool">Try the rotation tool →</a>
-          </div>
-          <figure class="viz">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='220'><rect width='420' height='220' rx='18' fill='%23f8faff'/><text x='25' y='40' font-family='Inter' font-size='16' fill='%23333'>Before</text><g transform='translate(25,60)'><rect width='110' height='140' rx='8' fill='%23fff' stroke='%23d0d6e2'/><text x='55' y='75' font-size='14' font-family='Inter' text-anchor='middle' fill='%23666' transform='rotate(90 55 75)'>Pg 1</text></g><g transform='translate(155,60)'><rect width='110' height='140' rx='8' fill='%23fff' stroke='%23d0d6e2'/><text x='55' y='75' font-size='14' font-family='Inter' text-anchor='middle' fill='%23666' transform='rotate(180 55 75)'>Pg 2</text></g><g transform='translate(285,60)'><rect width='110' height='140' rx='8' fill='%23fff' stroke='%23d0d6e2'/><text x='55' y='75' font-size='14' font-family='Inter' text-anchor='middle' fill='%23666' transform='rotate(270 55 75)'>Pg 3</text></g><text x='25' y='200' font-family='Inter' font-size='16' fill='%23333'>After → All upright</text></svg>" alt="Before and after rotation states" style="display:block;width:100%;height:auto" />
-            <figcaption>Mixed rotation flags become uniformly upright after processing.</figcaption>
-          </figure>
+      <div id="ad-content" class="ad-slot"></div>
+
+      <!-- Enhanced Feature Blog Section -->
+      <section class="feature-blog" aria-labelledby="rotate-guide-title">
+        <div class="title-with-logo">
+          <img src="../assets/images/sflogoPNG.PNG" alt="PDF Tools Logo" class="brand-logo" />
+          <h3 id="rotate-guide-title">
+            Rotate PDF Pages Fix Orientation Instantly
+          </h3>
         </div>
-        <article aria-labelledby="rotate-guide-title">
-          <h3>How It Works</h3>
-          <p>The viewer renders every page thumbnail with PDF.js. When you rotate a page we only adjust the page's rotation value – the underlying content stream is not re-encoded or rasterized, so there is <strong>zero quality loss</strong>. On export, <code class="kbd">PDF-Lib</code> copies each page to a new document and applies the accumulated rotation value.</p>
-          <div class="grid" aria-label="Rotation operations and benefits">
-            <div class="card">
-              <h4>Local &amp; Private</h4>
-              <p>All data stays in memory inside the browser. No uploads; ideal for confidential invoices, medical records or legal packets.</p>
-            </div>
-            <div class="card">
-              <h4>Non-Destructive</h4>
-              <p>Rotation modifies metadata only. Text layers, vector precision and embedded images remain untouched.</p>
-            </div>
-            <div class="card">
-              <h4>Batch Friendly</h4>
-              <p>Select multiple thumbnails and apply a single 90° left/right or 180° action. Mixed orientations are normalized in seconds.</p>
-            </div>
-            <div class="card">
-              <h4>Instant Preview</h4>
-              <p>Each thumbnail updates visually via a CSS transform so you see the cumulative result before exporting.</p>
-            </div>
-          </div>
-          <h3>Step-by-Step</h3>
-          <ol>
-            <li><strong>Drop</strong> your PDF into the upload area (or click to browse).</li>
-            <li><strong>Review</strong> the thumbnails – sideways pages stand out immediately.</li>
-            <li><strong>Select</strong> any set of pages (click toggles selection; selected pages gain a red outline).</li>
-            <li><strong>Rotate</strong> using the toolbar buttons (⟲ left 90°, ⟳ right 90°, ⇵ 180°) or per-page mini controls.</li>
-            <li><strong>Fine Tune</strong>: Double-click a single thumbnail for a quick 90° clockwise micro-adjust.</li>
-            <li><strong>Export</strong> once all pages are upright – the download triggers instantly, no server round trip.</li>
-          </ol>
-          <h3>Edge Cases &amp; Strategies</h3>
-          <div class="tip"><strong>Scanned bundles</strong>: Some scanners already embed a rotation flag. We add your chosen value on top of the existing flag, then normalize modulo 360° to ensure the visual orientation matches the exported file.</div>
-          <p><strong>Pages with different aspect ratios</strong>: Rotating a landscape page makes it portrait and vice versa. Layout remains intact – the page box is just reoriented.</p>
-          <p><strong>OCR concerns</strong>: If you plan to run OCR afterward (e.g., in the OCR tool), rotate first. OCR engines perform better on upright text baselines.</p>
-          <h3>Keyboard &amp; Speed Tips</h3>
-          <ul>
-            <li>Use double-click (fast 90° clockwise) for single-page corrections.</li>
-            <li>Rename output before download to keep version history clear (e.g., <code class="kbd">original-rotated.pdf</code>).</li>
-            <li>Do multiple passes: coarse batch rotate, then individual fixes.</li>
-            <li>If a thumbnail appears clipped, it is a rendering scale artifact only – exported content is not cropped.</li>
-          </ul>
-          <h3>Frequently Asked Questions</h3>
-          <div class="faq">
-            <details>
-              <summary>Does rotation degrade quality?</summary>
-              <p>No. We never rasterize pages. Rotation updates the page's rotation value; fonts, vectors and images are preserved verbatim.</p>
-            </details>
-            <details>
-              <summary>Can I undo a rotation?</summary>
-              <p>Yes. Apply the opposite 90° action (or a 180° if needed). The transform updates instantly; you can experiment freely before export.</p>
-            </details>
-            <details>
-              <summary>Maximum file size?</summary>
-              <p>Browser memory is the practical limit. Rotating huge (500+ page) PDFs works, but preview rendering may take time. You can rotate subsets progressively.</p>
-            </details>
-            <details>
-              <summary>Will bookmarks or forms break?</summary>
-              <p>Bookmarks and form fields remain intact. Form field widgets keep their relative positioning; only page rotation metadata changes.</p>
-            </details>
-          </div>
-          <h3>Why Choose This Tool</h3>
-          <p>Unlike server-based rotators, you avoid upload wait time, protect confidentiality, and retain perfect fidelity. The combination of PDF.js thumbnails plus PDF-Lib export delivers a trustworthy WYSIWYG rotation workflow.</p>
-          <p><strong>Next step:</strong> Need to reorder pages after rotating? Head over to the <a href="/features/reorder.html">Reorder PDF</a> tool.</p>
-          <p style="text-align:center;margin-top:2rem"><a class="cta" href="/features/rotate.html">Rotate your PDF now →</a></p>
-        </article>
+
+        <p>
+          <strong>Got pages that are sideways or upside-down?</strong>
+          Our Rotate tool lets you select specific pages and rotate them 90
+          left, 90 right, or 180 to fix orientation issues. The rotation happens
+          <strong>entirely in your browser</strong>, keeping your documents
+          private and secure.
+        </p>
+
+        <img
+          src="../assets/images/rotate pdff - Copy.JPG"
+          alt="Rotate PDF pages to fix orientation"
+          class="hero-img"
+        />
+
+        <h4>How It Works</h4>
+        <p>
+          The Rotate tool uses PDF.js to render page thumbnails so you can see
+          the current orientation, then uses pdf-lib to apply rotation
+          transformations to selected pages. All processing happens
+          <strong>locally in your browser</strong> using JavaScript. No server
+          uploads, no data collection. You simply select pages, choose a
+          rotation direction, and download your corrected PDF.
+        </p>
+
+        <p>
+          Think of it like physically turning pages of a book to the right
+          orientation. Scanners and mobile apps often create PDFs with mixed
+          orientationssome pages sideways, some upside-down. This tool fixes
+          them all in one go.
+        </p>
+
+        <h4>Why Use This Tool</h4>
+        <ul>
+          <li>
+            <strong>Fix scanned documents</strong> - Correct orientation from
+            scanner or multi-function printer outputs
+          </li>
+          <li>
+            <strong>Mobile photo PDFs</strong> - Rotate pages captured on phones
+            or tablets with inconsistent orientation
+          </li>
+          <li>
+            <strong>Mixed-orientation files</strong> - Standardize documents
+            with portrait and landscape pages
+          </li>
+          <li>
+            <strong>Printing preparation</strong> - Ensure all pages print
+            correctly without manual adjustment
+          </li>
+          <li>
+            <strong>Reading comfort</strong> - Make PDFs readable without
+            tilting your screen or head
+          </li>
+        </ul>
+
+        <h4>Complete Privacy</h4>
+        <p>
+          Your PDF never leaves your computer. All page rotation happens
+          directly in your browser using PDF.js and pdf-lib. No files are
+          uploaded to any server. This is essential when working with sensitive
+          documents like contracts, medical records, legal filings, or personal
+          identification.
+        </p>
+
+        <div class="tip">
+          <strong> Your Privacy Matters:</strong><br />
+          100% client-side processing - everything stays on your device<br />
+          No server uploads - your document never goes online<br />
+          No data logging - we never see your file contents<br />
+          Works offline - rotate PDFs even without internet connection
+        </div>
+
+        <h4>Rotation Options</h4>
+        <ul>
+          <li>
+            <strong> 90 Left (Counter-clockwise):</strong> Rotates pages 90
+            degrees to the leftuseful for landscape pages that should be
+            portrait
+          </li>
+          <li>
+            <strong> 90 Right (Clockwise):</strong> Rotates pages 90 degrees to
+            the rightfixes portrait pages that are sideways
+          </li>
+          <li>
+            <strong> 180 Flip:</strong> Flips pages upside-downcorrects
+            documents scanned backward
+          </li>
+          <li>
+            <strong>Select multiple pages:</strong> Click thumbnails to select,
+            then apply rotation to all selected pages at once
+          </li>
+          <li>
+            <strong>Preview before download:</strong> See rotation changes in
+            real-time in the thumbnail preview
+          </li>
+        </ul>
+
+        <h4>Rotation Tips</h4>
+        <ul>
+          <li>
+            <strong>Preview thumbnails:</strong> The tool shows page previews so
+            you can see which pages need rotation
+          </li>
+          <li>
+            <strong>Select strategically:</strong> Click multiple page
+            thumbnails, then rotate them all at once
+          </li>
+          <li>
+            <strong>Multiple rotations:</strong> You can rotate pages, then
+            rotate again if needed before downloading
+          </li>
+          <li>
+            <strong>Keep originals:</strong> This tool creates a new file; your
+            original PDF remains unchanged
+          </li>
+          <li>
+            <strong>Batch processing:</strong> Rotate all landscape pages
+            together by selecting them all first
+          </li>
+          <li>
+            <strong>Name outputs clearly:</strong> Use descriptive filenames
+            like "contract-rotated" for organization
+          </li>
+        <h4>Rotation Tips</h4>
+        <p>Rotating PDF pages is straightforward, but a few smart moves will save you from having to redo corrections. Here's what you need to know:</p>
+        <ul>
+          <li>
+            <strong>Select Multiple Pages for Batch Rotation:</strong> Instead of rotating pages one by one, click multiple thumbnails (they'll highlight) and then hit the rotation button. This applies the same rotation to all selected pages at once, which is way faster when dealing with documents where every other page is sideways.
+          </li>
+          <li>
+            <strong>Preview Changes Before Downloading:</strong> After you rotate pages, the thumbnails update in real-time to show the new orientation. Scroll through and visually confirm everything looks correct before clicking "Download Rotated PDF." It's easier to fix mistakes now than to re-upload and start over.
+          </li>
+          <li>
+            <strong>Left vs. Right Can Be Confusing:</strong> If you're not sure which direction to rotate, think of it like turning a physical page. "90° Right" (clockwise) makes portrait pages face right if they were upside-down on the left. "90° Left" (counter-clockwise) does the opposite. When in doubt, just try one—the thumbnail preview updates instantly so you can see if you guessed right.
+          </li>
+          <li>
+            <strong>180° for Upside-Down Scans:</strong> If pages are completely upside-down (text reads correctly but the page is flipped), use the 180° rotation button. This is common when documents get fed backward through a scanner. One click flips them right-side up without changing portrait/landscape orientation.
+          </li>
+          <li>
+            <strong>Large Files Take Longer:</strong> If you're rotating a 200-page PDF, rendering all those thumbnails takes time—sometimes 30-60 seconds. Be patient and let the page load completely before you start clicking. Trying to rotate while thumbnails are still rendering can cause lag or missed selections.
+          </li>
+          <li>
+            <strong>Mixed Orientation? That's Normal:</strong> Some documents legitimately have both portrait and landscape pages (like reports with text pages and wide charts). Don't feel like you need to rotate everything to match—just fix the pages that are actually wrong. A mix of orientations is perfectly fine if it matches the content.
+          </li>
+        </ul>
+
+        <h4>🔄 Common Rotation Scenarios</h4>
+        <p>Not sure which rotation you need? Here are the most common situations and how to fix them:</p>
+        <p><strong>Scanned Documents with Mixed Orientation:</strong> Scanners often create PDFs where some pages are rotated 90° or 180° depending on how the paper was fed. Select all the sideways pages, rotate them 90° in the correct direction, then select the upside-down pages and hit 180°. Two batches and you're done.</p>
+        <p><strong>Mobile Photo PDFs:</strong> When you take photos with your phone and convert them to PDF, the orientation depends on how you held the phone. If some photos are sideways, select them and rotate 90° left or right until they're upright. The thumbnail preview makes it obvious which direction you need.</p>
+        <p><strong>Landscape Pages in Portrait Documents:</strong> If you have a mostly portrait document with a few wide charts or tables that should be landscape, you <em>don't</em> need to rotate those—they're intentionally sideways. Only rotate pages where the content is actually wrong (like text that should read normally but is tilted).</p>
+        <p><strong>Printing Preparation:</strong> Before printing a large PDF, rotate pages so everything comes out right-side up. Printers don't auto-rotate, so if page 5 is sideways in the PDF, it'll print sideways on paper. Fix it digitally first and save yourself wasted paper and toner.</p>
+
+        <h4>Quick Guide</h4>
+        <ol>
+          <li>
+            <strong>Upload your PDF:</strong> Click or drag your file into the
+            upload area
+          </li>
+          <li>
+            <strong>Preview pages:</strong> Wait for thumbnails to load showing
+            current orientation
+          </li>
+          <li>
+            <strong>Select pages:</strong> Click on page thumbnails you want to
+            rotate (they'll highlight)
+          </li>
+          <li>
+            <strong>Choose rotation:</strong> Click 90 Left, 90 Right, or 180
+            button
+          </li>
+          <li>
+            <strong>Set output name:</strong> Enter a descriptive filename for
+            your rotated PDF
+          </li>
+          <li>
+            <strong>Download:</strong> Click the download button to save your
+            corrected PDF!
+          </li>
+        </ol>
+
+        <h4>Frequently Asked Questions</h4>
+        <details>
+          <summary>
+            Can I rotate different pages in different directions?
+          </summary>
+          <p>
+            Yes! Select a group of pages and rotate them one way, then select
+            different pages and rotate them another way. You can make multiple
+            rotations before downloading the final PDF.
+          </p>
+        </details>
+
+        <details>
+          <summary>Does rotating reduce image quality?</summary>
+          <p>
+            No. PDF rotation is a metadata operationit simply changes the
+            orientation flag for each page. The actual page content (text,
+            images, vectors) remains unchanged with no quality loss.
+          </p>
+        </details>
+
+        <details>
+          <summary>What if I rotate a page the wrong direction?</summary>
+          <p>
+            Just rotate it again! You can rotate the same page multiple times.
+            For example, if you rotate 90 right but meant to go left, just
+            rotate that page 90 left twice (or 180 once, then 90 left).
+          </p>
+        </details>
+
+        <details>
+          <summary>Can I rotate all pages at once?</summary>
+          <p>
+            Yes. Click on all page thumbnails to select them (or use Ctrl+A if
+            your browser supports selecting all), then click your desired
+            rotation button. All selected pages will rotate together.
+          </p>
+        </details>
+
+        <details>
+          <summary>Why are my thumbnails taking long to load?</summary>
+          <p>
+            Large PDFs with many pages or high-resolution images take longer to
+            render thumbnails. PDF.js renders each page in your browser. For 50+
+            page documents, expect 10-30 seconds of processing time.
+          </p>
+        </details>
+
+        <details>
+          <summary>What happens to my original PDF?</summary>
+          <p>
+            Your original file remains completely unchanged on your device. The
+            Rotate tool creates a new PDF with the rotation changes applied.
+            You'll have both the original and the rotated version.
+          </p>
+        </details>
+
+        <div class="note">
+          Ready to fix your PDF orientation? Upload your file, select pages,
+          rotate them to the correct position, and download in seconds.
+          <a href="#file-input">Try it now </a>
+        </div>
       </section>
     </main>
     <div id="ad-footer" class="ad-slot"></div>
     <div data-include="footer"></div>
+
     <script>
       const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
       if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
       }
 
-      const fileInput = document.getElementById('file-input');
-      const dropZone = document.getElementById('drop-zone');
-      const pagesWrap = document.getElementById('pages');
-      const statusText = document.getElementById('status');
-      const rotateLeftBtn = document.getElementById('rotate-left');
-      const rotateRightBtn = document.getElementById('rotate-right');
-      const rotate180Btn = document.getElementById('rotate-180');
-      const downloadBtn = document.getElementById('download-btn');
-      let originalBytes = null; let loadedDoc = null; let selected = new Set(); let outBlob = null;
+      const fileInput = document.getElementById("file-input");
+      const dropZone = document.getElementById("drop-zone");
+      const pagesWrap = document.getElementById("pages");
+      const statusText = document.getElementById("status");
+      const rotateLeftBtn = document.getElementById("rotate-left");
+      const rotateRightBtn = document.getElementById("rotate-right");
+      const rotate180Btn = document.getElementById("rotate-180");
+      const downloadBtn = document.getElementById("download-btn");
+      let originalBytes = null;
+      let loadedDoc = null;
+      let selected = new Set();
+      let outBlob = null;
       let rotations = []; // per-page rotation in degrees (0/90/180/270)
       let thumbCanvases = []; // per-page thumbnail canvas for live preview
 
-      dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-      dropZone.addEventListener('drop', async e => { e.preventDefault(); dropZone.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f) await loadFile(f); });
-      fileInput.addEventListener('change', async e => { const f = e.target.files[0]; if (f) await loadFile(f); e.target.value=''; });
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("dragover")
+      );
+      dropZone.addEventListener("drop", async (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        const f = e.dataTransfer.files[0];
+        if (f) await loadFile(f);
+      });
+      fileInput.addEventListener("change", async (e) => {
+        const f = e.target.files[0];
+        if (f) await loadFile(f);
+        e.target.value = "";
+      });
 
-  function enableActions(){ const disabled = selected.size === 0; rotateLeftBtn.disabled = disabled; rotateRightBtn.disabled = disabled; rotate180Btn.disabled = disabled; }
-      function clearOutput(){ downloadBtn.style.display='none'; outBlob=null; }
+      function enableActions() {
+        const disabled = selected.size === 0;
+        rotateLeftBtn.disabled = disabled;
+        rotateRightBtn.disabled = disabled;
+        rotate180Btn.disabled = disabled;
+      }
+      function clearOutput() {
+        downloadBtn.style.display = "none";
+        outBlob = null;
+      }
 
-      async function loadFile(file){
+      async function loadFile(file) {
         clearOutput();
-        statusText.textContent='Reading PDF...';
+        statusText.textContent = "Reading PDF...";
         try {
           originalBytes = new Uint8Array(await file.arrayBuffer());
-          loadedDoc = await PDFLib.PDFDocument.load(originalBytes, { ignoreEncryption:true });
+          loadedDoc = await PDFLib.PDFDocument.load(originalBytes, {
+            ignoreEncryption: true,
+          });
           const pageCount = loadedDoc.getPageCount();
-          pagesWrap.innerHTML=''; selected.clear(); enableActions(); rotations = new Array(pageCount).fill(0); thumbCanvases = new Array(pageCount).fill(null);
+          pagesWrap.innerHTML = "";
+          selected.clear();
+          enableActions();
+          rotations = new Array(pageCount).fill(0);
+          thumbCanvases = new Array(pageCount).fill(null);
 
           // Render thumbnails with pdf.js so user can see pages
           const task = pdfjsLib.getDocument({ data: originalBytes });
           const pdf = await task.promise;
-          for(let i=0;i<pageCount;i++){
-            const div = document.createElement('div');
-            div.className='page-thumb';
+          for (let i = 0; i < pageCount; i++) {
+            const div = document.createElement("div");
+            div.className = "page-thumb";
             div.dataset.index = i;
 
             // Canvas preview
-            const canvas = document.createElement('canvas');
-            canvas.style.pointerEvents = 'none';
+            const canvas = document.createElement("canvas");
+            canvas.style.pointerEvents = "none";
             div.appendChild(canvas);
 
             // Per-thumb rotate controls
-            const tools = document.createElement('div');
-            tools.className = 'thumb-tools';
-            tools.innerHTML = '<button data-act="l" title="Rotate 90° left">⟲</button><button data-act="r" title="Rotate 90° right">⟳</button><button data-act="u" title="Rotate 180°">⇵</button>';
+            const tools = document.createElement("div");
+            tools.className = "thumb-tools";
+            tools.innerHTML =
+              '<button data-act="l" title="Rotate 90° left">⟲</button><button data-act="r" title="Rotate 90° right">⟳</button><button data-act="u" title="Rotate 180°">⇵</button>';
             div.appendChild(tools);
 
             // Selection toggle (click on empty area)
-            div.addEventListener('click', (ev) => {
-              if ((ev.target instanceof HTMLButtonElement)) return; // buttons handled below
-              if (selected.has(i)) { selected.delete(i); div.classList.remove('active'); }
-              else { selected.add(i); div.classList.add('active'); }
-              enableActions(); clearOutput();
+            div.addEventListener("click", (ev) => {
+              if (ev.target instanceof HTMLButtonElement) return; // buttons handled below
+              if (selected.has(i)) {
+                selected.delete(i);
+                div.classList.remove("active");
+              } else {
+                selected.add(i);
+                div.classList.add("active");
+              }
+              enableActions();
+              clearOutput();
             });
-            tools.addEventListener('click', (ev)=>{
-              const btn = ev.target; if (!(btn instanceof HTMLButtonElement)) return; ev.stopPropagation();
-              if (btn.dataset.act === 'l') applyLocalRotation(i, -90);
-              else if (btn.dataset.act === 'r') applyLocalRotation(i, 90);
-              else if (btn.dataset.act === 'u') applyLocalRotation(i, 180);
+            tools.addEventListener("click", (ev) => {
+              const btn = ev.target;
+              if (!(btn instanceof HTMLButtonElement)) return;
+              ev.stopPropagation();
+              if (btn.dataset.act === "l") applyLocalRotation(i, -90);
+              else if (btn.dataset.act === "r") applyLocalRotation(i, 90);
+              else if (btn.dataset.act === "u") applyLocalRotation(i, 180);
             });
 
             pagesWrap.appendChild(div);
             thumbCanvases[i] = canvas;
 
             // Render this page thumbnail
-            const page = await pdf.getPage(i+1);
+            const page = await pdf.getPage(i + 1);
             const vp = page.getViewport({ scale: 1 });
             const targetW = 100; // px
             const scale = Math.max(0.15, Math.min(1.5, targetW / vp.width));
             const vps = page.getViewport({ scale });
             canvas.width = Math.floor(vps.width);
             canvas.height = Math.floor(vps.height);
-            await page.render({ canvasContext: canvas.getContext('2d'), viewport: vps }).promise;
+            await page.render({
+              canvasContext: canvas.getContext("2d"),
+              viewport: vps,
+            }).promise;
           }
-          statusText.textContent = 'Loaded ' + pageCount + ' page(s). Select pages or use per-page buttons to rotate.';
-        } catch(e){
-          console.error(e); statusText.textContent='Failed to read PDF.';
+          statusText.textContent =
+            "Loaded " +
+            pageCount +
+            " page(s). Select pages or use per-page buttons to rotate.";
+        } catch (e) {
+          console.error(e);
+          statusText.textContent = "Failed to read PDF.";
         }
       }
 
-      function getOutputName(defaultBase){
-        const el = document.getElementById('output-name');
-        let name = (el && el.value ? el.value : '').trim() || defaultBase || 'output';
-        name = name.replace(/[\\/:*?"<>|]/g,'-');
-        if (!/\.pdf$/i.test(name)) name += '.pdf';
+      function getOutputName(defaultBase) {
+        const el = document.getElementById("output-name");
+        let name =
+          (el && el.value ? el.value : "").trim() || defaultBase || "output";
+        name = name.replace(/[\\/:*?"<>|]/g, "-");
+        if (!/\.pdf$/i.test(name)) name += ".pdf";
         return name;
       }
 
-      function applyLocalRotation(index, deg){
+      function applyLocalRotation(index, deg) {
         if (!loadedDoc) return;
-        rotations[index] = ( (rotations[index]||0) + deg + 360 ) % 360;
+        rotations[index] = ((rotations[index] || 0) + deg + 360) % 360;
         const cnv = thumbCanvases[index];
-        if (cnv){ cnv.style.transform = `rotate(${rotations[index]}deg)`; }
-        statusText.textContent = `Page ${index+1} rotated by ${Math.abs(deg)}° ${deg<0?'left':'right'}.`;
-        downloadBtn.style.display='inline-block';
+        if (cnv) {
+          cnv.style.transform = `rotate(${rotations[index]}deg)`;
+        }
+        statusText.textContent = `Page ${index + 1} rotated by ${Math.abs(
+          deg
+        )}° ${deg < 0 ? "left" : "right"}.`;
+        downloadBtn.style.display = "inline-block";
       }
 
-      function applyRotationToSelected(deg){
-        if (!loadedDoc || selected.size===0) return;
-        selected.forEach(i => applyLocalRotation(i, deg));
+      function applyRotationToSelected(deg) {
+        if (!loadedDoc || selected.size === 0) return;
+        selected.forEach((i) => applyLocalRotation(i, deg));
         const count = selected.size;
-        statusText.textContent = `Rotated ${count} page(s) by ${Math.abs(deg)}° ${deg<0?'left':'right'}.`;
+        statusText.textContent = `Rotated ${count} page(s) by ${Math.abs(
+          deg
+        )}° ${deg < 0 ? "left" : "right"}.`;
       }
 
       // Click on thumbnail itself rotates 90° right for quick action
-      pagesWrap.addEventListener('dblclick', (e)=>{
-        const div = e.target.closest && e.target.closest('.page-thumb');
-        if (!div) return; const i = parseInt(div.dataset.index,10); if (Number.isInteger(i)) applyLocalRotation(i, 90);
+      pagesWrap.addEventListener("dblclick", (e) => {
+        const div = e.target.closest && e.target.closest(".page-thumb");
+        if (!div) return;
+        const i = parseInt(div.dataset.index, 10);
+        if (Number.isInteger(i)) applyLocalRotation(i, 90);
       });
 
-      rotateLeftBtn.addEventListener('click', () => applyRotationToSelected(-90));
-      rotateRightBtn.addEventListener('click', () => applyRotationToSelected(90));
-      rotate180Btn.addEventListener('click', () => applyRotationToSelected(180));
-      downloadBtn.addEventListener('click', async () => {
+      rotateLeftBtn.addEventListener("click", () =>
+        applyRotationToSelected(-90)
+      );
+      rotateRightBtn.addEventListener("click", () =>
+        applyRotationToSelected(90)
+      );
+      rotate180Btn.addEventListener("click", () =>
+        applyRotationToSelected(180)
+      );
+      downloadBtn.addEventListener("click", async () => {
         if (!loadedDoc) return;
-        statusText.textContent = 'Building rotated PDF...';
+        statusText.textContent = "Building rotated PDF...";
         try {
           const outDoc = await PDFLib.PDFDocument.create();
           const total = loadedDoc.getPageCount();
-          const pages = await outDoc.copyPages(loadedDoc, Array.from({length:total}, (_,i)=>i));
-          pages.forEach((p,i)=>{
+          const pages = await outDoc.copyPages(
+            loadedDoc,
+            Array.from({ length: total }, (_, i) => i)
+          );
+          pages.forEach((p, i) => {
             const base = p.getRotation().angle || 0;
             const add = rotations[i] || 0;
             p.setRotation(PDFLib.degrees((base + add) % 360));
             outDoc.addPage(p);
           });
           const outBytes = await outDoc.save();
-          outBlob = new Blob([outBytes], { type:'application/pdf' });
+          outBlob = new Blob([outBytes], { type: "application/pdf" });
           const url = URL.createObjectURL(outBlob);
-          const a=document.createElement('a'); a.href=url; a.download=getOutputName('rotated'); a.click(); URL.revokeObjectURL(url);
-          statusText.textContent = 'Downloaded rotated PDF successfully.';
-        } catch(e){ console.error(e); statusText.textContent='Failed to build rotated PDF.'; }
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = getOutputName("rotated");
+          a.click();
+          URL.revokeObjectURL(url);
+          statusText.textContent = "Downloaded rotated PDF successfully.";
+        } catch (e) {
+          console.error(e);
+          statusText.textContent = "Failed to build rotated PDF.";
+        }
+      });
+
+      // "Try it now" link functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const tryLinks = document.querySelectorAll('a[href="#file-input"]');
+        tryLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const fileInput = document.getElementById("file-input");
+            if (fileInput) {
+              fileInput.click();
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }, 100);
+            }
+          });
+        });
       });
     </script>
     <script src="../assets/app.js"></script>

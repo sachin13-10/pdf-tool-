@@ -3,18 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compress PDF - EDITSMYPDF</title>
+    <meta name="description" content="Compress PDF files to reduce size while maintaining quality. Free online tool  set target size in KB/MB, browser-based processing, no uploads required." />
+    <title>Compress PDF - EDITSMYPDF</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/styles.css" />
-  <link rel="canonical" href="https://editmypdf.tech/features/compress.html" />
+    <link
+      rel="canonical"
+      href="https://editmypdf.tech/features/compress.html"
+    />  <link rel="icon" type="image/png" href="../assets/images/sflogoPNG.PNG" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
+      * { box-sizing: border-box; }
+      * { box-sizing: border-box; }
       body {
         font-family: "Inter", sans-serif;
         background: #fff;
@@ -109,20 +115,191 @@
         color: #999;
         font-weight: 500;
       }
+
+      /* Enhanced Feature Blog Styles */
+      .feature-blog {
+        background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+        border-left: 5px solid #2563eb;
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-top: 3rem;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+      }
+
+      .feature-blog .blog-title {
+        font-size: 1.75rem;
+        color: #1e40af;
+        margin: 0 0 1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .feature-blog p.sub {
+        color: #475569;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+      }
+
+      .feature-blog h4 {
+        color: #1e40af;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog p {
+        color: #374151;
+        line-height: 1.75;
+        margin-bottom: 1rem;
+      }
+
+      .feature-blog ul,
+      .feature-blog ol {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin: 1.5rem 0;
+      }
+
+      .feature-blog ul li,
+      .feature-blog ol li {
+        color: #374151;
+        margin-bottom: 0.75rem;
+        line-height: 1.7;
+      }
+
+      .feature-blog ul li:last-child,
+      .feature-blog ol li:last-child {
+        margin-bottom: 0;
+      }
+
+      .feature-blog details {
+        background: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.75rem;
+        transition: all 0.2s ease;
+      }
+
+      .feature-blog details:hover {
+        border-color: #c7d2fe;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+      }
+
+      .feature-blog details[open] {
+        background: #fafbff;
+        border-color: #a5b4fc;
+      }
+
+      .feature-blog details summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: #1e40af;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feature-blog details summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .feature-blog details summary::before {
+        content: "▶";
+        font-size: 0.75rem;
+        color: #2563eb;
+        transition: transform 0.2s ease;
+      }
+
+      .feature-blog details[open] summary::before {
+        transform: rotate(90deg);
+      }
+
+      .feature-blog details p {
+        margin-top: 0.75rem;
+        padding-left: 1.25rem;
+        color: #475569;
+      }
+
+      .feature-blog .blog-figures figure {
+        margin: 2rem 0;
+      }
+
+      .feature-blog .blog-figures img {
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-blog figcaption {
+        text-align: center;
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-top: 0.75rem;
+        font-style: italic;
+      }
+
+      .feature-blog .note {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-left: 4px solid #2563eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2.5rem;
+        text-align: center;
+        color: #1e40af;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+      }
+
+      .feature-blog .note strong {
+        color: #1e3a8a;
+        font-weight: 700;
+      }
+
+      @media (max-width: 640px) {
+        .feature-blog {
+          padding: 1.75rem 1.25rem;
+        }
+
+        .feature-blog .blog-title {
+          font-size: 1.5rem;
+        }
+
+        .feature-blog h4 {
+          font-size: 1.1rem;
+        }
+
+        .feature-blog ul,
+        .feature-blog ol {
+          padding: 1.25rem 1.25rem 1.25rem 2rem;
+        }
+      }
+
       /* Footer replaced by shared component */
     </style>
   </head>
   <body>
     <header data-include="navbar"></header>
-    <div id="ad-top" class="ad-slot" aria-label="Top advertisement placeholder"></div>
+    <div
+      id="ad-top"
+      class="ad-slot"
+      aria-label="Top advertisement placeholder"
+    ></div>
 
-  <main class="feature">
+    <main class="feature">
       <h2>Compress PDF</h2>
       <p class="sub">
         Upload your PDF, set desired size, then click “Start Compression”.
       </p>
 
-  <div class="compress-card">
+      <div class="compress-card">
         <label>Enter desired size:</label>
         <input type="number" id="target-size" placeholder="256" value="256" />
         <select id="size-unit">
@@ -158,103 +335,135 @@
         </button>
       </div>
 
-  <div id="ad-content" class="ad-slot" aria-label="Content advertisement placeholder"></div>
-      <!-- Inline feature blog: replaced with in-depth explainer -->
-      <section class="feature-blog" aria-labelledby="compress-blog-title">
-        <h3 id="compress-blog-title" class="blog-title">How Our PDF Compressor Works (In Plain English)</h3>
-        <p class="sub">You dropped in a big PDF, clicked compress, and—boom—your file got smaller. Here’s the human-friendly tour of what actually happens, why quality still looks good, and how to get the best results every time.</p>
-
-        <h4>What actually happens under the hood?</h4>
-        <p>
-          Think of a PDF like a folder. Inside are pages, and each page can hold text, vector drawings, and images. Our tool opens that “folder” right in your browser and visits each page. For every page, we make a high‑resolution snapshot on an invisible canvas. Then we write those snapshots back into a brand‑new PDF—but this time, each page image is saved at a smart, slightly lower quality to reduce the file size.
-        </p>
-        <p>
-          That’s the core idea: <strong>render → snapshot → rebuild</strong>. The quality is tuned adaptively so you can aim for a specific size (say <em>256&nbsp;KB</em> or <em>2&nbsp;MB</em>) without crushing readability.
-        </p>
-
-        <div class="blog-figures">
-          <figure>
-            <img src="data:image/svg+xml;utf8,
-              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'>
-                <rect width='1200' height='700' fill='%23fafbff'/>
-                <rect x='70' y='120' width='480' height='420' rx='12' fill='white' stroke='%23d9ddff'/>
-                <text x='310' y='165' text-anchor='middle' fill='%23333' font-size='28'>Before</text>
-                <rect x='120' y='200' width='380' height='220' rx='8' fill='%23eef2ff' stroke='%23e0e7ff'/>
-                <text x='310' y='340' text-anchor='middle' fill='%23666' font-size='18'>~ 4.2 MB</text>
-                <rect x='650' y='120' width='480' height='420' rx='12' fill='white' stroke='%23d9ddff'/>
-                <text x='890' y='165' text-anchor='middle' fill='%23333' font-size='28'>After</text>
-                <rect x='700' y='200' width='380' height='220' rx='8' fill='%23eefaf5' stroke='%23d1fae5'/>
-                <text x='890' y='340' text-anchor='middle' fill='%23065f46' font-size='18'>~ 780 KB</text>
-              </svg>"
-              alt="Before/After size comparison preview" style="width:100%;height:auto;border-radius:12px;">
-            <figcaption>Illustration: typical scanned PDFs shrink a lot; vector‑heavy brochures shrink less.</figcaption>
-          </figure>
+      <div
+        id="ad-content"
+        class="ad-slot"
+        aria-label="Content advertisement placeholder"
+      ></div>
+      <!-- Enhanced Feature Blog Section -->
+      <section class="feature-blog">
+        <div class="title-with-logo">
+          <img src="../assets/images/sflogoPNG.PNG" alt="PDF Tools Logo" class="brand-logo" />
+          <h3> Compress PDF  Reduce File Size Without Losing Quality</h3>
         </div>
 
-        <h4>Step‑by‑step, from click to download</h4>
-        <ol class="blog-steps">
-          <li><strong>You choose a target size.</strong> Pick in KB or MB. A realistic goal helps quality.</li>
-          <li><strong>We scan your pages.</strong> Each page is rendered to a canvas at a sensible scale.</li>
-          <li><strong>We encode images.</strong> The page snapshot is stored as a JPEG with an initial quality.</li>
-          <li><strong>We check the size.</strong> If the PDF is still larger than your target, we retry at a slightly lower quality.</li>
-          <li><strong>We stop when it fits.</strong> Once it meets the target (or the quality floor), we package your new, smaller PDF.</li>
-        </ol>
+        <img src="../assets/images/pdf compresor.JPG" alt="Compress PDF tool interface" class="hero-img" />
 
-        <h4>Privacy first: your file stays with you</h4>
-        <p>
-          Everything happens locally in your browser. We don’t upload, scan, or store your document — and when you close the tab, the working data disappears. It’s compression without compromise.
-        </p>
+        <section>
+          <h4> How It Works</h4>
+          <p>Our <strong>PDF Compressor</strong> reduces file size by converting each page to optimized JPEG images and rebuilding the PDF. You set your target size, we render each page, compress it with adjustable quality, and package it into a smaller PDFall processed locally in your browser.</p>
+        </section>
 
-        <div class="ad-slot" aria-label="In-article advertisement placeholder">Ad</div>
+        <section>
+          <h4> Why Use This Tool?</h4>
+          <ul>
+            <li><strong>Target Size Control:</strong> Set your desired file size in KB or MB</li>
+            <li><strong>Automatic Quality Adjustment:</strong> Tool finds optimal compression for your target</li>
+            <li><strong>Preview Before Download:</strong> See final file size before saving</li>
+            <li><strong>100% Private:</strong> No uploadseverything stays in your browser</li>
+            <li><strong>No Limits:</strong> Compress as many PDFs as you need, any size</li>
+          </ul>
+        </section>
 
-        <h4>Pro tips for best results</h4>
-        <ul>
-          <li><strong>Start moderate.</strong> Aim for a 40–60% reduction first. If it still looks great, go lower.</li>
-          <li><strong>Check small text.</strong> If tiny fonts look fuzzy, bump the target size up a notch.</li>
-          <li><strong>Split and compress.</strong> For huge docs, compress sections separately to keep quality consistent.</li>
-          <li><strong>Keep originals safe.</strong> Use a clear output name (e.g., <em>filename‑compressed.pdf</em>).</li>
-        </ul>
+        <section>
+          <h4> Complete Privacy</h4>
+          <p>Your PDF <strong>never leaves your device</strong>. We use PDF.js to render pages and jsPDF to rebuild the compressed document entirely in your browser. No server uploads, no data collection, no privacy concerns.</p>
+        </section>
 
-        <div class="blog-figures">
-          <figure>
-            <img src="data:image/svg+xml;utf8,
-              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='560'>
-                <rect width='1200' height='560' fill='%23ffffff'/>
-                <text x='600' y='70' text-anchor='middle' font-size='24' fill='%23333'>Quality vs. Size</text>
-                <line x1='120' y1='460' x2='1080' y2='460' stroke='%23d1d5db' stroke-width='2'/>
-                <line x1='120' y1='120' x2='120' y2='460' stroke='%23d1d5db' stroke-width='2'/>
-                <polyline fill='none' stroke='%232563eb' stroke-width='4' points='120,180 360,220 600,300 840,380 1080,430'/>
-                <circle cx='360' cy='220' r='6' fill='%232563eb'/>
-                <circle cx='600' cy='300' r='6' fill='%232563eb'/>
-                <circle cx='840' cy='380' r='6' fill='%232563eb'/>
-                <text x='1080' y='485' text-anchor='end' font-size='14' fill='%23666'>Smaller size →</text>
-                <text x='80' y='130' text-anchor='end' font-size='14' fill='%23666'>Higher quality →</text>
-              </svg>"
-              alt="Chart illustration showing quality decreasing as size target lowers"
-              style="width:100%;height:auto;border-radius:12px;">
-            <figcaption>Lower targets mean smaller files but more aggressive compression. Find your sweet spot.</figcaption>
-          </figure>
+        <section>
+          <h4> Common Compression Scenarios</h4>
+          <p><strong>Email Attachments:</strong> Most email providers limit files to 10-25 MB. Compress large PDFs to fit attachment size limits.</p>
+          <p><strong>Website Uploads:</strong> Faster loading = better SEO. Compress PDFs before uploading to improve page speed.</p>
+          <p><strong>Mobile Storage:</strong> Save phone/tablet space by compressing archived documents, old contracts, and reference materials.</p>
+          <p><strong>Cloud Backup:</strong> Reduce cloud storage costs by compressing files that don't need print quality.</p>
+        </section>
+
+        <section>
+          <h4>💡 Compression Tips</h4>
+          <p>Compressing PDFs isn't just about making files smaller—it's about finding that sweet spot where size meets quality. Here's what you need to know to get the best results:</p>
+          <ul>
+            <li><strong>Start Conservative:</strong> Try 50-70% of original size first to preserve quality, then go lower if needed. It's way easier to compress more aggressively on the second try than to undo an over-compressed file you've already sent out.</li>
+            <li><strong>Check Readability:</strong> After compression, zoom in on small text and fine details like charts or diagrams. If things look fuzzy or pixelated, increase your target size slightly. Remember, the goal is smaller files that still look professional—not unreadable mush.</li>
+            <li><strong>Know Your Use Case:</strong> Web viewing? Go aggressive (256-512 KB) since screens handle lower resolution just fine. Printing? Stay moderate (1-2 MB) to keep text sharp and colors accurate. Archiving for long-term storage? Minimal compression preserves every detail.</li>
+            <li><strong>Keep Originals:</strong> Never, ever overwrite your source file with the compressed version. Compression is lossy, meaning you can't reverse it perfectly. Always save the compressed file with a new name like "document_compressed.pdf" so you have the original to fall back on.</li>
+            <li><strong>Large Documents:</strong> For PDFs over 50 MB or with 100+ pages, consider splitting into sections first using our <a href="./split.html">Split PDF tool</a>. Compressing smaller chunks gives you better quality control and prevents browser memory issues.</li>
+            <li><strong>Test Your Target:</strong> If you're unsure what size to target, start with half the original file size. You can always go lower if needed, but starting too aggressive means you'll have to re-compress from the original again.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>⚠️ Common Compression Mistakes to Avoid</h4>
+          <p>We've seen thousands of PDFs compressed, and these are the mistakes that come up again and again. Avoid them and you'll save yourself a ton of frustration:</p>
+          <ul>
+            <li><strong>Compressing Already-Compressed Files:</strong> If your PDF is already small or has been compressed before, running it through again won't help much. You're just degrading quality for minimal size reduction. Check the original file size first—if it's already under 2-3 MB, you're probably fine.</li>
+            <li><strong>Ignoring the Preview:</strong> Always open the compressed PDF before sending it. What looked fine at 100% zoom might be blurry at 150%. Better to catch quality issues before your client or colleague does.</li>
+            <li><strong>Using the Wrong Tool for the Job:</strong> This tool compresses by converting pages to images, which is perfect for scanned documents or image-heavy PDFs. But if you have a text-only PDF with no images, you won't see much benefit. In that case, the file's probably already as small as it's going to get.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>📖 Quick Guide</h4>
+          <p><strong>1. Upload PDF:</strong> Drag and drop or click to select your PDF file</p>
+          <p><strong>2. Set Target Size:</strong> Choose your desired file size in KB or MB</p>
+          <p><strong>3. Start Compression:</strong> Click "Start Compression" and wait for processing</p>
+          <p><strong>4. Auto-Adjust Quality:</strong> Tool automatically adjusts JPEG quality to meet your target</p>
+          <p><strong>5. Review Results:</strong> Check final file size in the progress message</p>
+          <p><strong>6. Download:</strong> Click "Download Compressed PDF" to save the optimized file</p>
+        </section>
+
+        <div class="faq">
+          <h4> Frequently Asked Questions</h4>
+
+          <details>
+            <summary>Will my links, forms, or selectable text still work after compression?</summary>
+            <p>Our compression method converts pages to images, so interactive elements like hyperlinks, fillable forms, and selectable text won't function afterward. If you need to preserve these features, use a lighter compression target or consider compressing only image-heavy sections.</p>
+          </details>
+
+          <details>
+            <summary>Why does my scanned document compress more than my design brochure?</summary>
+            <p>Scanned documents are essentially just images, which compress very efficiently. Design brochures contain vector graphics, high-resolution logos, and crisp typography that require more data to maintain visual quality. You'll see smaller compression ratios on professionally designed PDFs compared to simple scans.</p>
+          </details>
+
+          <details>
+            <summary>What if the compressed file is still too large for my needs?</summary>
+            <p>Try these strategies: (1) Set a lower target size and re-compress, (2) Split your PDF into smaller sections first, (3) Remove unnecessary pages before compressing, or (4) Reduce images/graphics in your original document if possible. You can compress multiple times if needed.</p>
+          </details>
+
+          <details>
+            <summary>Is there a file size limit for compression?</summary>
+            <p>While there's no hard limit, very large files (50+ MB or 100+ pages) may take longer to process and could cause memory issues on older devices or mobile browsers. For best performance, we recommend working with PDFs under 25 MB. If you have a larger file, split it into sections first.</p>
+          </details>
+
+          <details>
+            <summary>How is this different from other online PDF compressors?</summary>
+            <p>The key difference is <strong>privacy and speed</strong>. Most online compressors upload your file to their servers for processing, which raises security concerns and adds upload/download time. Our tool processes everything locally in your browserno uploads, no waiting, no privacy risks.</p>
+          </details>
+
+          <details>
+            <summary>Can I compress password-protected PDFs?</summary>
+            <p>Currently, password-protected PDFs cannot be compressed directly. You'll need to remove the password protection first using our <a href="./unlock.html">Unlock PDF tool</a>, then compress the unlocked file. After compression, you can re-apply password protection using our <a href="./protect.html">Protect PDF tool</a> if needed.</p>
+          </details>
         </div>
 
-        <h4>Quick FAQs</h4>
-        <details>
-          <summary>Will links, forms, or selectable text survive?</summary>
-          <p>Since pages are flattened into images, interactive elements (links, forms, selectable text) won’t behave the same afterward. If you need live text, try a lighter target or compress only scan‑heavy sections.</p>
-        </details>
-        <details>
-          <summary>Why does a 1‑page scan shrink more than a brochure?</summary>
-          <p>Scans are just images—easy to shrink. Brochures often mix vectors, icons, and crisp text that need more detail to look good, so savings are smaller.</p>
-        </details>
-        <details>
-          <summary>What if the output is still too big?</summary>
-          <p>Try a slightly lower target, or split the file and compress parts. Also remove unused pages before compressing—garbage in, garbage out.</p>
-        </details>
-
-        <p class="note">Ready to try? Drop your PDF above, set a goal, and you’ll see progress as each page is packed and optimized.</p>
+        <div class="note">
+          <p><strong>Ready to compress your PDF?</strong> <a href="#file-input">Try it now </a></p>
+        </div>
+        <h4> Related Tools</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+          <a href="./merge.html" style="display: block; padding: 0.75rem 1rem; background: white; border: 1px solid #e0e7ff; border-radius: 8px; text-decoration: none; color: #1e40af; font-weight: 500; transition: all 0.2s;"> Merge PDFs</a>
+          <a href="./split.html" style="display: block; padding: 0.75rem 1rem; background: white; border: 1px solid #e0e7ff; border-radius: 8px; text-decoration: none; color: #1e40af; font-weight: 500; transition: all 0.2s;"> Split PDF</a>
+          <a href="./delete.html" style="display: block; padding: 0.75rem 1rem; background: white; border: 1px solid #e0e7ff; border-radius: 8px; text-decoration: none; color: #1e40af; font-weight: 500; transition: all 0.2s;"> Delete Pages</a>
+          <a href="./images-to-pdf.html" style="display: block; padding: 0.75rem 1rem; background: white; border: 1px solid #e0e7ff; border-radius: 8px; text-decoration: none; color: #1e40af; font-weight: 500; transition: all 0.2s;"> Images to PDF</a>
+        </div>
       </section>
     </main>
-    <div id="ad-footer" class="ad-slot" aria-label="Footer advertisement placeholder"></div>
-  <div data-include="footer"></div>
+    </main>
+    <div
+      id="ad-footer"
+      class="ad-slot"
+      aria-label="Footer advertisement placeholder"
+    ></div>
+    <div data-include="footer"></div>
 
     <script>
       const { jsPDF } = window.jspdf;
@@ -379,6 +588,20 @@
           a.click();
           URL.revokeObjectURL(url);
         }
+      });
+
+      // "Try it now" link functionality
+      document.querySelectorAll('a[href="#file-input"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const fileInput = document.getElementById('file-input');
+          if (fileInput) {
+            fileInput.click();
+            setTimeout(() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
+          }
+        });
       });
     </script>
 
